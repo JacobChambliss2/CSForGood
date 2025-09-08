@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tutors</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="Tutors.css">
+        <!--<link rel="icon" type="image/x-icon" href="favicon.ico"> logo eventually-->
+    </head>
+    <body>
+        
+      <h1>Tutors</h1>
+      <nav>
+            <div class = "navbar">
+                <div class="dropdown">
+                <button class="dropbtn">Navigation ⮟</button>
+                  <div class="dropdown-content">
+                    <a id="landingpagenav" href="Landing.html">Home</a>
+                    <a id = "schedulingnav" href="Scheduling.html">Calendar</a>
+                    <a id="tutorsnav" href="Tutors.html">Tutors</a>
+                    </div>
+                </div>   
+                <div class="subjectsdd">
+                    <!-- Button to trigger dropdown -->
+                <button class="subjects">Subjects ⮟</button>
+                    
+                      <!-- Subject List -->
+                      <ul class="subjectlist">
+                        <!-- Subject 1 -->
+                        <li class="asubject">
+                          <input class="form-check-input me-1" type="checkbox" id="mathCheckbox" value="Math">
+                          <label class="form-check-label" for="mathCheckbox">Math</label>
+                        </li>
+                        
+                        <!-- Subject 2 -->
+                        <li class="asubject">
+                          <input class="form-check-input me-1" type="checkbox" id="scienceCheckbox" value="Science">
+                          <label class="form-check-label" for="scienceCheckbox">Science</label>
+                        </li>
+                        
+                        <!-- Subject 3 -->
+                        <li class="asubject">
+                          <input class="form-check-input me-1" type="checkbox" id="languageArtsCheckbox" value="Language Arts">
+                          <label class="form-check-label" for="languageArtsCheckbox">Language Arts</label>
+                        </li>
+                      </ul>
+                  </div>
+                  <div class = "filterby">
+                    <button class = "filterbydd">Filter By ⮟</button>
+                      <div class = "filteroptions">
+                        <label>By Rating</label>
+                        <label>By Price</label>
+                      </div>
+                  </div>
+            </div>
+        </nav>
+    </html>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="Tutors.js"></script>
+  </body>
