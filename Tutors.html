@@ -24,32 +24,38 @@
                   </div>   
                   <div class="subjectsdd">
                     <button class="subjects">Subjects ⮟</button>
-                    <ul class="subjectlist">
-                      <li class="subject">
-                        <input class="form-check-input me-1" type="checkbox" id="LACheck">
-                        <label class="form-check-label" for="firstCheckbox">Language Arts</label>
-                      </li>
-                      <li class="subject">
-                        <input class="form-check-input me-1" type="checkbox" id="ScienceCheck">
-                        <label class="form-check-label" for="secondCheckbox">Science</label>
-                      </li>
-                      <li class="subject">
-                        <input class="form-check-input me-1" type="checkbox" id="MathCheck">
-                        <label class="form-check-label" for="thirdCheckbox">Math</label>
-                      </li>
-                      <li class="subject">
-                        <input class="form-check-input me-1" type="checkbox" id="OtherCheck">
-                        <label class="form-check-label" for="thirdCheckbox">Other</label>
-                      </li>
+                      <ul class="subjectlist">
+                        <li class="subject">
+                            <input class="form-check-input me-1" type="radio" id="LACheck" name="subject">
+                            <label class="form-check-label" for="LACheck">Language Arts</label>
+                        </li>
+                        <li class="subject">
+                            <input class="form-check-input me-1" type="radio" id="ScienceCheck" name="subject">
+                            <label class="form-check-label" for="ScienceCheck">Science</label>
+                        </li>
+                        <li class="subject">
+                            <input class="form-check-input me-1" type="radio" id="MathCheck" name="subject">
+                            <label class="form-check-label" for="MathCheck">Math</label>
+                        </li>
+                        <li class="subject">
+                            <input class="form-check-input me-1" type="radio" id="OtherCheck" name="subject">
+                            <label class="form-check-label" for="OtherCheck">Other</label>
+                        </li>
                     </ul>
                   </div>
                   
                   <div class="filterby">
                     <button class="filterbydd">Filter By ⮟</button>
-                    <div class="filteroptions">
-                      <label>By Rating</label>
-                      <label>By Price</label>
-                    </div>
+                    <ul class="filteroptions">
+                      <li class="filteroption">
+                        <input class="form-check-input me-1" type="radio" id="filterprice">
+                        <label class="form-check-label" for="MathCheck">By Price</label>
+                      </li>
+                      <li class="filteroption">
+                        <input class="form-check-input me-1" type="radio" id="filterrating">
+                        <label class="form-check-label" for="OtherCheck">By Rating</label>
+                      </li>
+                    </ul>
                   </div>
               </div>
           </nav>

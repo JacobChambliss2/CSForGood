@@ -61,15 +61,6 @@
     background-color: rgba(71, 38, 219, 0.808);
     border: white solid 1px;
 }
-#OtherCheck {
-    color: white;
-    padding: 12px 16px;
-    display: block;
-    background-color: rgba(71, 38, 219, 0.808);
-    border: white solid 1px;
-    margin-left: 5%;
-    margin-top: -20%;
-}
 
 .filterby:hover .filteroptions {
     display: flex;
@@ -80,7 +71,7 @@
     min-width: 160px;
     flex-direction: column;
 }
-.filteroptions label {
+.filteroptions li {
     color: white;
     padding: 12px 16px;
     display: block;
