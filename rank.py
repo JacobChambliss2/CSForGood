@@ -1,33 +1,56 @@
 import pandas as pd
-import numpy as np
+
 # Load tutors
 df = pd.read_csv("example.csv")
 
-# Define your requirements
+# Keep only active tutors
+df = df[df["Active"] == True].reset_index(drop=True)
+
+# Define requirements and weights
 requirements = {
-    "Age": {"minAge": 17, "weight": 10},
-    "School":   {"equals": "Castle", "weight": 1000},
-    "SAT":   {"minSAT": 1500, "weight": 1000},
+    "Age": {"target": 15, "weight": 1.0},      
+    "School": {"equals": "Castle", "weight": 1.0},
+    "SAT": {"min": 400, "max": 1600, "weight": 1.0},  
+    "distance": {"weight": 1.0},  
 }
 
-# Start everyone with score = 0
-df["Score"] = 0
+def normalize_scores(df, reqs):
+    scores = pd.DataFrame(index=df.index)
 
-# Apply each requirement
-for col, rule in requirements.items():
-    if "minAge" in rule:
-        df["Score"] -= (abs(df[col] - rule["minAge"])) * rule["weight"]
-    if "minSAT" in rule:
-        df["Score"] += (np.log((df[col] - rule["minSAT"])) * rule["weight"])
-    if "max" in rule:
-        df["Score"] += (df[col] <= rule["max"]) * rule["weight"]
-    if "equals" in rule:
-        df["Score"] += (df[col] == rule["equals"]) * rule["weight"]
+    # Age: closer to target is better
+    if "Age" in reqs:
+        target = reqs["Age"]["target"]
+        max_diff = df["Age"].sub(target).abs().max()
+        scores["Age"] = 1 - (df["Age"].sub(target).abs() / max_diff)
 
-# Sort by total score (highest first)
+    # School: exact match = 1, else 0
+    if "School" in reqs:
+        school = reqs["School"]["equals"]
+        scores["School"] = (df["School"] == school).astype(float)
+
+    # SAT: scale between min and max
+    if "SAT" in reqs:
+        sat_min, sat_max = df["SAT"].min(), df["SAT"].max()
+        scores["SAT"] = (df["SAT"] - sat_min) / (sat_max - sat_min)
+
+
+    # Distance: smaller = better
+    if "distance" in reqs:
+        max_dist = df["distance"].max()
+        scores["distance"] = 1 - (df["distance"] / max_dist)
+
+    return scores.clip(0, 1)
+
+# Compute scores
+scores = normalize_scores(df, requirements)
+
+# Apply weights
+weights = {k: v["weight"] for k, v in requirements.items()}
+weight_sum = sum(weights.values())
+
+df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight_sum
+
+# Sort candidates
 candidates = df.sort_values(by="Score", ascending=False)
 
-# Pick top 3 (or more if you want)
-top_candidates = candidates.head(3)
-
-print(top_candidates)
+print(candidates.head(10))
