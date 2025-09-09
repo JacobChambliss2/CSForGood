@@ -53,4 +53,4 @@ df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight
 # Sort candidates
 candidates = df.sort_values(by="Score", ascending=False)
 
-print(candidates.head(5))
+print(candidates.head(10))
