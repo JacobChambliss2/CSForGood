@@ -17,7 +17,7 @@ schools = ["Castle", "Westfield", "Memorial", "North", "South", "Central"]
 rows = []
 for _ in range(n_rows):
     name = f"{random.choice(names_first)} {random.choice(names_last)}"
-    age = random.randint(15, 25)  # tutor age range
+    age = random.randint(15, 20)  # tutor age range
     school = random.choice(schools)
     sat = random.randint(800, 1600)  # SAT scores
     active = random.choice([True, False])
