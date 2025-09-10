@@ -8,9 +8,9 @@ df = df[df["Active"] == True].reset_index(drop=True)
 
 # Define requirements and weights
 requirements = {
-    "Age": {"target": 15, "weight": 1.0},      
+    "Age": {"target": 17, "weight": 1.0},      
     "School": {"equals": "Castle", "weight": 1.0},
-    "SAT": {"min": 400, "max": 1600, "weight": 1.0},  
+    "SAT": {"min": 400, "max": 1600, "weight": 1000.0},  
     "distance": {"weight": 1.0},  
 }
 
@@ -53,4 +53,4 @@ df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight
 # Sort candidates
 candidates = df.sort_values(by="Score", ascending=False)
 
-print(candidates.head(5))
+print(candidates.head(10))

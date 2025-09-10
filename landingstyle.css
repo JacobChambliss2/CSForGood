@@ -5,8 +5,16 @@ html{
 nav{
     display: flex;
     height: 3em;
-    font-size: 25px;
+    font-size: 1.7em;
     overflow: hidden;
     background-color: rgb(221, 212, 212);
     position: relative;
+}
+.navbuttons{
+    margin: 1em;
+    justify-content: space-between;
+}
+.TwoButtons{
+    margin-left:auto;
+    margin-right: auto;
 }
