@@ -1,3 +1,4 @@
+
 html{
     scroll-behavior: smooth;
     display: flex;
@@ -5,8 +6,30 @@ html{
 nav{
     display: flex;
     height: 3em;
-    font-size: 25px;
+    font-size: 1.7em;
     overflow: hidden;
     background-color: rgb(221, 212, 212);
     position: relative;
+}
+.navbuttons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+    margin-left: 1em;
+    gap: 5em;
+}
+.Creation{
+    display: flex;
+    margin: auto;
+    margin-right: 1em;
+    gap: 1em;
+}
+title{
+    
+}
+.TwoSides{
+    display: flex;
+    margin-left: 10em;
+    margin-right: 10em;
 }
