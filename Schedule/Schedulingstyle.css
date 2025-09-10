@@ -5,16 +5,39 @@
 
 .calendar {
     text-align: center;
-    
+}
+
+input {
+    font-size: 17px;
 }
 
 .topBar {
     background-color: blue;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.hoursWrapper {
+display: flex;
+align-items: flex-start;
+}
+
+.hours {
+    background-color: grey;
+    padding-left: 10px;
+    padding-right: 40px;
+}
+
+.hours ul {
+    list-style: none;
+}
+
+.hours li {
+    margin-bottom: 30px;
 }
 
 .hoursLineDiv {
-    margin-left: 130px;
     width: 2px;
-    height: 100vh;
+    height: 1192px;
     background-color: black;
 }
