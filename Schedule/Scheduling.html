@@ -8,25 +8,35 @@
         <script src="Schedulingscript.js"></script>
 
         <title>
+            <!--Title name-->
             Schedule
         </title>
     </head>
 
     <body>
+        <!--top blue bar-->
         <div class="topBar">
+            <!--Title-->
+            <div class=""></div>
+
+            <!--input calendar-->
             <div class="calendar">
+                <!--basic calendar from html-->
+                <!--has both starting value and range available-->
                 <input type="date" id="start" name="trip-start"
                 value="2025-09-09"
                 min="2025-01-01" max="2027-01-01">
             </div>
         </div>
 
+        <!--tutor name bar right under top blue bar-->
         <div class="tutors">
             
         </div>
 
-
+        <!--hours wrapper for flex-->
         <div class="hoursWrapper">
+            <!--list of hours for the whole day-->
             <div class="hours">
                 <ul>
                 <li>12:00am</li>
@@ -55,7 +65,10 @@
                 <li>11:00pm</li>
                 </ul>
             </div>
+            <!--vert line for hours-->
             <div class="hoursLineDiv"></div>
+            <!--hor lines for hours-->
+            <div class="lines"></div>
         </div>
     </body>
 </html>
