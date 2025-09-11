@@ -10,13 +10,17 @@ fetch('./data.json')
 
         const tutors = [];
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 10; i++) {
             if (actives[i] == true) {
                 const button = document.createElement('button');
 
                 button.setAttribute('id', `tutors${i}`); 
-                button.textContent = `${names[i]}, Age: ${ages[i]}, School: ${schools[i]}, SAT: ${sats[i]}`; 
-
+                button.innerHTML = `
+                    <strong>${names[i]}</strong><br>
+                    Age: ${ages[i]}<br>
+                    School: ${schools[i]}<br>
+                    SAT: ${sats[i]}
+                    `;
                 document.getElementById('tutorcards').appendChild(button); 
                 tutors.push(button); 
             }
