@@ -1,0 +1,147 @@
+/* ================================
+   THEME VARIABLES (easy to edit)
+================================ */
+:root {
+    --primary-color: #4f46e5;          /* main button color */
+    --primary-color-dark: #3730a3;     /* hover color */
+    --background-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+    --card-bg: rgba(255, 255, 255, 0.15); /* glass effect */
+    --card-border: rgba(255, 255, 255, 0.3);
+    --text-color: #f9fafb;
+    --input-bg: rgba(255, 255, 255, 0.1);
+    --input-border: rgba(255, 255, 255, 0.4);
+    --error-color: #f87171;            /* soft red */
+    --radius: 12px;
+    --transition-speed: 0.3s;
+    --font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ================================
+   BASE STYLES
+================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background-gradient);
+    color: var(--text-color);
+}
+
+/* ================================
+   LOGIN CARD
+================================ */
+.login-container {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px); /* frosted glass effect */
+    border: 1px solid var(--card-border);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    width: 350px;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+}
+
+.login-container h2 {
+    margin-bottom: 2rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* ================================
+   INPUTS
+================================ */
+.input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    display: block;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-color);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border var(--transition-speed), background var(--transition-speed);
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ================================
+   BUTTON
+================================ */
+.btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--primary-color);
+    border: none;
+    border-radius: var(--radius);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+}
+
+.btn:hover {
+    background: var(--primary-color-dark);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* ================================
+   RESPONSE MESSAGE
+================================ */
+#response {
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--error-color);
+}
+
+/* ================================
+   ANIMATIONS
+================================ */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.extra-actions {
+    margin-top: 1.5rem;
+}
+
+.btn.secondary {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn.secondary:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
