@@ -15,21 +15,32 @@ nav{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: auto;
-    margin-left: 1em;
-    gap: 5em;
+    margin: 1em;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 .Creation{
     display: flex;
-    margin: auto;
-    margin-right: 1em;
+    flex-wrap: wrap;
     gap: 1em;
+    margin: 1em;
+    min-width: 0;
 }
-title{
-    
+h1, #Title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-wrap: none;
 }
 .TwoSides{
     display: flex;
-    margin-left: 10em;
-    margin-right: 10em;
+    justify-content: center;
+    margin: 0 10vw;
+    flex-wrap: wrap;
+}
+.TwoSides img{
+    width: 45%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
 }
