@@ -1,4 +1,6 @@
 import pandas as pd
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 # Load tutors
 df = pd.read_csv("example.csv")
@@ -54,3 +56,35 @@ df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight
 candidates = df.sort_values(by="Score", ascending=False)
 
 print(candidates.head(10))
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route("/rank", methods=["POST"])
+def rank():
+    data = request.json
+
+    # take input values from HTML/JS
+    age_target = int(data.get("Age", 17))
+    school_target = data.get("School", "Castle")
+    sat_weight = float(data.get("SAT_weight", 1000.0))
+    distance_weight = float(data.get("distance_weight", 1.0))
+
+    # update requirements dynamically
+    requirements["Age"]["target"] = age_target
+    requirements["School"]["equals"] = school_target
+    requirements["SAT"]["weight"] = sat_weight
+    requirements["distance"]["weight"] = distance_weight
+
+    # recompute scores
+    scores = normalize_scores(df, requirements)
+    weights = {k: v["weight"] for k, v in requirements.items()}
+    weight_sum = sum(weights.values())
+    df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight_sum
+
+    candidates = df.sort_values(by="Score", ascending=False).head(10)
+    print(candidates.head(10))
+    return jsonify(candidates.to_dict(orient="records"))
+
+if __name__ == "__main__":
+    app.run(debug=True)
