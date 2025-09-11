@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tutor Ranking</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    form { margin-bottom: 20px; }
+    label { display: block; margin: 8px 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Rank Tutors</h1>
+
+  <form id="rankForm">
+    <label>
+      Target Age:
+      <input type="number" name="Age" value="17">
+    </label>
+    <label>
+      Target School:
+      <input type="text" name="School" value="Castle">
+    </label>
+    <label>
+      SAT Weight:
+      <input type="number" name="SAT_weight" value="1000">
+    </label>
+    <label>
+      Distance Weight:
+      <input type="number" name="distance_weight" value="1">
+    </label>
+    <button type="submit">Get Rankings</button>
+  </form>
+
+  <h2>Results</h2>
+  <table id="resultsTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>School</th>
+        <th>SAT</th>
+        <th>Distance</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    document.getElementById("rankForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // collect form data
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      // send to Flask
+      const response = await fetch("http://127.0.0.1:5000/rank", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const tutors = await response.json();
+
+      // update results table
+      const tbody = document.querySelector("#resultsTable tbody");
+      tbody.innerHTML = ""; // clear old results
+
+      tutors.forEach(t => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${t.Name}</td>
+          <td>${t.Age}</td>
+          <td>${t.School}</td>
+          <td>${t.SAT}</td>
+          <td>${t.distance}</td>
+          <td>${t.Score.toFixed(3)}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    });
+  </script>
+</body>
+</html>

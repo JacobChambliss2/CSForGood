@@ -78,3 +78,29 @@
     background-color: rgba(71, 38, 219, 0.808);
     border: white solid 1px;
 }
+
+#tutorcards {
+    margin-top: 1%;
+}
+
+#tutorcards button {
+  display: block;
+  width: 250px;
+  margin: 10px auto;
+  padding: 12px 16px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  white-space: normal;
+  background-color: #f0f4f8;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#tutorcards button:hover {
+  background-color: #e0e7ef;
+}
