@@ -6,7 +6,7 @@ html{
 nav{
     display: flex;
     height: 3em;
-    font-size: 1.7em;
+    font-size: 3.4vh;
     overflow: hidden;
     background-color: rgb(221, 212, 212);
     position: relative;
@@ -26,11 +26,22 @@ nav{
     margin: 1em;
     min-width: 0;
 }
-h1, #Title{
+h1{
     display: flex;
     justify-content: center;
     align-items: center;
-    text-wrap: none;
+}
+#move{
+    display: flex;
+    animation: scroll 25s linear infinite;
+}
+@keyframes scroll{
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(-50%);
+    }
 }
 .TwoSides{
     display: flex;
