@@ -7,7 +7,7 @@ fetch('./data.json')
         const schools = data.schools;
         const sats = data.sats;
         const actives = data.actives;
-
+        
         const tutors = [];
         const imglink = `<img src="Pictures/black.jpg" alt="Tutor photo" style="width:30px; height:30px; border-radius:50%; vertical-align:middle; margin-right:8px;">`;
 
@@ -29,3 +29,10 @@ fetch('./data.json')
         }
     })
     .catch(error => console.error('Error loading data:', error));
+
+const slider = document.getElementById('satrange');
+const output = document.getElementById('satscore');
+  
+    // Update the display when the slider moves
+    slider.addEventListener('input', function() {
+      output.textContent = this.value; });
