@@ -1,0 +1,46 @@
+
+html{
+    scroll-behavior: smooth;
+    display: flex;
+}
+nav{
+    display: flex;
+    height: 3em;
+    font-size: 1.7em;
+    overflow: hidden;
+    background-color: rgb(221, 212, 212);
+    position: relative;
+}
+.navbuttons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 1em;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.Creation{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin: 1em;
+    min-width: 0;
+}
+h1, #Title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-wrap: none;
+}
+.TwoSides{
+    display: flex;
+    justify-content: center;
+    margin: 0 10vw;
+    flex-wrap: wrap;
+}
+.TwoSides img{
+    width: 45%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
