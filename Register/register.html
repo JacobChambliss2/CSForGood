@@ -2,13 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="login.css">
+    <title>Register</title>
+    <link rel="stylesheet" href="register.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
+    <div class="register-container">
+        <h2>Create Account</h2>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+          
+          <button onclick="moveProgress()">Increase Progress</button>
+          
+        <form id="registerForm">
             <div class="input-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
@@ -19,16 +26,21 @@
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="btn">Login</button>
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
         </form>
 
         <p id="response"></p>
 
         <div class="extra-actions">
-            <button id="createAccountBtn" class="btn secondary">Create Account</button>
+            <button id="backToLoginBtn" class="btn secondary">Back to Login</button>
         </div>
     </div>
 
-    <script src="login.js"></script>
+    <script src="register.js"></script>
 </body>
 </html>
