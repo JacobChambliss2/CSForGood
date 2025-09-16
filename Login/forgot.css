@@ -29,7 +29,7 @@ body {
     color: var(--text-color);
 }
 
-.register-container {
+.forgot-container {
     background: var(--card-bg);
     backdrop-filter: blur(12px);
     border: 1px solid var(--card-border);
@@ -41,10 +41,16 @@ body {
     animation: fadeIn 0.8s ease;
 }
 
-.register-container h2 {
-    margin-bottom: 2rem;
+.forgot-container h2 {
+    margin-bottom: 1rem;
     font-weight: 600;
     color: var(--text-color);
+}
+
+.instructions {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    color: #555;
 }
 
 .input-group {
@@ -56,7 +62,6 @@ body {
     font-size: 0.9rem;
     margin-bottom: 0.4rem;
     display: block;
-    opacity: 0.9;
 }
 
 .input-group input {
@@ -115,27 +120,4 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-.progress-container {
-    width: 100%;
-    background: var(--input-bg);
-    border: 1px solid var(--input-border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    height: 22px;
-    margin-bottom: 1.5rem;
-}
-
-.progress-bar {
-    width: 0%;
-    height: 100%;
-    background: var(--primary-color);
-    color: #fff;
-    text-align: center;
-    font-size: 0.8rem;
-    line-height: 22px;
-    font-weight: 500;
-    border-radius: var(--radius) 0 0 var(--radius);
-    transition: width var(--transition-speed) ease;
 }

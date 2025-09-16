@@ -12,9 +12,9 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         let result = await response.json();
 
         if (result.success) {
-            window.location.href = "../Landing/Landing.html";
+            window.location.href = "../Landing/landing.html";
         } else {
-            document.getElementById("response").innerText = "Invalid username or password.";
+            document.getElementById("response").innerText = "Invalid email or password.";
         }
     } catch (err) {
         document.getElementById("response").innerText = "Error connecting to server.";
