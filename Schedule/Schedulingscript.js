@@ -14,4 +14,4 @@ fetch('../data.json')
     });
   })
   // catch just incase some error
-  .catch(err => console.error('Error loading JSON:', err));
+.catch(err => console.error('Error loading JSON:', err));

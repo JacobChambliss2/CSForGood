@@ -41,7 +41,7 @@ padding: 20px;
 .hours {
     background-color: grey;
     padding: 20px 30px;
-    border-right: 2px solid black;
+    border-right: 2px solid rgb(37, 37, 37);
 }
 
 /*gets rid of bullet points*/
@@ -53,19 +53,19 @@ padding: 20px;
 .hours li {
     margin-bottom: 30px;
     font-size: 16px;
-    color: #333;
+    color: #1a1a1a;
 }
 
 /*horiz lines between each hour*/
 .lines {
     flex: 1;
-    height: 1192px;
+    height: 1180px;
 
     /*repeat hor lines so I don't need to create a div for every single one*/
     background: repeating-linear-gradient(
         to bottom,
-        black,
-        black 2px,
+        rgb(224, 224, 224),
+        rgb(141, 141, 141) 2px,
         white 1px,
         white 49px
     );
@@ -89,4 +89,34 @@ padding: 20px;
 
 .tutors li {
     margin-left: 150px;
+}
+
+.tutors li:hover {
+    color: rgb(0, 96, 240);
+}
+
+.bookingWrapper {
+    display: none; /* hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.bookUI {
+    background: white;
+    margin: 10% auto;
+    padding: 20px 30px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    text-align: center;
+}
+  
+  /* Close button */
+.close {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
 }
