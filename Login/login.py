@@ -10,22 +10,22 @@ CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5500"}})
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def check_credentials(username, password):
+def check_credentials(email, password):
     csv_path = os.path.join(BASE_DIR, "login.csv")  # always use the file in the same folder as login.py
     with open(csv_path, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            if row["username"] == username and row["password"] == password:
+            if row["email"] == email and row["password"] == password:
                 return True
     return False
 
 
 @app.route("/login", methods=["POST"])
 def login():
-    username = request.form.get("username")
+    email = request.form.get("email")
     password = request.form.get("password")
 
-    if check_credentials(username, password):
+    if check_credentials(email, password):
         return jsonify({"success": True})
     else:
         return jsonify({"success": False})
