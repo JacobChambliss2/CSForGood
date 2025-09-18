@@ -17,7 +17,6 @@
         <!--top blue bar-->
         <div class="topBar">
             <!--Title-->
-            <div class=""></div>
 
             <!--input calendar-->
             <div class="calendar">
@@ -31,7 +30,7 @@
 
         <!--tutor name bar right under top blue bar-->
         <div class="tutors">
-            
+            <ul id="tutorList"></ul>
         </div>
 
         <!--hours wrapper for flex-->
@@ -65,10 +64,27 @@
                 <li>11:00pm</li>
                 </ul>
             </div>
-            <!--vert line for hours-->
-            <div class="hoursLineDiv"></div>
-            <!--hor lines for hours-->
+            <!--horiz lines for hours-->
             <div class="lines"></div>
+        </div>
+        
+        <!--booking popup (hidden)-->
+        <div id="bookingModal" class="bookingWrapper">
+            <!--UI-->
+            <div class="bookUI">
+                <!--close button-->
+                <span class="close">&times;</span>
+                <!--when get tutor name-->
+                <h2 id="modalTutorName"></h2>
+                <!--basic booking form to select time-->
+                <form id="bookingForm">
+                    <label for="time">Select Time:</label>
+                    <input type="time" id="time" name="time" required>
+                    <!--line break then submit/book button-->
+                    <br><br>
+                    <button type="submit">Book</button>
+                </form>
+            </div>
         </div>
     </body>
 </html>

@@ -1,55 +1,98 @@
 <!DOCTYPE html>
-<html>
-    <!--References-->
+<html lang="en">
+<head>
+    <!-- References -->
+    <meta charset="UTF-8">
     <title>Nextech CSforGood - Castle 2025, Tutoring Help</title>
     <link rel="stylesheet" href="landingstyle.css">
     <script defer src="landingscript.js"></script>
-    <!--Navigation-->
+</head>
+
+<body>
+    <!-- Navigation -->
     <nav>
-        <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Fortnite_F_lettermark_logo.png">
+        <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Fortnite_F_lettermark_logo.png" alt="Logo">
         <div class="navbuttons">
-            <a href="https://chatgpt.com/" id="button1">Button 1</a>
-            <a href="https://chatgpt.com/" id="button1">Button 2</a>
-            <a href="https://chatgpt.com/" id="button1">Button 3</a>
-            <a href="https://chatgpt.com/" id="button1">Button 4</a>
+            <!-- NOTE: IDs must be unique. Changed to class="nav-button" -->
+            <a href="https://chatgpt.com/" class="nav-button">Button 1</a>
+            <a href="https://chatgpt.com/" class="nav-button">Button 2</a>
+            <a href="https://chatgpt.com/" class="nav-button">Button 3</a>
+            <a href="https://chatgpt.com/" class="nav-button">Button 4</a>
         </div>
-        <!--Whenever The User is On the Website before Creating an Account/Signing-In-->
+
+        <!-- Whenever The User is On the Website before Creating an Account/Signing-In -->
         <div class="Creation">
-            <a href="https://chatgpt.com/" id="SignIn">Sign In</a>
-            <a href="https://chatgpt.com/" id="CreateAcc">Create Account</a>
+            <a href="..\Login\login.html" id="login">Login</a>
+            <a href="..\Register\register.html" id="CreateAcc">Create Account</a>
         </div>
-        <!-- Whenever the User is Logged In
-         <div class="LoggedIn">
-             <a href="https://chatgpt.com/" id="LoggedIn">Timmy Toughknuckles</a>
-         </div>
+
+        <!-- Whenever the User is Logged In -->
+        <!-- 
+        <div class="LoggedIn">
+            <a href="https://chatgpt.com/" id="LoggedIn">Timmy Toughknuckles</a>
+        </div>
         -->
     </nav>
-    <!--Title-->
-    <head>
-        <h1>Castle CS 4 Good Helper</h1>
-    </head>
-    <body>
-        <!--Moving Text-->
-        <h4 id="Title">Loren Ipsum</h4>
-        <div class="TwoSides">
-            <img id="Image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png">
-            <img id="Image2" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png">
+
+    <!-- Title -->
+    <h1>Castle CS 4 Good Helper</h1>
+
+    <!-- Moving Text -->
+    <div class="scrollcontainer">
+        <div class="scroller">
+            <div class="scroll-content">
+                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
+                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
+            </div>
+            <div class="scroll-content" aria-hidden="true">
+                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
+                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
+            </div>
         </div>
-        <div class="Achievements">
-            <!--Four Containers: 1. Licensed Professionals, 2. Many Subjects, 3. Yeah, 4. AP/IB -->
-        </div>
-        <div class="Peronsal Review">
-            <!--May include an Admin/Adult saying they are excited about this-->
-        </div>
-        <div class="Purpose">
-            <!--Just Talking about our Goal/Purpose-->
-        </div>
-        <div class="misc">
-            <!--may include other buttons-->
-            <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
-        </div>
-    </body>
+    </div>
     
+
+    <!-- Two Images Side-by-Side -->
+     <!--https://prismic.io/blog/css-hover-effects-->
+    <div class="TwoSides">
+        <div class="Side1">
+            <img id="Image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="Placeholder Image 1">
+            <span class="Header">Tutor</span>
+            <h3 class="imagetext">Join the great team of tutors!</h3>
+        </div>
+        <div class="Side2">
+            <img id="Image2" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="Placeholder Image 2">
+            <span class="Header">Student</span>
+            <h3 class="imagetext">Engage and learn alongside millions of other students!</h3>
+        </div>
+    </div>
+
+    <div class="Achievements">
+        <!-- Four Containers:
+            1. Licensed Professionals,
+            2. Many Subjects,
+            3. Yeah,
+            4. AP/IB -->
+    </div>
+
+    <div class="PersonalReview">
+        <!-- May include an Admin/Adult saying they are excited about this -->
+    </div>
+
+    <div class="Purpose">
+        <!-- Just Talking about our Goal/Purpose -->
+    </div>
+
+    <div class="misc">
+        <!-- May include other buttons -->
+        <h3>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </h3>
+    </div>
+</body>
 </html>
 
 <!--
