@@ -31,27 +31,39 @@ h1{
     justify-content: center;
     align-items: center;
 }
-.scrollcontainer{
+.scrollcontainer {
     width: 100%;
     overflow: hidden;
     position: relative;
+    height: 2em; /* Adjust to fit your text size */
 }
-span{
-    padding-right: 2em;
-}
-#move{
-    display: inline-block;
-    text-wrap: none;
+
+.scroller {
+    position: absolute;
+    white-space: nowrap;
+    display: flex;
     animation: scroll 20s linear infinite;
 }
-@keyframes scroll{
-    0%{
-        transform: translateX(0);
+
+.scroll-content {
+    display: flex;
+}
+
+.scroll-content span {
+    padding-right: 2em;
+    font-size: 1.5em;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0%);
     }
-    100%{
+    100% {
         transform: translateX(-50%);
     }
 }
+
+
 .TwoSides{
     display: flex;
     justify-content: center;
