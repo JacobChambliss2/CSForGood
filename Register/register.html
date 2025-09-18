@@ -9,29 +9,80 @@
     <div class="register-container">
         <h2>Create Account</h2>
 
+        <!-- Progress Bar -->
         <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-          </div>
-          
-          <button onclick="moveProgress()">Increase Progress</button>
-          
+            <div class="progress-bar" id="progress-bar">0%</div>
+        </div>
+
         <form id="registerForm">
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+            <!-- STEP 1: Role -->
+            <div class="form-step active">
+                <div class="input-group">
+                    <label>Are you signing up as:</label>
+                    <select id="role" name="role" required>
+                        <option value="">-- Select --</option>
+                        <option value="tutor">Tutor</option>
+                        <option value="student">Student</option>
+                    </select>
+                </div>
+                <button type="button" class="btn next-btn">Next</button>
             </div>
 
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+            <!-- STEP 2: Basic Info -->
+            <div class="form-step">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="button" class="btn prev-btn">Back</button>
+                <button type="button" class="btn next-btn">Next</button>
             </div>
 
-            <div class="input-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <!-- STEP 3: Tutor-specific -->
+            <div class="form-step" data-role="tutor">
+                <div class="input-group">
+                    <label>Subjects you can teach</label>
+                    <input type="text" name="subjects">
+                </div>
+                <div class="input-group">
+                    <label>Grade levels</label>
+                    <input type="text" name="levels">
+                </div>
+                <div class="input-group">
+                    <label>Availability</label>
+                    <input type="text" name="availability">
+                </div>
+                <button type="button" class="btn prev-btn">Back</button>
+                <button type="button" class="btn next-btn">Next</button>
             </div>
 
-            <button type="submit" class="btn">Register</button>
+           <!-- STEP: Subject Selection -->
+            <div class="form-step">
+                <div class="input-group">
+                    <label>Select subjects:</label>
+                    <div id="subjects-container">
+                        <!-- checkboxes will be injected here -->
+                    </div>
+                </div>
+                <button type="button" class="btn prev-btn">Back</button>
+                <button type="button" class="btn next-btn">Next</button>
+            </div>
+
+
+            <!-- STEP 4: Confirmation -->
+            <div class="form-step">
+                <p>Please review your details and click Register.</p>
+                <button type="button" class="btn prev-btn">Back</button>
+                <button type="submit" class="btn">Register</button>
+            </div>
         </form>
 
         <p id="response"></p>
