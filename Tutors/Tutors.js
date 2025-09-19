@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const imglink = `<img src='../Pictures/black.jpg' alt="Tutor photo" style="width:30px; height:30px; border-radius:50%; vertical-align:middle; margin-right:8px;">`;
             const heartlink = `<img src='../Pictures/heart.png' alt="Heart icon" style="width:20px; height:20px; vertical-align:right;">`;
             const tutorcards = document.getElementById('tutorcards');
-
+          
             // Combine data into lists
             const tutorData = [];
             for (let i = 0; i < names.length; i++) {
@@ -34,18 +34,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 const button = document.createElement('button');
                 button.setAttribute('id', `tutor${i}`);
                 button.innerHTML = `
-                    ${imglink}
-                    <strong>${tutor.name}</strong><br>
-                    Age: ${tutor.age}<br>
-                    School: ${tutor.school}<br>
-                    SAT: ${tutor.sat}
-                    <div class="hearticon">
-                    ${heartlink}
-                    </div>
+                        ${imglink}
+                        <strong>${tutor.name}</strong><br>
+                        Age: ${tutor.age}<br>
+                        School: ${tutor.school}<br>
+                        SAT: ${tutor.sat}
+                        <div class="hearticon">
+                            <img src="../Pictures/heart.png" 
+                                alt="Heart icon" 
+                                class="heart" 
+                                style="width:20px; height:20px; cursor:pointer;">
+                        </div>
                 `;
                 tutorcards.appendChild(button);
-            });
-
+                // Add click event for heart toggle
+                button.addEventListener("contextmenu", function (event) {
+                    event.preventDefault(); // stop the browser’s right-click menu
+                    const heartImg = button.querySelector(".heart");
+                    if (heartImg.src.includes("filledinheart.png")) {
+                        heartImg.src = "../Pictures/heart.png"; // switch back to empty heart
+                    } else {
+                        heartImg.src = "../Pictures/filledinheart.png"; // switch to filled heart
+                    }
+                });
+            }); 
             // Set up slider
             const slider = document.getElementById('satrange');
             const output = document.getElementById('satscore');
@@ -62,7 +74,4 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         })
         .catch(error => console.error('Error loading data:', error));
-        document.addEventListener("DOMContentLoaded", function() {
-            //make it so you can favorite a tutor
-        });
 });
