@@ -69,6 +69,8 @@ h1{
     justify-content: center;
     margin: 0 10vw;
     flex-wrap: wrap;
+    display: -webkit-flex;
+    -webkit-justify-content:
 }
 .TwoSides img{
     width: 45%;

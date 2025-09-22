@@ -1,38 +1,77 @@
-fetch('./data.json')
-    .then(response => response.json())
-    .then(data => {
-        console.log('Data loaded:', data); 
-        const names = data.names;
-        const ages = data.ages;
-        const schools = data.schools;
-        const sats = data.sats;
-        const actives = data.actives;
-        
-        const tutors = [];
-        const imglink = `<img src="Pictures/black.jpg" alt="Tutor photo" style="width:30px; height:30px; border-radius:50%; vertical-align:middle; margin-right:8px;">`;
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('./data.json')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data loaded:', data); 
+            const names = data.names;
+            const ages = data.ages;
+            const schools = data.schools;
+            const sats = data.sats;
+            const actives = data.actives;
 
-        for (let i = 0; i < names.length; i++) {
-            if (actives[i] == true) {
-                const button = document.createElement('button');
-
-                button.setAttribute('id', `tutors${i}`); 
-                button.innerHTML = `
-                    ${imglink}
-                    <strong>${names[i]}</strong><br>
-                    Age: ${ages[i]}<br>
-                    School: ${schools[i]}<br>
-                    SAT: ${sats[i]}
-                    `;
-                document.getElementById('tutorcards').appendChild(button); 
-                tutors.push(button); 
+            const imglink = `<img src='../Pictures/black.jpg' alt="Tutor photo" style="width:30px; height:30px; border-radius:50%; vertical-align:middle; margin-right:8px;">`;
+            const heartlink = `<img src='../Pictures/heart.png' alt="Heart icon" style="width:20px; height:20px; vertical-align:right;">`;
+            const tutorcards = document.getElementById('tutorcards');
+          
+            // Combine data into lists
+            const tutorData = [];
+            for (let i = 0; i < names.length; i++) {
+                if (actives[i] === true) {
+                    tutorData.push({
+                        name: names[i],
+                        age: ages[i],
+                        school: schools[i],
+                        sat: sats[i]
+                    });
+                }
             }
-        }
-    })
-    .catch(error => console.error('Error loading data:', error));
 
-const slider = document.getElementById('satrange');
-const output = document.getElementById('satscore');
-  
-    // Update the display when the slider moves
-    slider.addEventListener('input', function() {
-      output.textContent = this.value; });
+            // Sort by SAT highest to lowest
+            tutorData.sort((a, b) => b.sat - a.sat);
+
+            // Create cards
+            tutorData.forEach((tutor, i) => {
+                const button = document.createElement('button');
+                button.setAttribute('id', `tutor${i}`);
+                button.innerHTML = `
+                        ${imglink}
+                        <strong>${tutor.name}</strong><br>
+                        Age: ${tutor.age}<br>
+                        School: ${tutor.school}<br>
+                        SAT: ${tutor.sat}
+                        <div class="hearticon">
+                            <img src="../Pictures/heart.png" 
+                                alt="Heart icon" 
+                                class="heart" 
+                                style="width:20px; height:20px; cursor:pointer;">
+                        </div>
+                `;
+                tutorcards.appendChild(button);
+                // Add click event for heart toggle
+                button.addEventListener("contextmenu", function (event) {
+                    event.preventDefault(); // stop the browser’s right-click menu
+                    const heartImg = button.querySelector(".heart");
+                    if (heartImg.src.includes("filledinheart.png")) {
+                        heartImg.src = "../Pictures/heart.png"; // switch back to empty heart
+                    } else {
+                        heartImg.src = "../Pictures/filledinheart.png"; // switch to filled heart
+                    }
+                });
+            }); 
+            // Set up slider
+            const slider = document.getElementById('satrange');
+            const output = document.getElementById('satscore');
+            slider.addEventListener('input', function () {
+                output.textContent = this.value;
+                tutorData.forEach((tutor,i) => {
+                    const button = document.getElementById(`tutor${i}`);
+                    if (tutor.sat >= this.value) {
+                        button.style.display = 'block';
+                    } else {
+                        button.style.display = 'none';
+                    }
+                });
+            });
+        })
+        .catch(error => console.error('Error loading data:', error));
+});
