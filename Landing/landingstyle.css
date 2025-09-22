@@ -2,6 +2,7 @@
 html{
     scroll-behavior: smooth;
     display: flex;
+    background-color: rgb(238, 236, 236);
 }
 nav{
     display: flex;
@@ -78,7 +79,7 @@ h1{
 .Side {
     position: relative;
     width: 45%;
-    height: 40%;
+    height: 50%;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
