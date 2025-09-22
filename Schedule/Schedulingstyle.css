@@ -71,6 +71,7 @@ padding: 20px;
     );
 }
 
+/*tutor list*/
 .tutors {
     background-color: white;
     padding-top: 15px;
@@ -78,6 +79,7 @@ padding: 20px;
     border-bottom: 1px solid White;
 }
 
+/*tutor style/font*/
 .tutors ul {
     list-style: none;
     display: flex;
@@ -91,10 +93,12 @@ padding: 20px;
     margin-left: 150px;
 }
 
+/*change tutor color when hover*/
 .tutors li:hover {
     color: rgb(0, 96, 240);
 }
 
+/*booking pop up when user clicks on tutor*/
 .bookingWrapper {
     display: none; /* hidden by default */
     position: fixed;
@@ -114,7 +118,7 @@ padding: 20px;
     text-align: center;
 }
   
-  /* Close button */
+/*Close button*/
 .close {
     float: right;
     font-size: 22px;
