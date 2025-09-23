@@ -2,6 +2,7 @@
 html{
     scroll-behavior: smooth;
     display: flex;
+    background-color: rgb(238, 236, 236);
 }
 nav{
     display: flex;
@@ -31,13 +32,14 @@ h1{
     justify-content: center;
     align-items: center;
 }
+
+/*#region Scroll Container*/
 .scrollcontainer {
     width: 100%;
     overflow: hidden;
     position: relative;
-    height: 2em; /* Adjust to fit your text size */
+    height: 2em; 
 }
-
 .scroller {
     position: absolute;
     white-space: nowrap;
@@ -62,19 +64,115 @@ h1{
         transform: translateX(-50%);
     }
 }
+/*#endregion*/
 
 
-.TwoSides{
+
+/* Container for both sides */
+.TwoSides {
     display: flex;
     justify-content: center;
-    margin: 0 10vw;
+    margin: auto;
+    gap: 35px;
     flex-wrap: wrap;
-    display: -webkit-flex;
-    -webkit-justify-content:
+    width: 90em;
+    padding: 40px;
 }
-.TwoSides img{
-    width: 45%;
-    max-width: 100%;
-    height: auto;
+
+/* Card container */
+.Side {
+    position: relative;
+    width: 40em;
+    height: 28em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+    cursor: pointer;
+}
+
+.Side:hover {
+    transform: scale(1.10);
+    box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
+}
+
+/* Actual image */
+.card-img {
+    width: 50em;
     object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    transition: opacity 0.3s ease;
 }
+
+/* Hover overlay dims the image */
+.img-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3); /* You can adjust the dimming level */
+    opacity: 0;
+    transition: 0.3s all ease;
+    z-index: 1;
+}
+
+.Side:hover .img-hover {
+    opacity: 1;
+}
+
+/* Text block */
+.overlay-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    padding: 20px;
+    background-color: #fff;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #000;
+}
+
+/* Hover: transparent bg + white text */
+.Side:hover .overlay-text {
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+}
+
+/* Typography */
+.Header {
+    display: block;
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 500;
+    color: inherit;
+}
+
+.imagetext {
+    margin-top: 5px;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
+    color: inherit;
+}
+/*Achievements Subsection*/
+.Achievements{
+    background-color: rgb(197, 197, 197);
+    height: 25em;
+}
+.professional{
+
+}
+.sujects{
+
+}
+.apib{
+
+}
+.reviewer{
+    
+}
+/*End of Achievements Subsection*/
