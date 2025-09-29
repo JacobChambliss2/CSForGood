@@ -202,6 +202,7 @@ h1{
 }
 .imagetext2 {
     margin-top: 5px;
+    justify-content: center;
     font-family: 'Roboto Slab', serif;
     font-size: 16px;
     color: inherit;
@@ -247,3 +248,20 @@ h1{
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
 }
 /*End of Achievements Subsection*/
+/*Personal Review Subsection*/
+.reviewd{
+    background-color: rgb(112, 112, 112);
+    height: 15em;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 40px;
+}
+#actualreview{
+   width: 20em;
+      margin-right: auto;
+}
+.card-img3 {
+    width: 20em;
+    margin-left: auto;
+}
