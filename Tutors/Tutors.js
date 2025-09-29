@@ -75,7 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     const button = document.getElementById(`tutor${i}`);
                     if (tutor.sat < this.value) {
                         button.style.display = 'none';
-                    } 
+                    } else {
+                        button.style.display = 'block';
+                    }
                     
                 });
             });
