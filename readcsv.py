@@ -9,7 +9,7 @@ actives = []
 
 # Open and read the CSV file
 with open('' \
-'rank/example.csv', 'r') as file:
+'Rank/example.csv', 'r') as file:
     reader = csv.DictReader(file)  # Use DictReader to handle column headers
     for row in reader:
         # Append each value to its respective list
