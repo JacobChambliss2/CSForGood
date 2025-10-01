@@ -91,7 +91,7 @@ h1{
     cursor: pointer;
 }
 
-.Side:hover {
+.Side:hover, .boxt:hover {
     transform: scale(1.10);
     box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
 }
@@ -106,6 +106,9 @@ h1{
 }
 
 /* Hover overlay dims the image */
+.Side:hover .img-hover {
+    opacity: 1;
+}
 .img-hover {
     position: absolute;
     top: 0;
@@ -118,27 +121,26 @@ h1{
     z-index: 1;
 }
 
-.Side:hover .img-hover {
-    opacity: 1;
-}
-
 /* Text block */
-.overlay-text {
+.overlay-text{
     position: absolute;
     bottom: 0;
     left: 0;
     z-index: 2;
     padding: 20px;
-    background-color: #fff;
     width: 100%;
     transition: background-color 0.3s ease, color 0.3s ease;
-    color: #000;
+    color: #ffffff91;
 }
 
 /* Hover: transparent bg + white text */
 .Side:hover .overlay-text {
     background-color: transparent;
     color: rgb(255, 255, 255);
+}
+.boxt:hover .overlay-text2{
+    background-color: transparent;
+    color: black;
 }
 
 /* Typography */
@@ -149,30 +151,117 @@ h1{
     font-size: 13px;
     letter-spacing: 2px;
     font-weight: 500;
-    color: inherit;
 }
 
 .imagetext {
     margin-top: 5px;
     font-family: 'Roboto Slab', serif;
     font-size: 16px;
-    color: inherit;
 }
 /*Achievements Subsection*/
+.boxt{
+    justify-content: center;
+}
+.overlay-text2{
+    position: absolute;
+    justify-content: center;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    padding: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #ffffff;
+}
+.boxt-hover .img-hover {
+    opacity: 1;
+}
 .Achievements{
     background-color: rgb(197, 197, 197);
     height: 25em;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 40px;
+}
+.boxt .Header{
+    display: block;
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 500;
+    color: black;
+}
+.card-img2 {
+    width: 19em;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+}
+.imagetext2 {
+    margin-top: 5px;
+    justify-content: center;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
+    color: inherit;
 }
 .professional{
-
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
 }
-.sujects{
-
+.sujets{
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
 }
 .apib{
-
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
 }
 .reviewer{
-    
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
 }
 /*End of Achievements Subsection*/
+/*Personal Review Subsection*/
+.reviewd{
+    background-color: rgb(112, 112, 112);
+    height: 15em;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 40px;
+}
+#actualreview{
+   width: 20em;
+      margin-right: auto;
+}
+.card-img3 {
+    width: 20em;
+    margin-left: auto;
+}
