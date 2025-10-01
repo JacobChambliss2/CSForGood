@@ -34,7 +34,13 @@ def generate_tutor():
         random.randint(1, 30)                # distance
     )
 
-def insert_tutors(n=200):
+def clear_tutors():
+    """Delete all rows in the tutors table."""
+    cursor.execute("TRUNCATE TABLE tutors;")
+    conn.commit()
+    print(" Cleared tutors table.")
+
+def insert_tutors(n=500):
     """Insert n random tutors into the database."""
     sql = """
     INSERT INTO tutors (first_name, last_name, age, school, sat_score, distance)
@@ -46,6 +52,7 @@ def insert_tutors(n=200):
     print(f" Inserted {n} tutors into database.")
 
 if __name__ == "__main__":
-    insert_tutors(200)  # change the number here for how many tutors you want
+    clear_tutors()       # clear existing rows
+    insert_tutors(500)   # then add fresh tutors
     cursor.close()
     conn.close()
