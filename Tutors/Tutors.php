@@ -1,5 +1,20 @@
+<?php
+    $host = "localhost";   // or your server's IP/hostname
+    $user = "chscscom_jacob";
+    $pass = "Jacoshark11";
+    $db   = "chscscom_tutortrack";
+
+    $conn = new mysqli($host, $user, $pass, $db);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+  ?>
+
 <!DOCTYPE html>
 <html>
+ 
     <head>
         <title>Tutors</title>
         <meta charset="UTF-8">

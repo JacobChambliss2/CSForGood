@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    fetch('./data.json')
+    fetch('../data.json')
     .then(response => response.json())
     .then(data => {
         console.log('Data loaded:', data); 
         const names = data.names;
-        const ages = data.ages;
+        const ages = data.ages; 
         const schools = data.schools;
         const sats = data.sats;
         const actives = data.actives;
@@ -73,10 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 output.textContent = this.value;
                 tutorData.forEach((tutor,i) => {
                     const button = document.getElementById(`tutor${i}`);
-                    if (tutor.sat >= this.value) {
-                        button.style.display = 'block';
-                    } else {
+                    if (tutor.sat < this.value) {
                         button.style.display = 'none';
+                    } else {
+                        button.style.display = 'block';
                     }
                     
                 });
@@ -86,10 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
             favoritesFilter.addEventListener("click", function () {
               const allTutors = document.querySelectorAll(".tutor-card");
               allTutors.forEach(card => {
-                if (card.classList.contains("favorite")) {
-                  card.style.display = "block";
-                } else {
-                  card.style.display = "none";
+                if (!card.classList.contains("favorite")) {
+                    card.style.display = "none";
                 }
               });
             });
