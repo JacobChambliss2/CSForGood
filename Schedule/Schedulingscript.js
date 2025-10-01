@@ -1,5 +1,5 @@
 //grab sample data from json/csv
-fetch('../data.json')
+fetch('../BackendData/data.json')
 //directly take response from json
   .then(response => response.json())
   .then(data => {

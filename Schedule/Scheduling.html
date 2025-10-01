@@ -16,7 +16,6 @@
     <body>
         <!--top blue bar-->
         <div class="topBar">
-            <!--Title-->
 
             <!--input calendar-->
             <div class="calendar">
@@ -26,6 +25,9 @@
                 value="2025-09-09"
                 min="2025-01-01" max="2027-01-01">
             </div>
+
+            <!--Booking button-->
+            <div class="reservationbtn"></div>
         </div>
 
         <!--tutor name bar right under top blue bar-->
@@ -79,7 +81,10 @@
                 <br>
                 <!--basic booking form to select time-->
                 <form id="bookingForm">
-                    <label for="time">Select Time:</label>
+                    <label for="time">Start Time:</label>
+                    <input type="time" id="time" name="time" required>
+                    <br><br>
+                    <label for="time">  End Time:</label>
                     <input type="time" id="time" name="time" required>
                     <!--line break then submit/book button-->
                     <br><br>
