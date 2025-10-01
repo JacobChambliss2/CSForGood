@@ -1,5 +1,5 @@
 
-html{
+html, body{
     scroll-behavior: smooth;
     background-color: #FFF9F0;
     margin: 0;
@@ -16,7 +16,7 @@ nav{
     background-color: #7ca38c;
     position: relative;
 }
-.navbuttons{
+.navbuttons, #login, #CreateAcc{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -35,23 +35,29 @@ nav{
     display: inline-block;
     font-weight: 600;
     font-size: 18px;
-    padding: 0 18px;
+    padding: 0 67px;
     line-height: 50px;
     text-align: center;
     text-decoration: none;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+
 }
 .butt:hover{
     background-color: #c1d3c3;
 }
 .Creation{
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 1em;
-    margin: 1em;
-    min-width: 0;
+    height: 4em;
+    width: 17em;
+    font-size: 3.4vh;
+    overflow: hidden;
+    background-color: #486855;
+    position: relative;
+    
 }
 h1{
     display: flex;
