@@ -1,18 +1,22 @@
 
-html{
+html, body{
     scroll-behavior: smooth;
-    display: flex;
-    background-color: rgb(238, 236, 236);
+    background-color: #FFF9F0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 nav{
+    margin: 0;
+    padding: 0;
     display: flex;
-    height: 3em;
+    height: 4em;
     font-size: 3.4vh;
     overflow: hidden;
-    background-color: rgb(221, 212, 212);
+    background-color: #7ca38c;
     position: relative;
 }
-.navbuttons{
+.navbuttons, #login, #CreateAcc{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -20,17 +24,45 @@ nav{
     flex: 1 1 auto;
     min-width: 0;
 }
+.butt{
+    /*Credits: https://getcssscan.com/css-buttons-examples*/
+    background-color: #DDEEDF;
+    border: 2px solid #2E8B57;
+    border-radius: 30px;
+    box-shadow: #1c5736 4px 4px 0 0;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 50px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
+}
+.butt:hover{
+    background-color: #c1d3c3;
+}
 .Creation{
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 1em;
-    margin: 1em;
-    min-width: 0;
+    height: 4em;
+    font-size: 3.4vh;
+    overflow: hidden;
+    background-color: #486855;
+    position: relative;
+    
 }
 h1{
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #333333;
 }
 
 /*#region Scroll Container*/
@@ -49,6 +81,7 @@ h1{
 
 .scroll-content {
     display: flex;
+    color: #333333;
 }
 
 .scroll-content span {
@@ -253,15 +286,63 @@ h1{
     background-color: rgb(112, 112, 112);
     height: 15em;
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
     padding: 40px;
 }
 #actualreview{
-   width: 20em;
-      margin-right: auto;
+   width: 50%;
+   line-height: 2em;
+   margin-right: 20px;
+   font-size: 1.2em;
 }
 .card-img3 {
-    width: 20em;
-    margin-left: auto;
+    width: 27%;
+    height: auto;
+    border-width: 20px;
+    border-radius: 20px;
+    border-color: red;
 }
+/*
+
+
+<!-- HTML !-->
+<button class="button-74" role="button">Button 74</button>
+
+/* CSS 
+.button-74 {
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #422800;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-74:hover {
+    background-color: #fff;
+  }
+  
+  .button-74:active {
+    box-shadow: #422800 2px 2px 0 0;
+    transform: translate(2px, 2px);
+  }
+  
+  @media (min-width: 768px) {
+    .button-74 {
+      min-width: 120px;
+      padding: 0 25px;
+    }
+  }
+*/
