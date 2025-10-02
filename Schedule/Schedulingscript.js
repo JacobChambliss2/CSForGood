@@ -38,10 +38,3 @@ tutorList.addEventListener("click", (e) => {
 closeBtn.addEventListener("click", () => {
   bookingModal.style.display = "none";
 });
-
-// Optional: close modal when clicking outside the modal box
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-  }
-});
