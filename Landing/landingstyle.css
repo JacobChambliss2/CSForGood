@@ -7,14 +7,33 @@ html, body{
     box-sizing: border-box;
 }
 nav{
+    position: relative;
     margin: 0;
     padding: 0;
     display: flex;
     height: 4em;
     font-size: 3.4vh;
     overflow: hidden;
-    background-color: #7ca38c;
+    z-index: 1000;
+    background-color: #7ca38c;}
+.TitleArea{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 4em;
+    overflow: hidden;
     position: relative;
+    justify-content: space-between;
+    gap: -2em;
+}
+.TitleArea h1{
+    font-size: 1.2em;
+    font-family: verdana, serif;
+
+}
+.TitleArea img{
+    width: 3em 3em;
+    margin: 0.5em;
 }
 .navbuttons, #login, #CreateAcc{
     display: flex;
@@ -56,10 +75,13 @@ nav{
     overflow: hidden;
     background-color: #486855;
     position: relative;
-    
 }
+/*
+Verdana, Tahoma, Trebuchet, Arial
+*/
 h1{
     display: flex;
+    font-family: Georgia, serif;
     justify-content: center;
     align-items: center;
     color: #333333;
