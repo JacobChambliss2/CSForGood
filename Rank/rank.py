@@ -1,90 +1,95 @@
 import pandas as pd
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from sqlalchemy import create_engine
 
-# Load tutors
-df = pd.read_csv("example.csv")
+# database setup
+user = "chscscom_jacob"
+password = "Jacoshark11"
+host = "mi3-cl8-its1.a2hosting.com"
+port = 3306
+db = "chscscom_tutortrack"
 
-# Keep only active tutors
-df = df[df["Active"] == True].reset_index(drop=True)
+engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{db}")
 
-# Define requirements and weights
-requirements = {
-    "Age": {"target": 17, "weight": 1.0},      
-    "School": {"equals": "Castle", "weight": 1.0},
-    "SAT": {"min": 400, "max": 1600, "weight": 1000.0},  
-    "distance": {"weight": 1.0},  
-}
+# show more decimal places when printing
+pd.set_option("display.precision", 12)
+
+def get_tutors():
+    df = pd.read_sql("SELECT * FROM tutors", engine)
+    df.rename(columns={
+        "age": "Age",
+        "school": "School",
+        "sat_score": "SAT",
+        "distance": "distance"
+    }, inplace=True)
+    df["Active"] = True
+    return df[df["Active"] == True].reset_index(drop=True)
 
 def normalize_scores(df, reqs):
     scores = pd.DataFrame(index=df.index)
 
-    # Age: closer to target is better
-    if "Age" in reqs:
-        target = reqs["Age"]["target"]
-        max_diff = df["Age"].sub(target).abs().max()
-        scores["Age"] = 1 - (df["Age"].sub(target).abs() / max_diff)
+    # age
+    target = reqs["Age"]["target"]
+    max_diff = df["Age"].sub(target).abs().max()
+    scores["Age"] = 1 if max_diff == 0 else 1 - (df["Age"].sub(target).abs() / max_diff)
 
-    # School: exact match = 1, else 0
-    if "School" in reqs:
-        school = reqs["School"]["equals"]
-        scores["School"] = (df["School"] == school).astype(float)
+    # school
+    scores["School"] = (df["School"] == reqs["School"]["equals"]).astype(float)
 
-    # SAT: scale between min and max
-    if "SAT" in reqs:
-        sat_min, sat_max = df["SAT"].min(), df["SAT"].max()
-        scores["SAT"] = (df["SAT"] - sat_min) / (sat_max - sat_min)
+    # sat
+    sat_min, sat_max = df["SAT"].min(), df["SAT"].max()
+    scores["SAT"] = 1 if sat_max == sat_min else (df["SAT"] - sat_min) / (sat_max - sat_min)
 
+    # distance
+    max_dist = df["distance"].max()
+    scores["distance"] = 1 if max_dist == 0 else 1 - (df["distance"] / max_dist)
 
-    # Distance: smaller = better
-    if "distance" in reqs:
-        max_dist = df["distance"].max()
-        scores["distance"] = 1 - (df["distance"] / max_dist)
+    return scores
 
-    return scores.clip(0, 1)
+def rank_tutors(age_target=15, school_target="Castle", sat_weight=5.0, distance_weight=1.0):
+    df = get_tutors()
+    requirements = {
+        "Age": {"target": age_target, "weight": 1},
+        "School": {"equals": school_target, "weight": 1},
+        "SAT": {"min": 400, "max": 1600, "weight": sat_weight},
+        "distance": {"weight": distance_weight}
+    }
 
-# Compute scores
-scores = normalize_scores(df, requirements)
+    scores = normalize_scores(df, requirements)
+    weights = {k: v["weight"] for k, v in requirements.items()}
+    weight_sum = sum(weights.values())
+    df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight_sum
 
-# Apply weights
-weights = {k: v["weight"] for k, v in requirements.items()}
-weight_sum = sum(weights.values())
-
-df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight_sum
-
-# Sort candidates
-candidates = df.sort_values(by="Score", ascending=False)
-
-print(candidates.head(10))
+    # add deterministic tie-breaker in case of exact score ties
+    return df.sort_values(
+        by=["Score", "SAT", "distance"],
+        ascending=[False, True, False]
+    ).head(10)
 
 app = Flask(__name__)
 CORS(app)
 
 @app.route("/rank", methods=["POST"])
 def rank():
-    data = request.json
+    data = request.json or {}
 
-    # take input values from HTML/JS
-    age_target = int(data.get("Age", 17))
-    school_target = data.get("School", "Castle")
-    sat_weight = float(data.get("SAT_weight", 1000.0))
-    distance_weight = float(data.get("distance_weight", 1.0))
+    results = rank_tutors(
+        age_target=int(data.get("Age", 17)),
+        school_target=data.get("School", "Castle"),
+        sat_weight=float(data.get("SAT_weight", 5)),
+        distance_weight=float(data.get("distance_weight", 1))
+    )
 
-    # update requirements dynamically
-    requirements["Age"]["target"] = age_target
-    requirements["School"]["equals"] = school_target
-    requirements["SAT"]["weight"] = sat_weight
-    requirements["distance"]["weight"] = distance_weight
+    print("\nTop tutors:")
+    print(results[["first_name", "last_name", "Age", "School", "SAT", "distance", "Score"]])
 
-    # recompute scores
-    scores = normalize_scores(df, requirements)
-    weights = {k: v["weight"] for k, v in requirements.items()}
-    weight_sum = sum(weights.values())
-    df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight_sum
-
-    candidates = df.sort_values(by="Score", ascending=False).head(10)
-    print(candidates.head(10))
-    return jsonify(candidates.to_dict(orient="records"))
+    # send more decimal places for Score in JSON
+    results["Score"] = results["Score"].apply(lambda x: round(float(x), 12))
+    return jsonify(results.to_dict(orient="records"))
 
 if __name__ == "__main__":
+    initial = rank_tutors()
+    print("Initial ranking with defaults:")
+    print(initial[["id","first_name", "last_name", "Age", "School", "SAT", "distance", "Score"]])
     app.run(debug=True)

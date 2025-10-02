@@ -36,15 +36,19 @@ body {
     padding: 2.5rem;
     border-radius: var(--radius);
     box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-    width: 350px;
+    width: 30rem;
     text-align: center;
     animation: fadeIn 0.8s ease;
+    display: flex;
+    flex-direction: column;
+    max-height: 95vh;   /* ✅ contain within viewport */
 }
 
 .register-container h2 {
     margin-bottom: 2rem;
     font-weight: 600;
     color: var(--text-color);
+    flex-shrink: 0;     /* always visible */
 }
 
 .input-group {
@@ -95,7 +99,6 @@ body {
 }
 
 .btn.secondary {
-    margin-top: 1rem;
     background: transparent;
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
@@ -126,6 +129,7 @@ body {
     overflow: hidden;
     height: 22px;
     margin-bottom: 1.5rem;
+    flex-shrink: 0;     /* keep visible */
 }
 
 .progress-bar {
@@ -143,28 +147,38 @@ body {
 
 .form-step {
     display: none;
+    flex: 1;
+    overflow: hidden;  /* prevent pushing container */
 }
+
 .form-step.active {
-    display: block;
-}
-
-/* ============================= */
-/* Checkbox subjects step styling */
-/* ============================= */
-
-#subjects-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem; /* more space between options */
+    flex: 1;
+    overflow: hidden; /* keep children controlled */
 }
 
+/* Scrollable subject list */
+#subjects-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    overflow-y: auto;      
+    padding-right: 0.5rem;  
+    min-height: 0;
+    max-height: 40vh;
+    margin-bottom: 1rem;
+}
 .checkbox-group {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     background: var(--input-bg);
     border: 1px solid var(--input-border);
     border-radius: var(--radius);
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     cursor: pointer;
     transition: background var(--transition-speed), transform var(--transition-speed);
 }
@@ -175,14 +189,14 @@ body {
 }
 
 .checkbox-group input[type="checkbox"] {
-    transform: scale(1.5);   /* enlarge checkbox */
-    margin-right: 1rem;
+    transform: scale(1.3);
+    margin-right: 0.75rem;
     cursor: pointer;
 }
 
 .checkbox-group label {
-    flex: 1;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
+    text-align: right;
     cursor: pointer;
 }

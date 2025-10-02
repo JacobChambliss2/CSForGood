@@ -1,17 +1,22 @@
 
-html{
+html, body{
     scroll-behavior: smooth;
-    display: flex;
+    background-color: #FFF9F0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 nav{
+    margin: 0;
+    padding: 0;
     display: flex;
-    height: 3em;
+    height: 4em;
     font-size: 3.4vh;
     overflow: hidden;
-    background-color: rgb(221, 212, 212);
+    background-color: #7ca38c;
     position: relative;
 }
-.navbuttons{
+.navbuttons, #login, #CreateAcc{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -19,25 +24,54 @@ nav{
     flex: 1 1 auto;
     min-width: 0;
 }
+.butt{
+    /*Credits: https://getcssscan.com/css-buttons-examples*/
+    background-color: #DDEEDF;
+    border: 2px solid #2E8B57;
+    border-radius: 30px;
+    box-shadow: #1c5736 4px 4px 0 0;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 50px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
+}
+.butt:hover{
+    background-color: #c1d3c3;
+}
 .Creation{
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 1em;
-    margin: 1em;
-    min-width: 0;
+    height: 4em;
+    font-size: 3.4vh;
+    overflow: hidden;
+    background-color: #486855;
+    position: relative;
+    
 }
 h1{
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #333333;
 }
+
+/*#region Scroll Container*/
 .scrollcontainer {
     width: 100%;
     overflow: hidden;
     position: relative;
-    height: 2em; /* Adjust to fit your text size */
+    height: 2em; 
 }
-
 .scroller {
     position: absolute;
     white-space: nowrap;
@@ -47,6 +81,7 @@ h1{
 
 .scroll-content {
     display: flex;
+    color: #333333;
 }
 
 .scroll-content span {
@@ -62,38 +97,41 @@ h1{
         transform: translateX(-50%);
     }
 }
+/*#endregion*/
+
 
 
 /* Container for both sides */
 .TwoSides {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    margin: auto;
+    gap: 35px;
     flex-wrap: wrap;
-    max-width: 100%;
+    width: 90em;
     padding: 40px;
 }
 
 /* Card container */
 .Side {
     position: relative;
-    width: 45%;
-    height: 40%;
-    border-radius: 12px;
+    width: 40em;
+    height: 28em;
+    border-radius:50px;
     overflow: hidden;
     box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
     cursor: pointer;
 }
 
-.Side:hover {
+.Side:hover, .boxt:hover {
     transform: scale(1.10);
     box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
 }
 
 /* Actual image */
 .card-img {
-    width: 100%;
+    width: 50em;
     object-fit: cover;
     display: block;
     border-radius: 12px;
@@ -101,6 +139,9 @@ h1{
 }
 
 /* Hover overlay dims the image */
+.Side:hover .img-hover {
+    opacity: 1;
+}
 .img-hover {
     position: absolute;
     top: 0;
@@ -113,27 +154,26 @@ h1{
     z-index: 1;
 }
 
-.Side:hover .img-hover {
-    opacity: 1;
-}
-
 /* Text block */
-.overlay-text {
+.overlay-text{
     position: absolute;
     bottom: 0;
     left: 0;
     z-index: 2;
     padding: 20px;
-    background-color: #fff;
     width: 100%;
     transition: background-color 0.3s ease, color 0.3s ease;
-    color: #000;
+    color: #ffffff91;
 }
 
 /* Hover: transparent bg + white text */
 .Side:hover .overlay-text {
     background-color: transparent;
     color: rgb(255, 255, 255);
+}
+.boxt:hover .overlay-text2{
+    background-color: transparent;
+    color: black;
 }
 
 /* Typography */
@@ -144,12 +184,165 @@ h1{
     font-size: 13px;
     letter-spacing: 2px;
     font-weight: 500;
-    color: inherit;
 }
 
 .imagetext {
     margin-top: 5px;
     font-family: 'Roboto Slab', serif;
     font-size: 16px;
+}
+/*Achievements Subsection*/
+.boxt{
+    justify-content: center;
+}
+.overlay-text2{
+    position: absolute;
+    justify-content: center;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    padding: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #ffffff;
+}
+.boxt-hover .img-hover {
+    opacity: 1;
+}
+.Achievements{
+    background-color: rgb(197, 197, 197);
+    height: 25em;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 40px;
+}
+.boxt .Header{
+    display: block;
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 500;
+    color: black;
+}
+.card-img2 {
+    width: 19em;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+}
+.imagetext2 {
+    margin-top: 5px;
+    justify-content: center;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
     color: inherit;
 }
+.professional{
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+}
+.sujets{
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+}
+.apib{
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+}
+.reviewer{
+    background-color: white;
+    position: relative;
+    width: 20em;
+    height: 23em;
+    border-radius:50px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+}
+/*End of Achievements Subsection*/
+/*Personal Review Subsection*/
+.reviewd{
+    background-color: rgb(112, 112, 112);
+    height: 15em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 40px;
+}
+#actualreview{
+   width: 50%;
+   line-height: 2em;
+   margin-right: 20px;
+   font-size: 1.2em;
+}
+.card-img3 {
+    width: 27%;
+    height: auto;
+    border-width: 20px;
+    border-radius: 20px;
+    border-color: red;
+}
+/*
+
+
+<!-- HTML !-->
+<button class="button-74" role="button">Button 74</button>
+
+/* CSS 
+.button-74 {
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #422800;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-74:hover {
+    background-color: #fff;
+  }
+  
+  .button-74:active {
+    box-shadow: #422800 2px 2px 0 0;
+    transform: translate(2px, 2px);
+  }
+  
+  @media (min-width: 768px) {
+    .button-74 {
+      min-width: 120px;
+      padding: 0 25px;
+    }
+  }
+*/

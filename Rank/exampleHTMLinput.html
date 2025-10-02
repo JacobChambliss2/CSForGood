@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tutor Ranking</title>
+  <title>Test Tutor Ranking</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
+    body { font-family: Arial, sans-serif; padding: 20px; }
     form { margin-bottom: 20px; }
     label { display: block; margin: 8px 0; }
     table { border-collapse: collapse; width: 100%; margin-top: 15px; }
@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <h1>Rank Tutors</h1>
+  <h1>Test Tutor Ranking</h1>
 
   <form id="rankForm">
     <label>
@@ -32,7 +32,7 @@
       Distance Weight:
       <input type="number" name="distance_weight" value="1">
     </label>
-    <button type="submit">Get Rankings</button>
+    <button type="submit">Rank Tutors</button>
   </form>
 
   <h2>Results</h2>
@@ -74,7 +74,7 @@
       tutors.forEach(t => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${t.Name}</td>
+          <td>${t.first_name} ${t.last_name}</td>
           <td>${t.Age}</td>
           <td>${t.School}</td>
           <td>${t.SAT}</td>
