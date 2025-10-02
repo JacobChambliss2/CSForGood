@@ -28,6 +28,18 @@ input[type="date"] {
     padding-top: 30px;
     padding-bottom: 30px;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.reservationbtn {
+    width: 300px;
+    background-color: rgb(119, 239, 255);
+    border: none;
+    font-size: 20px;
+    padding: 15px 0;
+    cursor: pointer;
 }
 
 /*wrapper for flex*/
