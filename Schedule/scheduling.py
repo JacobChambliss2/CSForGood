@@ -20,6 +20,8 @@ def create_schedule_table(days_ahead=7):
         d = today + timedelta(days=i)
         col_name = d.strftime("%Y_%m_%d")  # safe SQL column name
         date_columns.append(f"`{col_name}` VARCHAR(20) DEFAULT NULL")
+        print(col_name)
+
     
     # Drop the old table, then create the new one
     drop_sql = "DROP TABLE IF EXISTS Scheduling;"
@@ -28,7 +30,7 @@ def create_schedule_table(days_ahead=7):
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         tutor_id INT NOT NULL,
         {", ".join(date_columns)},
-        FOREIGN KEY (tutor_id) REFERENCES tutor(id)
+        FOREIGN KEY (tutor_id) REFERENCES tutors(id)
     );
     """
     
@@ -37,4 +39,4 @@ def create_schedule_table(days_ahead=7):
         conn.execute(text(create_sql)) # create new one
         conn.commit()
 
-create_schedule_table(days_ahead=7)
+create_schedule_table(days_ahead=30)

@@ -1,5 +1,5 @@
 //grab sample data from json/csv
-fetch('../data.json')
+fetch('../BackendData/data.json')
 //directly take response from json
   .then(response => response.json())
   .then(data => {
@@ -37,11 +37,4 @@ tutorList.addEventListener("click", (e) => {
 //close button
 closeBtn.addEventListener("click", () => {
   bookingModal.style.display = "none";
-});
-
-// Optional: close modal when clicking outside the modal box
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-  }
 });

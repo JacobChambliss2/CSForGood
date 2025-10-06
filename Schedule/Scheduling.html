@@ -8,7 +8,6 @@
         <script src="Schedulingscript.js" defer></script>
 
         <title>
-            <!--Title name-->
             Schedule
         </title>
     </head>
@@ -16,7 +15,6 @@
     <body>
         <!--top blue bar-->
         <div class="topBar">
-            <!--Title-->
 
             <!--input calendar-->
             <div class="calendar">
@@ -26,6 +24,12 @@
                 value="2025-09-09"
                 min="2025-01-01" max="2027-01-01">
             </div>
+
+            <!--Booking button-->
+            <div class="reservationbtn"></div>
+
+            <!--Back to home page-->
+            <a href="/Landing/Landing.html" class="backHome">Button 1</a>
         </div>
 
         <!--tutor name bar right under top blue bar-->
@@ -79,13 +83,24 @@
                 <br>
                 <!--basic booking form to select time-->
                 <form id="bookingForm">
-                    <label for="time">Select Time:</label>
-                    <input type="time" id="time" name="time" required>
-                    <!--line break then submit/book button-->
+                    <!--   Sample code for integrated booking (future) -->
+                    <label for="time">Start Time:</label>
+                    <input type="time" id="time" name="time" required step="600">
                     <br><br>
-                    <button type="submit">Book</button>
+                    <label for="time">  End Time:</label>
+                    <input type="time" id="time" name="time" required step="600">
+                    <br><br>
+                    <button type="book">Book</button>
+
+                    <!--Code for email integration
+                    <label for="time">Email for Contact: smobie08@gmail.com</label>
+                    <br><br>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=smobie08@gmail.com&su=Tutoring%20Inquiry&body=Hi%2C%20I'm%20interested%20in%20booking%20a%20session." target="_blank">
+                        <button type="button">Email</button>
+                      </a>
+                    -->
                 </form>
             </div>
-        </div>
+        </div>   
     </body>
 </html>
