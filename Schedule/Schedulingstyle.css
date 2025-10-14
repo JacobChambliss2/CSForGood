@@ -24,7 +24,7 @@ input[type="date"] {
 
 /*Calendar top blue bar*/
 .topBar {
-    background-color: rgb(0, 96, 240);
+    background-color: #7ca38c;
     padding-top: 30px;
     padding-bottom: 30px;
     color: white;
@@ -41,6 +41,32 @@ input[type="date"] {
     padding: 15px 0;
     cursor: pointer;
 }
+
+.backHome {
+    background-color: #DDEEDF;
+    border: 2px solid #2E8B57;
+    border-radius: 30px;
+    box-shadow: #1c5736 4px 4px 0 0;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 50px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .backHome:hover {
+    background-color: #c1d3c3;
+    box-shadow: #1c5736 2px 2px 0 0;
+    transform: translateY(-2px);
+  }  
 
 /*wrapper for flex*/
 .hoursWrapper {

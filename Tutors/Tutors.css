@@ -84,7 +84,7 @@
   display: block;
   width: 250px;
   margin: 2%, 3%;
-  padding: 12px 16px;
+  padding: 12px;
   font-family: Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5;
@@ -105,4 +105,5 @@
 .hearticon {
     float: right;
     padding-left: 3%;
+    margin-top: -5%;
 }
