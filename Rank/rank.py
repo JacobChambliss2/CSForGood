@@ -22,6 +22,7 @@ def get_tutors():
         "school": "School",
         "sat_score": "SAT",
         "distance": "distance"
+        "favorite"
     }, inplace=True)
     df["Active"] = True
     return df[df["Active"] == True].reset_index(drop=True)
@@ -32,7 +33,10 @@ def normalize_scores(df, reqs):
     # age
     target = reqs["Age"]["target"]
     max_diff = df["Age"].sub(target).abs().max()
-    scores["Age"] = 1 if max_diff == 0 else 1 - (df["Age"].sub(target).abs() / max_diff)
+    if max_diff == 0: 
+        scores["Age"] = 1 
+    else:
+        scores["Age"] =  1 - (df["Age"].sub(target).abs() / max_diff)
 
     # school
     scores["School"] = (df["School"] == reqs["School"]["equals"]).astype(float)
@@ -60,7 +64,8 @@ def rank_tutors(age_target=15, school_target="Castle", sat_weight=5.0, distance_
     weights = {k: v["weight"] for k, v in requirements.items()}
     weight_sum = sum(weights.values())
     df["Score"] = sum(scores[col] * weights[col] for col in scores.columns) / weight_sum
-
+    
+    
     # add deterministic tie-breaker in case of exact score ties
     return df.sort_values(
         by=["Score", "SAT", "distance"],

@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ages = data.ages; 
         const schools = data.schools;
         const sats = data.sats;
+        const subjects = data.subjects;
         const actives = data.actives;
         const favtutors = [];
         const imglink = `<img src='../Pictures/black.jpg' alt="Tutor photo" style="width:30px; height:30px; border-radius:50%; vertical-align:middle; margin-right:8px;">`;
@@ -16,18 +17,16 @@ document.addEventListener("DOMContentLoaded", function () {
         // Combine data into lists
         const tutorData = [];
         for (let i = 0; i < names.length; i++) {
-            if (actives[i] === true) {
-                tutorData.push({
-                    name: names[i],
-                    age: ages[i],
-                    school: schools[i],
-                    sat: sats[i]
-                });
-            }
+            tutorData.push({
+                name: names[i],
+                age: ages[i],
+                school: schools[i],
+                sat: sats[i],
+                subjects: subjects[i],
+            });
         }
 
-            // Sort by SAT highest to lowest
-            tutorData.sort((a, b) => b.sat - a.sat);
+            
 
             // Create cards
             tutorData.forEach((tutor, i) => {
@@ -38,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         <strong>${tutor.name}</strong><br>
                         Age: ${tutor.age}<br>
                         School: ${tutor.school}<br>
-                        SAT: ${tutor.sat}
+                        SAT: ${tutor.sat} <br>
+                        Subject: ${subjects[i]}<br>
                         <div class="hearticon">
                             <img src="../Pictures/heart.png" 
                                 alt="Heart icon" 
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 button.classList.add("tutor-card");
                 tutorcards.appendChild(button);
                 // Add click event for heart toggle
-                button.addEventListener("contextmenu", function (event) {
+                button.addEventListener("click", function (event) {
                     event.preventDefault();
                     const heartImg = button.querySelector(".heart");
                     if (heartImg.src.includes("filledinheart.png")) {
@@ -100,5 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 card.style.display = "block";
             });
         });
+        
     })
     .catch(error => console.error('Error loading data:', error));
