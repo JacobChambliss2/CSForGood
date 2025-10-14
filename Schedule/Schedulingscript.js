@@ -1,74 +1,88 @@
-//grab sample data from json/csv
-fetch('../BackendData/data.json')
-//directly take response from json
-  .then(response => response.json())
-  .then(data => {
-    //firstFive placeholder for filter of tutors
-    //right now takes first 5 names in data.json
-    const firstFive = data.names.slice(0, 5);
-    const ul = document.getElementById('tutorList');
+// Point this to where PHP actually runs:
+// - If you used: php -S 127.0.0.1:8000  → set BASE = "http://127.0.0.1:8000/"
+// - If uploaded to your host              → set BASE = "https://yourdomain.com/path/"
+const BASE = "http://127.0.0.1:8000/";  // <-- CHANGE THIS for your setup
 
-    //for each 5 append to ul the name/element
-    firstFive.forEach(name => {
-      const li = document.createElement('li');
-      li.textContent = name;
-      ul.appendChild(li);
+document.addEventListener("DOMContentLoaded", () => {
+  const tutorList      = document.getElementById("tutorList");
+  const dateInput      = document.getElementById("start");
+  const bookingModal   = document.getElementById("bookingModal");
+  const modalTutorName = document.getElementById("modalTutorName");
+  const closeBtn       = document.querySelector(".close");
+
+  (function tagHourLis() {
+    document.querySelectorAll(".hours li").forEach((li, idx) => { li.dataset.hour = idx; });
+  })();
+
+  function clearAvailability() {
+    document.querySelectorAll(".hours li").forEach(li => li.classList.remove("available"));
+  }
+  function renderAvailability(hoursArr) {
+    clearAvailability();
+    (hoursArr || []).forEach(h => {
+      const li = document.querySelector(`.hours li[data-hour="${h}"]`);
+      if (li) li.classList.add("available");
     });
-  })
-  // catch just incase some error (for troubleshooting)
-.catch(err => console.error('Error loading JSON:', err));
+  }
+  function renderRankedTutors(rows) {
+    tutorList.innerHTML = "";
+    (rows || []).forEach(t => {
+      const li = document.createElement("li");
+      li.textContent = `${t.first_name} ${t.last_name}`;
+      li.dataset.tutorId = t.id;
+      tutorList.appendChild(li);
+    });
+  }
 
-//section for booking modal/pop up ui
-const bookingModal = document.getElementById("bookingModal");
-const modalTutorName = document.getElementById("modalTutorName");
-const closeBtn = document.querySelector(".close");
-const tutorList = document.getElementById("tutorList");
+  async function fetchJSON(url, options) {
+    const res = await fetch(url, options);
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      console.error("Non-JSON response from", url, "→", text.slice(0, 200));
+      throw new Error("Bad JSON");
+    }
+  }
 
-//identify a user click on any tutor name and grab the name clicked
-tutorList.addEventListener("click", (e) => {
-  const clicked = e.target.closest("li");
-  if (!clicked) return;
+  async function loadRankedTutors() {
+    try {
+      // GET so it works even if a host blocks POST by default
+      const data = await fetchJSON(`${BASE}rank.php`);
+      renderRankedTutors(data);
+    } catch (err) {
+      console.error("Failed to load ranked tutors:", err);
+      tutorList.innerHTML = "<li>Could not load tutors</li>";
+    }
+  }
 
-  //book time with [tutor name]
-  modalTutorName.textContent = `Book a time with ${clicked.textContent}`;
-  bookingModal.style.display = "block";
-});
+  async function loadAvailability(tutorId, ymd) {
+    try {
+      const data = await fetchJSON(`${BASE}availability.php?tutor_id=${encodeURIComponent(tutorId)}&date=${encodeURIComponent(ymd)}`);
+      renderAvailability(data.hours || []);
+    } catch (err) {
+      console.error("Failed to load availability:", err);
+      clearAvailability();
+    }
+  }
 
-//close button
-closeBtn.addEventListener("click", () => {
-  bookingModal.style.display = "none";
-});
+  let lastTutorId = null;
 
-document.getElementById("rankForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  // collect form data
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData.entries());
-
-  // send to Flask
-  const response = await fetch("http://127.0.0.1:5000/rank", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+  tutorList.addEventListener("click", (e) => {
+    const li = e.target.closest("li");
+    if (!li) return;
+    lastTutorId = li.dataset.tutorId;
+    modalTutorName.textContent = `Book a time with ${li.textContent}`;
+    bookingModal.style.display = "block";
+    if (dateInput && dateInput.value) loadAvailability(lastTutorId, dateInput.value);
+    else clearAvailability();
   });
 
-  const tutors = await response.json();
-
-  // update results table
-  const tbody = document.querySelector("#resultsTable tbody");
-  tbody.innerHTML = ""; // clear old results
-
-  tutors.forEach(t => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${t.first_name} ${t.last_name}</td>
-      <td>${t.Age}</td>
-      <td>${t.School}</td>
-      <td>${t.SAT}</td>
-      <td>${t.distance}</td>
-      <td>${t.Score.toFixed(3)}</td>
-    `;
-    tbody.appendChild(row);
+  dateInput.addEventListener("change", () => {
+    if (lastTutorId && dateInput.value) loadAvailability(lastTutorId, dateInput.value);
   });
-}); 
+
+  if (closeBtn) closeBtn.addEventListener("click", () => { bookingModal.style.display = "none"; });
+
+  loadRankedTutors();
+});
