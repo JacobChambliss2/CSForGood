@@ -162,3 +162,5 @@ padding: 20px;
     font-size: 22px;
     cursor: pointer;
 }
+
+.hours li.available { background:#c7f3c4; border-radius:6px; font-weight:600; padding:2px 6px; }
