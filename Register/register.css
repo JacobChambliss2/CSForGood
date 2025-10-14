@@ -41,8 +41,7 @@ body {
     animation: fadeIn 0.8s ease;
     display: flex;
     flex-direction: column;
-    max-height: 95vh;   /* ✅ contain within viewport */
-}
+    max-height: 95vh;  
 
 .register-container h2 {
     margin-bottom: 2rem;

@@ -38,3 +38,37 @@ tutorList.addEventListener("click", (e) => {
 closeBtn.addEventListener("click", () => {
   bookingModal.style.display = "none";
 });
+
+document.getElementById("rankForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // collect form data
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+
+  // send to Flask
+  const response = await fetch("http://127.0.0.1:5000/rank", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  const tutors = await response.json();
+
+  // update results table
+  const tbody = document.querySelector("#resultsTable tbody");
+  tbody.innerHTML = ""; // clear old results
+
+  tutors.forEach(t => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${t.first_name} ${t.last_name}</td>
+      <td>${t.Age}</td>
+      <td>${t.School}</td>
+      <td>${t.SAT}</td>
+      <td>${t.distance}</td>
+      <td>${t.Score.toFixed(3)}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}); 
