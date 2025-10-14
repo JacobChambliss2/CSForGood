@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 sat: sats[i],
                 subjects: subjects[i],
             });
-        }
+            }
 
             
 
@@ -91,6 +91,43 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               });
             });
+
+            const lafilter = document.getElementById("LACheck");
+            lafilter.addEventListener("click", function () {
+                const allTutors = document.querySelectorAll(".tutor-card");
+                tutorData.forEach((tutor, i) => {
+                    const button = document.getElementById(`tutor${i}`);
+                    if (tutor.subjects.includes("Language Arts")) {
+                        button.style.display = "block";
+                    } else {
+                        button.style.display = "none";
+                    }
+                });
+              });
+            const mathfilter = document.getElementById("MathCheck");
+            mathfilter.addEventListener("click", function () {
+                const allTutors = document.querySelectorAll(".tutor-card");
+                tutorData.forEach((tutor, i) => {
+                    const button = document.getElementById(`tutor${i}`);
+                    if (tutor.subjects.includes("Math")) {
+                        button.style.display = "block";
+                    } else {
+                        button.style.display = "none";
+                    }
+                });
+              });
+            const sciencefilter = document.getElementById("ScienceCheck");
+            sciencefilter.addEventListener("click", function () {
+                const allTutors = document.querySelectorAll(".tutor-card");
+                tutorData.forEach((tutor, i) => {
+                    const button = document.getElementById(`tutor${i}`);
+                    if (tutor.subjects.includes("Science")) {
+                        button.style.display = "block";
+                    } else {
+                        button.style.display = "none";
+                    }
+                });
+              });
         })
 
         const filterdefault = document.getElementById("filterdefault");
