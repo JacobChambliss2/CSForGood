@@ -15,7 +15,7 @@ nav{
     font-size: 3.4vh;
     overflow: hidden;
     z-index: 1000;
-    background-color: #7ca38c;}
+    background-color: #7a9183;}
 .TitleArea{
     margin: 0;
     padding: 0;
@@ -87,8 +87,7 @@ h1{
     display: flex;
     font-family: Georgia, serif;
     justify-content: center;
-    align-items: center;
-    color: #333333;
+    align-items: center;    color: #133120;
 }
 
 /*#region Scroll Container*/
@@ -359,6 +358,26 @@ h1{
         text-align: center;
     }
 }
+.Purpose{
+    background-color: rgb(207, 206, 206);
+    height: 35em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 40px;
+    gap: 30px;
+}
+.Purpose h3{
+    
+}
+.Purpose img{
+    width: 15em;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    transition: opacity 0.3s ease;
+}
 /*#endregion*/
 /*
 
@@ -403,283 +422,3 @@ h1{
   }
 */
 
-/* 
-html, body {
-    scroll-behavior: smooth;
-    background-color: #FFF9F0;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/*#region Navbar*/
-nav {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 4em;
-    font-size: 3.4vh;
-    overflow: hidden;
-    z-index: 1000;
-    background-color: #7ca38c;
-    flex-wrap: wrap;
-}
-.TitleArea {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 4em;
-    overflow: hidden;
-    position: relative;
-    justify-content: space-between;
-    gap: 1em;
-    flex: 1 1 100%;
-}
-.TitleArea h1 {
-    font-size: 1.2em;
-    font-family: verdana, serif;
-}
-.TitleArea img {
-    width: 3em;
-    height: 3em;
-    margin: 0.5em;
-}
-.navbuttons, #login, #CreateAcc {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 1em;
-    flex: 1 1 100%;
-    min-width: 0;
-}
-/*#endregion*/
-
-.butt, .butt2 {
-    background-color: #DDEEDF;
-    border: 2px solid #2E8B57;
-    border-radius: 30px;
-    box-shadow: #1c5736 4px 4px 0 0;
-    color: #333333;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 1em;
-    padding: 0 2em;
-    line-height: 3em;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-.butt:hover, .butt2:hover {
-    background-color: #c1d3c3;
-    box-shadow: #1c5736 2px 2px 0 0;
-    transform: translateY(-2px);
-}
-.Creation {
-    display: flex;
-    align-items: center;
-    height: 4em;
-    margin: 0;
-    padding: 0 1em;
-    font-size: 3.4vh;
-    overflow: hidden;
-    background-color: #486855;
-    position: relative;
-    flex-wrap: wrap;
-}
-h1 {
-    display: flex;
-    font-family: Georgia, serif;
-    justify-content: center;
-    align-items: center;
-    color: #333333;
-}
-
-/*#region Scroll Container*/
-.scrollcontainer {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    height: 2em;
-}
-.scroller {
-    position: absolute;
-    white-space: nowrap;
-    display: flex;
-    animation: scroll 20s linear infinite;
-}
-.scroll-content {
-    display: flex;
-    color: #333333;
-}
-.scroll-content span {
-    padding-right: 2em;
-    font-size: 1.5em;
-}
-@keyframes scroll {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
-}
-/*#endregion*/
-
-/* Container for both sides */
-.TwoSides {
-    display: flex;
-    justify-content: center;
-    margin: auto;
-    gap: 2em;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 90em;
-    padding: 2em;
-}
-
-/* Card container */
-.Side {
-    position: relative;
-    width: 100%;
-    max-width: 40em;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    border-radius: 50px;
-    overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
-    cursor: pointer;
-}
-.Side:hover, .boxt:hover {
-    transform: scale(1.10);
-    box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
-}
-.card-img {
-    width: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 12px;
-    transition: opacity 0.3s ease;
-}
-.Side:hover .img-hover {
-    opacity: 1;
-}
-.img-hover {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    transition: 0.3s all ease;
-    z-index: 1;
-}
-.overlay-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    padding: 20px;
-    width: 100%;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    color: #ffffff91;
-}
-.Side:hover .overlay-text {
-    background-color: transparent;
-    color: rgb(255, 255, 255);
-}
-.boxt:hover .overlay-text2 {
-    background-color: transparent;
-    color: black;
-}
-.Header {
-    display: block;
-    font-family: 'Raleway', sans-serif;
-    text-transform: uppercase;
-    font-size: 0.8em;
-    letter-spacing: 2px;
-    font-weight: 500;
-}
-.imagetext {
-    margin-top: 5px;
-    font-family: 'Roboto Slab', serif;
-    font-size: 1em;
-}
-
-/*#region Achievements Subsection*/
-.Achievements {
-    background-color: rgb(197, 197, 197);
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-    padding: 2em;
-}
-.boxt {
-    justify-content: center;
-    width: 100%;
-    max-width: 20em;
-}
-.overlay-text2 {
-    position: absolute;
-    justify-content: center;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    padding: 20px;
-    width: 100%;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    color: #ffffff;
-}
-.card-img2 {
-    width: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 12px;
-}
-.imagetext2 {
-    margin-top: 5px;
-    justify-content: center;
-    font-family: 'Roboto Slab', serif;
-    font-size: 1em;
-    color: inherit;
-}
-.professional, .sujets, .apib, .reviewer {
-    background-color: white;
-    position: relative;
-    width: 100%;
-    max-width: 20em;
-    aspect-ratio: 4 / 5;
-    border-radius: 50px;
-    overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
-}
-/*#endregion*/
-
-/*#region Personal Review Subsection*/
-.reviewd {
-    background-color: rgb(112, 112, 112);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2em;
-    gap: 2em;
-}
-#actualreview {
-    width: 100%;
-    max-width: 600px;
-    line-height: 2em;
-    font-size: 1.2em;
-    text-align: center;
-}
-.card-img3 {
-    width: 80%;
-    max-width: 400px;
-    height: auto;
-    border-radius: 20px;
-    border: 4px solid red;
-}
-/*#endregion*/
