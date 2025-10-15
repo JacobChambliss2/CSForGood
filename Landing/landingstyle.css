@@ -402,6 +402,15 @@ h1{
     align-items: center;
     flex-wrap: nowrap;
 }
+.misc-container{
+    margin: 3em;
+}
+.misc h3{
+    font-size: 1.4em;
+    margin: 2em;
+    
+}
+
 /*#endregion*/
 /*
 
