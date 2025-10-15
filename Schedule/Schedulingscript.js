@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ NEW: automatically load today's availability for all tutors
+  //  NEW: automatically load today's availability for all tutors
   async function loadTodayAvailabilityAllTutors() {
     try {
       const data = await fetchJSON(`${BASE}availability.php`);
