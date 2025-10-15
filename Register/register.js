@@ -45,21 +45,67 @@ function showStep(step) {
 //  Handle navigation
 nextBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        showStep(currentStep + 1);
+
+
+        if (currentStep == 1 && roleSelect.value === "student") {
+            // Skip step 3 for students
+            showStep(currentStep + 2);
+            return;
+        }
+        else
+            showStep(currentStep + 1);
+        
+    console.log(currentStep);
+    console.log(roleSelect.value);
     });
 });
 
 prevBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        showStep(currentStep - 1);
+
+        if (currentStep == 3 && roleSelect.value === "student") {
+            // Skip step 3 for students
+            showStep(currentStep - 2);
+            return;
+        }
+        else
+            showStep(currentStep - 1);
+    console.log(currentStep);
+    console.log(roleSelect.value);
     });
 });
 
-//  Handle form submission
+// Handle form submission
 document.getElementById("registerForm").addEventListener("submit", e => {
     e.preventDefault();
+
+    // === Collect form data ===
+    const role = document.getElementById("role").value;
+    const name = document.getElementById("name") ? document.getElementById("name").value : "";
+    const email = document.getElementById("email") ? document.getElementById("email").value : "";
+    const password = document.getElementById("password") ? document.getElementById("password").value : "";
+
+    // Subjects (all selected checkboxes)
+    const selectedSubjects = Array.from(
+        document.querySelectorAll('input[name="subjects"]:checked')
+    ).map(cb => cb.value);
+
+
+    // Bundle into variables / object
+    const formData = {
+        role,
+        name,
+        email,
+        password,
+        subjects: selectedSubjects,
+    };
+
+    console.log("Form data:", formData);
+
+    // Show simple success message
     document.getElementById("response").textContent = "Account created successfully!";
 });
+
 
 //  Recalculate when role changes
 roleSelect.addEventListener("change", () => {

@@ -15,7 +15,7 @@ nav{
     font-size: 3.4vh;
     overflow: hidden;
     z-index: 1000;
-    background-color: #7ca38c;}
+    background-color: #7a9183;}
 .TitleArea{
     margin: 0;
     padding: 0;
@@ -87,8 +87,7 @@ h1{
     display: flex;
     font-family: Georgia, serif;
     justify-content: center;
-    align-items: center;
-    color: #333333;
+    align-items: center;    color: #133120;
 }
 
 /*#region Scroll Container*/
@@ -359,6 +358,32 @@ h1{
         text-align: center;
     }
 }
+.Purpose{
+    background-color: rgb(207, 206, 206);
+    height: 25em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 100px;
+}
+.Purpose h3{
+    font-size: 18px;
+    margin: 0;
+    align-self: flex-start;
+}
+.purpose-images{
+    display: flex;
+    justify-content: space-between;
+    gap: 1px;
+}
+.purpose-images img{
+    width: 27em;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    transition: opacity 0.3s ease;
+}
 /*#endregion*/
 /*
 
@@ -402,3 +427,4 @@ h1{
     }
   }
 */
+

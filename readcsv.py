@@ -1,36 +1,48 @@
-import csv
+import pandas as pd
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from sqlalchemy import create_engine
+import json
 
+# database setup
+user = "chscscom_jacob"
+password = "Jacoshark11"
+host = "mi3-cl8-its1.a2hosting.com"
+port = 3306
+db = "chscscom_tutortrack"
+
+engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{db}")
 # Initialize empty lists for each column
-names = []
+firstname = []
+lastname = []
 ages = []
 schools = []
 sats = []
-actives = []
+distances = []
+subjects = []
 
-# Open and read the CSV file
-with open('' \
-'Rank/example.csv', 'r') as file:
-    reader = csv.DictReader(file)  # Use DictReader to handle column headers
-    for row in reader:
-        # Append each value to its respective list
-        names.append(row['Name'])
-        ages.append(int(row['Age']))
-        schools.append(row['School'])
-        sats.append(int(row['SAT']))
-        actives.append(row['Active'] == 'True')  # Convert 'True'/'False' to boolean
+df = pd.read_sql("SELECT * FROM tutors", engine)
+#columns = age, school, sat, distance, subject
 
-for i in range(len(names)):
-    print(f"Name: {names[i]}, Age: {ages[i]}, School: {schools[i]}, SAT: {sats[i]}, Active: {actives[i]}")
+# Loop through the DataFrame rows and append to the lists
+for index, row in df.iterrows():
+    firstname.append(row['first_name'])
+    lastname.append(row['last_name'])
+    ages.append(row['age'])
+    schools.append(row['school'])
+    sats.append(row['sat_score'])
+    distances.append(row['distance'])
+    subjects.append(row['subject'])
 
-import json
-
+names = [f"{first} {last}" for first, last in zip(firstname, lastname)]
 # Save the lists into a dictionary
 data = {
     "names": names,
     "ages": ages,
     "schools": schools,
     "sats": sats,
-    "actives": actives
+    "distances": distances,
+    "subjects": subjects
 }
 
 # Write the dictionary to a JSON file
