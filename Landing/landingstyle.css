@@ -258,6 +258,16 @@ h1{
     display: block;
     border-radius: 12px;
 }
+.sujets img{
+    width: 23em;
+    position: relative;
+    left: -25px;
+}
+.apib img{
+    width: 27em;
+    position: relative;
+    left: -50px;
+}
 .imagetext2 {
     margin-top: 5px;
     justify-content: center;
@@ -383,6 +393,14 @@ h1{
     display: block;
     border-radius: 12px;
     transition: opacity 0.3s ease;
+}
+.misc{
+    background-color: #7a9183;
+    height: 15em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 /*#endregion*/
 /*
