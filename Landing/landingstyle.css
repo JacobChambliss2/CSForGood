@@ -360,19 +360,25 @@ h1{
 }
 .Purpose{
     background-color: rgb(207, 206, 206);
-    height: 35em;
+    height: 25em;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-    padding: 40px;
-    gap: 30px;
+    padding: 100px;
 }
 .Purpose h3{
-    
+    font-size: 18px;
+    margin: 0;
+    align-self: flex-start;
 }
-.Purpose img{
-    width: 15em;
+.purpose-images{
+    display: flex;
+    justify-content: space-between;
+    gap: 1px;
+}
+.purpose-images img{
+    width: 27em;
     object-fit: cover;
     display: block;
     border-radius: 12px;
