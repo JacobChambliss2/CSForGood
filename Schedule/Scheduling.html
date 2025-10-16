@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="Schedulingstyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+        <pre id="debug" style="white-space:pre-wrap; font:12px/1.4 monospace; background:#111; color:#0f0; padding:8px; max-height:200px; overflow:auto;"></pre>
         <script src="Schedulingscript.js" defer></script>
 
         <title>
@@ -15,7 +16,10 @@
     <body>
         <!--top blue bar-->
         <div class="topBar">
-
+            <section id="availabilityDisplay" style="margin: 20px; font-family: sans-serif;">
+                Loading today’s availability...
+              </section>
+              
             <!--input calendar-->
             <div class="calendar">
                 <!--basic calendar from html-->
@@ -26,12 +30,12 @@
             </div>
 
             <!--Booking button-->
-            <div class="reservationbtn"></div>
+            <div class="reservationbtn">Book a Reservation</div>
 
             <!--Back to home page-->
-            <a href="/Landing/Landing.html" class="backHome">Button 1</a>
+            <a href="/Landing/Landing.html" class="backHome">Main Page</a>
         </div>
-
+        
         <!--tutor name bar right under top blue bar-->
         <div class="tutors">
             <ul id="tutorList"></ul>

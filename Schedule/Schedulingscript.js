@@ -1,74 +1,135 @@
-//grab sample data from json/csv
-fetch('../BackendData/data.json')
-//directly take response from json
-  .then(response => response.json())
-  .then(data => {
-    //firstFive placeholder for filter of tutors
-    //right now takes first 5 names in data.json
-    const firstFive = data.names.slice(0, 5);
-    const ul = document.getElementById('tutorList');
+const BASE = ""; // same-origin with your PHP server
 
-    //for each 5 append to ul the name/element
-    firstFive.forEach(name => {
-      const li = document.createElement('li');
-      li.textContent = name;
-      ul.appendChild(li);
+// simple on-page logger so you can see what’s happening without DevTools
+function dbg(...args){
+  const el = document.getElementById("debug");
+  if (!el) return;
+  el.textContent += args.map(a => (typeof a==='string'? a : JSON.stringify(a))).join(' ') + "\n";
+}
+
+async function fetchJSON(url, options){
+  dbg("FETCH", url);
+  const res = await fetch(url, options);
+  const text = await res.text();
+  dbg("RESP", url, "status", res.status, "body:", text.slice(0,200));
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    throw new Error("Non-JSON from " + url + ": " + text.slice(0,200));
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tutorList      = document.getElementById("tutorList");
+  const dateInput      = document.getElementById("start");
+  const bookingModal   = document.getElementById("bookingModal");
+  const modalTutorName = document.getElementById("modalTutorName");
+  const closeBtn       = document.querySelector(".close");
+  const availabilityDisplay = document.getElementById("availabilityDisplay");
+
+  // tag hours
+  document.querySelectorAll(".hours li").forEach((li, idx) => li.dataset.hour = idx);
+
+  function clearAvailability(){ 
+    document.querySelectorAll(".hours li").forEach(li => li.classList.remove("available")); 
+  }
+
+  function renderAvailability(hours){ 
+    clearAvailability(); 
+    (hours||[]).forEach(h => {
+      const li = document.querySelector(`.hours li[data-hour="${h}"]`);
+      if (li) li.classList.add("available");
     });
-  })
-  // catch just incase some error (for troubleshooting)
-.catch(err => console.error('Error loading JSON:', err));
+  }
 
-//section for booking modal/pop up ui
-const bookingModal = document.getElementById("bookingModal");
-const modalTutorName = document.getElementById("modalTutorName");
-const closeBtn = document.querySelector(".close");
-const tutorList = document.getElementById("tutorList");
+  function renderRankedTutors(rows){
+    tutorList.innerHTML = "";
+    (rows||[]).forEach(t => {
+      const li = document.createElement("li");
+      li.textContent = `${t.first_name} ${t.last_name}`;
+      li.dataset.tutorId = t.id;
+      tutorList.appendChild(li);
+    });
+    dbg("Rendered tutors:", (rows||[]).length);
+  }
 
-//identify a user click on any tutor name and grab the name clicked
-tutorList.addEventListener("click", (e) => {
-  const clicked = e.target.closest("li");
-  if (!clicked) return;
+  async function loadRankedTutors(){
+    try {
+      const data = await fetchJSON(`${BASE}rank.php`);
+      renderRankedTutors(data);
+    } catch (err) {
+      dbg("Rank error:", err.message);
+      tutorList.innerHTML = "<li>Could not load tutors</li>";
+    }
+  }
 
-  //book time with [tutor name]
-  modalTutorName.textContent = `Book a time with ${clicked.textContent}`;
-  bookingModal.style.display = "block";
-});
+  async function loadAvailability(tutorId, ymd){
+    try {
+      const data = await fetchJSON(`${BASE}availability.php?tutor_id=${encodeURIComponent(tutorId)}&date=${encodeURIComponent(ymd)}`);
+      renderAvailability(data.hours || []);
+    } catch (err) {
+      dbg("Avail error:", err.message);
+      clearAvailability();
+    }
+  }
 
-//close button
-closeBtn.addEventListener("click", () => {
-  bookingModal.style.display = "none";
-});
+  //  NEW: automatically load today's availability for all tutors
+  async function loadTodayAvailabilityAllTutors() {
+    try {
+      const data = await fetchJSON(`${BASE}availability.php`);
+      if (data.error) {
+        availabilityDisplay.textContent = ` ${data.error}`;
+        return;
+      }
+      availabilityDisplay.innerHTML = `<h3>Today's Availability (${data.date})</h3>`;
 
-document.getElementById("rankForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+      const table = document.createElement("table");
+      table.style.borderCollapse = "collapse";
+      table.style.marginTop = "10px";
+      table.innerHTML = `
+        <tr>
+          <th style="border:1px solid #ccc; padding:6px;">Tutor ID</th>
+          <th style="border:1px solid #ccc; padding:6px;">Available Hours</th>
+        </tr>
+      `;
 
-  // collect form data
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData.entries());
+      (data.tutors || []).forEach(t => {
+        const row = document.createElement("tr");
+        const hours = t.hours && t.hours.length ? t.hours.join(", ") : "—";
+        row.innerHTML = `
+          <td style="border:1px solid #ccc; padding:6px;">${t.tutor_id}</td>
+          <td style="border:1px solid #ccc; padding:6px;">${hours}</td>
+        `;
+        table.appendChild(row);
+      });
 
-  // send to Flask
-  const response = await fetch("http://127.0.0.1:5000/rank", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+      availabilityDisplay.appendChild(table);
+      dbg("Loaded today's availability:", data);
+    } catch (err) {
+      availabilityDisplay.textContent = " Failed to load today's availability.";
+      dbg("Avail-all error:", err.message);
+    }
+  }
+
+  let lastTutorId = null;
+
+  tutorList.addEventListener("click", (e) => {
+    const li = e.target.closest("li"); if (!li) return;
+    lastTutorId = li.dataset.tutorId;
+    modalTutorName.textContent = `Book a time with ${li.textContent}`;
+    bookingModal.style.display = "block";
+    if (dateInput && dateInput.value) loadAvailability(lastTutorId, dateInput.value);
+    else clearAvailability();
   });
 
-  const tutors = await response.json();
-
-  // update results table
-  const tbody = document.querySelector("#resultsTable tbody");
-  tbody.innerHTML = ""; // clear old results
-
-  tutors.forEach(t => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${t.first_name} ${t.last_name}</td>
-      <td>${t.Age}</td>
-      <td>${t.School}</td>
-      <td>${t.SAT}</td>
-      <td>${t.distance}</td>
-      <td>${t.Score.toFixed(3)}</td>
-    `;
-    tbody.appendChild(row);
+  dateInput.addEventListener("change", () => {
+    if (lastTutorId && dateInput.value) loadAvailability(lastTutorId, dateInput.value);
   });
-}); 
+
+  if (closeBtn) closeBtn.addEventListener("click", () => bookingModal.style.display = "none");
+
+  // kick off both ranking and today's availability
+  dbg("Page loaded, calling rank.php and availability.php…");
+  loadRankedTutors();
+  loadTodayAvailabilityAllTutors();
+});
