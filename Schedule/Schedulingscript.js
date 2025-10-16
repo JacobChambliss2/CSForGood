@@ -27,24 +27,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn       = document.querySelector(".close");
   const availabilityDisplay = document.getElementById("availabilityDisplay");
 
-  // tag hours
+  // tag hours (0..23)
   document.querySelectorAll(".hours li").forEach((li, idx) => li.dataset.hour = idx);
 
-  function clearAvailability(){ 
-    document.querySelectorAll(".hours li").forEach(li => li.classList.remove("available")); 
-  }
+  // helpers
+  const todayISO = () => new Date().toISOString().slice(0,10);
+  const selectedDate = () => (dateInput && dateInput.value) ? dateInput.value : todayISO();
 
-  function renderAvailability(hours){ 
-    clearAvailability(); 
+  function clearAvailability(){
+    document.querySelectorAll(".hours li").forEach(li => li.classList.remove("available"));
+  }
+  function renderAvailability(hours){
+    clearAvailability();
     (hours||[]).forEach(h => {
       const li = document.querySelector(`.hours li[data-hour="${h}"]`);
       if (li) li.classList.add("available");
     });
   }
 
+  // cache tutors so we can show names next to availability
+  const tutorMap = new Map(); // id -> {first_name,last_name}
+
   function renderRankedTutors(rows){
     tutorList.innerHTML = "";
     (rows||[]).forEach(t => {
+      tutorMap.set(String(t.id), { first_name: t.first_name, last_name: t.last_name });
       const li = document.createElement("li");
       li.textContent = `${t.first_name} ${t.last_name}`;
       li.dataset.tutorId = t.id;
@@ -73,40 +80,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  //  NEW: automatically load today's availability for all tutors
-  async function loadTodayAvailabilityAllTutors() {
+  // ---- NEW: load availability for ALL tutors for the selected date and show on page
+  async function loadAllTutorsAvailability(ymd){
     try {
-      const data = await fetchJSON(`${BASE}availability.php`);
+      const data = await fetchJSON(`${BASE}availability.php?date=${encodeURIComponent(ymd)}`);
       if (data.error) {
-        availabilityDisplay.textContent = ` ${data.error}`;
+        availabilityDisplay.textContent = `⚠️ ${data.error}`;
         return;
       }
-      availabilityDisplay.innerHTML = `<h3>Today's Availability (${data.date})</h3>`;
 
+      // header
+      availabilityDisplay.innerHTML = `<h3>Availability for ${data.date}</h3>`;
+
+      // table
       const table = document.createElement("table");
       table.style.borderCollapse = "collapse";
       table.style.marginTop = "10px";
       table.innerHTML = `
         <tr>
-          <th style="border:1px solid #ccc; padding:6px;">Tutor ID</th>
+          <th style="border:1px solid #ccc; padding:6px;">Tutor</th>
           <th style="border:1px solid #ccc; padding:6px;">Available Hours</th>
         </tr>
       `;
 
+      // build rows using cached names when available
       (data.tutors || []).forEach(t => {
         const row = document.createElement("tr");
-        const hours = t.hours && t.hours.length ? t.hours.join(", ") : "—";
+        const meta = tutorMap.get(String(t.tutor_id));
+        const label = meta ? `${meta.first_name} ${meta.last_name} (ID ${t.tutor_id})`
+                           : `ID ${t.tutor_id}`;
+        const hours = (t.hours && t.hours.length) ? t.hours.join(", ") : "—";
         row.innerHTML = `
-          <td style="border:1px solid #ccc; padding:6px;">${t.tutor_id}</td>
+          <td style="border:1px solid #ccc; padding:6px;">${label}</td>
           <td style="border:1px solid #ccc; padding:6px;">${hours}</td>
         `;
         table.appendChild(row);
       });
 
       availabilityDisplay.appendChild(table);
-      dbg("Loaded today's availability:", data);
+      dbg("All-tutor availability loaded.");
     } catch (err) {
-      availabilityDisplay.textContent = " Failed to load today's availability.";
+      availabilityDisplay.textContent = " Failed to load availability.";
       dbg("Avail-all error:", err.message);
     }
   }
@@ -118,18 +132,24 @@ document.addEventListener("DOMContentLoaded", () => {
     lastTutorId = li.dataset.tutorId;
     modalTutorName.textContent = `Book a time with ${li.textContent}`;
     bookingModal.style.display = "block";
-    if (dateInput && dateInput.value) loadAvailability(lastTutorId, dateInput.value);
-    else clearAvailability();
+    const ymd = selectedDate();
+    loadAvailability(lastTutorId, ymd);
   });
 
   dateInput.addEventListener("change", () => {
-    if (lastTutorId && dateInput.value) loadAvailability(lastTutorId, dateInput.value);
+    const ymd = selectedDate();
+    // refresh the all-tutors table for the newly chosen date
+    loadAllTutorsAvailability(ymd);
+    // if a tutor modal is open/selected, refresh their hour highlights too
+    if (lastTutorId) loadAvailability(lastTutorId, ymd);
   });
 
   if (closeBtn) closeBtn.addEventListener("click", () => bookingModal.style.display = "none");
 
-  // kick off both ranking and today's availability
-  dbg("Page loaded, calling rank.php and availability.php…");
+  // ---- bootstrap: ensure date input has a value (fallback to today), then load both
+  if (dateInput && !dateInput.value) dateInput.value = todayISO();
+  const firstDate = selectedDate();
+  dbg("Page loaded → date:", firstDate, "→ calling rank.php + availability.php…");
   loadRankedTutors();
-  loadTodayAvailabilityAllTutors();
+  loadAllTutorsAvailability(firstDate);
 });

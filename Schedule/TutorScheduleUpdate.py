@@ -1,58 +1,138 @@
+# reset_test_db.py
 from sqlalchemy import create_engine, text
-import pandas as pd
-from datetime import datetime
+from datetime import datetime, date, timedelta
+import random
 
-# --- Database setup ---
-user = "chscscom_jacob"
-password = "Jacoshark11"
-host = "mi3-cl8-its1.a2hosting.com"
-port = 3306
-db = "chscscom_tutortrack"
+# === CONFIG ===
+DB_USER = "chscscom_jacob"
+DB_PASS = "Jacoshark11"
+DB_HOST = "mi3-cl8-its1.a2hosting.com"
+DB_PORT = 3306
+DB_NAME = "chscscom_tutortrack"
 
-engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{db}")
+KEEP_COUNT = 30              # keep the first 30 tutors by id
+DAYS_AHEAD = 14              # create/seed availability for today + this many days
+START_HOUR = 8               # earliest hour (24h)
+END_HOUR = 20                # latest hour (exclusive)
+MIN_SLOTS = 1                # minimum number of hours per day
+MAX_SLOTS = 5                # maximum number of hours per day
 
-def update_schedule(tutor_id: int, slot_date: str, hours: list[int]):
-    """
-    Update a tutor's schedule for a given date with hours available (military time).
-    
-    tutor_id: int -> The tutor's ID from tutors table
-    slot_date: str -> Date in 'YYYY-MM-DD' format
-    hours: list[int] -> List of hours available in military time, e.g. [9, 10, 14]
-    """
+engine = create_engine(
+    f"mysql+mysqlconnector://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
+    pool_pre_ping=True,
+)
 
-    # Convert date into the column format (e.g. 2025-10-01 → 2025_10_01)
+# ---------- helpers ----------
+def _ensure_unique_index_on_tutor(conn):
+    """Make tutor_id unique so ON DUPLICATE KEY works."""
     try:
-        d = datetime.strptime(slot_date, "%Y-%m-%d")
-    except ValueError:
-        raise ValueError("Date must be in YYYY-MM-DD format")
+        conn.execute(text("ALTER TABLE Scheduling ADD UNIQUE KEY uk_tutor (tutor_id);"))
+    except Exception:
+        pass  # already exists or not needed
 
-    col_name = d.strftime("%Y_%m_%d")
-
-    # Format hours as a string (like "09,10,14,15")
-    hours_str = ",".join(str(h) for h in hours)
-
-    # Insert or update row
-    sql = f"""
-    INSERT INTO Scheduling (tutor_id, `{col_name}`)
-    VALUES (:tutor_id, :hours_str)
-    ON DUPLICATE KEY UPDATE `{col_name}` = :hours_str;
+def _ensure_date_column(conn, col_name: str):
+    """Add a date column `YYYY_MM_DD` if missing."""
+    exists_sql = """
+        SELECT 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'Scheduling'
+          AND COLUMN_NAME = :col
     """
+    if not conn.execute(text(exists_sql), {"col": col_name}).fetchone():
+        conn.execute(text(f"ALTER TABLE Scheduling ADD COLUMN `{col_name}` VARCHAR(255) DEFAULT NULL;"))
 
-    with engine.connect() as conn:
+def _to_col_name(yyyy_mm_dd: str) -> str:
+    d = datetime.strptime(yyyy_mm_dd, "%Y-%m-%d")
+    return d.strftime("%Y_%m_%d")
+
+def _rand_hours(
+    start_hour=START_HOUR,
+    end_hour=END_HOUR,
+    min_slots=MIN_SLOTS,
+    max_slots=MAX_SLOTS
+) -> list[int]:
+    hours = list(range(start_hour, end_hour))  # whole hours
+    k = random.randint(min_slots, min(max_slots, len(hours)))
+    return sorted(random.sample(hours, k)) if k > 0 else []
+
+# ---------- core steps ----------
+def get_first_n_tutor_ids(conn, n: int) -> list[int]:
+    rows = conn.execute(text("SELECT id FROM tutors ORDER BY id ASC LIMIT :n"), {"n": n}).fetchall()
+    return [int(r[0]) for r in rows]
+
+def delete_beyond_tutors(conn, keep_ids: list[int]):
+    if not keep_ids:  # nothing to keep => nothing to delete (safety)
+        return
+    # Delete Scheduling rows for tutors not in keep_ids
+    conn.execute(
+        text(f"DELETE FROM Scheduling WHERE tutor_id NOT IN ({','.join([':k'+str(i) for i in range(len(keep_ids))])})"),
+        {('k'+str(i)): keep_ids[i] for i in range(len(keep_ids))}
+    )
+    # Delete tutors not in keep_ids
+    conn.execute(
+        text(f"DELETE FROM tutors WHERE id NOT IN ({','.join([':k'+str(i) for i in range(len(keep_ids))])})"),
+        {('k'+str(i)): keep_ids[i] for i in range(len(keep_ids))}
+    )
+
+def ensure_scheduling_rows(conn, tutor_ids: list[int]):
+    _ensure_unique_index_on_tutor(conn)
+    # Insert missing Scheduling rows for each tutor_id
+    for tid in tutor_ids:
         conn.execute(
-            text(sql),
-            {"tutor_id": tutor_id, "hours_str": hours_str}
+            text("INSERT IGNORE INTO Scheduling (tutor_id) VALUES (:tid)"),
+            {"tid": tid}
         )
+
+def ensure_date_columns(conn, start: date, days: int) -> list[str]:
+    cols = []
+    for i in range(days + 1):
+        d = start + timedelta(days=i)
+        col = d.strftime("%Y_%m_%d")
+        _ensure_date_column(conn, col)
+        cols.append(col)
+    return cols
+
+def seed_random_availability(conn, tutor_ids: list[int], col_names: list[str]):
+    # For each tutor, set random hours for each date col
+    for tid in tutor_ids:
+        params = {"tutor_id": tid}
+        placeholders = [":tutor_id"]
+        cols = ["tutor_id"]
+        for col in col_names:
+            hrs = _rand_hours()
+            params[col] = ",".join(str(h) for h in hrs)
+            placeholders.append(f":{col}")
+            cols.append(f"`{col}`")
+        ondup = ", ".join([f"`{c}`=VALUES(`{c}`)" for c in col_names])
+        sql = f"INSERT INTO Scheduling ({', '.join(cols)}) VALUES ({', '.join(placeholders)}) ON DUPLICATE KEY UPDATE {ondup};"
+        conn.execute(text(sql), params)
+
+def reset_and_seed():
+    today = date.today()
+    with engine.connect() as conn:
+        # 1) Determine the first KEEP_COUNT tutors
+        keep_ids = get_first_n_tutor_ids(conn, KEEP_COUNT)
+        if len(keep_ids) < KEEP_COUNT:
+            print(f"⚠️ Only {len(keep_ids)} tutor(s) found; proceeding with those.")
+        else:
+            print(f"Keeping tutor IDs: {keep_ids[0]} … {keep_ids[-1]} ({len(keep_ids)} total)")
+
+        # 2) Delete everything beyond those tutors (Scheduling first, then tutors)
+        delete_beyond_tutors(conn, keep_ids)
+
+        # 3) Ensure Scheduling has a row for each kept tutor
+        ensure_scheduling_rows(conn, keep_ids)
+
+        # 4) Ensure date columns exist for today .. today + DAYS_AHEAD
+        col_names = ensure_date_columns(conn, today, DAYS_AHEAD)
+
+        # 5) Seed random availability for kept tutors over those columns
+        seed_random_availability(conn, keep_ids, col_names)
+
         conn.commit()
 
-    print(f" Updated tutor {tutor_id} for {slot_date} with hours: {hours_str}")
+    print(f"✅ Reset complete: kept {len(keep_ids)} tutor(s), wiped others, and seeded {len(col_names)} day(s) of availability.")
 
-
-# --- Example usage ---
 if __name__ == "__main__":
-    # Example: tutor 1, available on 2025-10-01 from 9am, 10am, 2pm, 3pm
-    update_schedule(
-        tutor_id=10,
-        slot_date="2025-10-11",
-        hours=[9, 10, 14, 15]
-    )
+    reset_and_seed()
