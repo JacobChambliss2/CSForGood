@@ -45,19 +45,30 @@ function showStep(step) {
 //  Handle navigation
 nextBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-
-
-        if (currentStep == 1 && roleSelect.value === "student") {
-            // Skip step 3 for students
-            showStep(currentStep + 2);
-            return;
+        const visibleSteps = getVisibleSteps();
+        const currentFormStep = visibleSteps[currentStep];
+    
+        // Validate all inputs in current step
+        const inputs = currentFormStep.querySelectorAll("input, select, textarea");
+    
+        for (let input of inputs) {
+            if (!input.checkValidity()) {
+                input.reportValidity(); //shows native popup
+                return; //stop navigation
+            }
         }
-        else
+    
+        // All fields are valid — continue to next step
+        if (currentStep === 1 && roleSelect.value === "student") {
+            showStep(currentStep + 2); // skip subject step for students
+        } else {
             showStep(currentStep + 1);
-        
-    console.log(currentStep);
-    console.log(roleSelect.value);
+        }
+    
+        console.log(currentStep);
+        console.log(roleSelect.value);
     });
+    
 });
 
 prevBtns.forEach(btn => {
@@ -149,3 +160,7 @@ async function loadSubjects() {
 
 // Load when DOM is ready
 document.addEventListener("DOMContentLoaded", loadSubjects);
+
+document.getElementById("backToLoginBtn").addEventListener("click", function () {
+    window.location.href = "../Landing/Landing.html";
+});
