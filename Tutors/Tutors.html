@@ -16,16 +16,16 @@
       <!--navbar links-->
       <div class="toppart">
         <h1 class = "title">Tutors</h1>
-        <a id="landingpagenav" href="../Landing/Landing.html">Home</a>
-        <a id = "schedulingnav" href="../Schedule/Scheduling.html">Calendar</a>
-        <a id="tutorsnav" href="Tutors.html">Tutors</a>
+          <a id="landingpagenav" href="../Landing/Landing.html">Home</a>
+          <a id = "schedulingnav" href="../Schedule/Scheduling.html">Calendar</a>
+          <a id="tutorsnav" href="Tutors.html">Tutors</a>
       </div>
 
         <div class = "maincontainer">
           <!--sorting options and filtering on the side-->
           <div class = "leftside">
             <h2 class="filtertitle">Filter Tutors</h2>
-            <i class="filterinfo">Left click on a card to add to favorites</i>
+            <i class="filterinfo">Right click to view profile <br> Left click to add to favorites</i>
             <span id="line"></span>
             <div id = "satslider">
               <p for="satrange" class="form-label">Minimum SAT Score: <span id="satscore">800</span></p>
@@ -47,7 +47,7 @@
               </li>
               <li class="subject">
                   <input class="form-check-input me-1" type="radio" id="OtherCheck" name="subject">
-                  <label class="form-check-label" for="OtherCheck">Other</label>
+                  <label class="form-check-label" for="OtherCheck">All</label>
               </li>
             </ul>
             <p>View:</p>
@@ -70,6 +70,9 @@
               </li>
             </ul>
           </div>
+          <button id="backarrow">
+            <img src="../Pictures/backarrow.png" alt="Back Arrow" width="30" height="30">
+          </button>
           <div id = "tutorcards">
             <!-- Tutor cards from js will go here -->
           </div>
