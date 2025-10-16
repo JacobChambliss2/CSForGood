@@ -82,4 +82,4 @@ usort($tutors, function($a,$b){
   return 0;
 });
 
-echo json_encode(array_slice($tutors, 0, 10));
+echo json_encode(array_slice($tutors, 0, 5));
