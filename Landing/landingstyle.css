@@ -235,7 +235,7 @@ h1{
     opacity: 1;
 }
 .Achievements{
-    background-color: rgb(197, 197, 197);
+    background-color: #eee6da;
     height: 25em;
     display: flex;
     justify-content: center;
@@ -318,7 +318,7 @@ h1{
 /*End of Achievements Subsection*/
 /*Personal Review Subsection*/
 .reviewd{
-    background-color: rgb(112, 112, 112);
+    background-color: #FFF9F0;
     height: 15em;
     display: flex;
     justify-content: space-between;
@@ -327,10 +327,21 @@ h1{
     padding: 40px;
 }
 #actualreview{
+    background-color: white;
+    border-style: solid;
+    border-radius: 50px;
+    border-width: 1px;
+    border-color: rgb(211, 211, 211);
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
    width: 50%;
    line-height: 2em;
    margin-right: 20px;
-   font-size: 1.2em;
+   font-size: 1.15em;
+   padding: 20px;
+}
+#credentials{
+    position: relative;
+    top: 125px;
 }
 .card-img3 {
     width: 27%;
@@ -369,7 +380,7 @@ h1{
     }
 }
 .Purpose{
-    background-color: rgb(207, 206, 206);
+    background-color: #eee6da;
     height: 25em;
     display: flex;
     justify-content: space-between;
@@ -406,9 +417,11 @@ h1{
     margin: 3em;
 }
 .misc h3{
-    font-size: 1.4em;
-    margin: 2em;
-    
+    width: 20em;
+    line-height: 1.5em;
+    font-size: 1.35em;
+    font-family: arial;
+    color: #27352d;
 }
 
 /*#endregion*/
