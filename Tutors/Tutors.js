@@ -96,12 +96,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                     </div>
                     <div class="rightsidecard">
-                    <h3> Bio:</h3>
-                    <p id = "bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquam odio et faucibus. Nulla rhoncus feugiat eros quis consectetur. Morbi neque ex, condimentum dapibus congue et, vulputate ut ligula. </p>
+                        <h3> Bio:</h3>
+                        <p id = "bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquam odio et faucibus. Nulla rhoncus feugiat eros quis consectetur. Morbi neque ex, condimentum dapibus congue et, vulputate ut ligula. </p>
+                        <div class="insideheart">
+                                <img src="../Pictures/heart.png" 
+                                    alt="Heart icon" 
+                                    class="heart" 
+                                    style="width:20px; height:20px; cursor:pointer;">
+                        </div>
                     </div>
                 `;
                 tutorcards.appendChild(expanded);
-
+               
                 // Back button restores all tutor cards
                 document.getElementById("backarrow").addEventListener("click", () => {
                     expanded.remove();

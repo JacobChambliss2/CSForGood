@@ -1,3 +1,6 @@
+html {
+    overflow-y: scroll;
+}
 .toppart {
     background-color: #7a9183;
     display: flex;
@@ -90,8 +93,6 @@
     font-size: 20px;
     margin-left: 21%;
     border: none;
-    background-color: #FFF9F0;
-    color: #7a9183;
     position: absolute;
     display: none;
 }
@@ -138,7 +139,7 @@
 
 #expanded-card {
     display: flex;
-    position: fixed;
+    position: absolute;
     margin-top: 5%;
     margin-left: 5%;
     width: 60%;
