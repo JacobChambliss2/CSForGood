@@ -1,8 +1,8 @@
 <?php
 require __DIR__ . '/config.php';
 
-// Use today's date automatically
-$date_str = date('Y-m-d');
+// availability.php — allow ?date=, else default to today
+$date_str = isset($_GET["date"]) ? $_GET["date"] : date('Y-m-d');
 $col = str_replace('-', '_', $date_str);
 
 // Check if column exists
