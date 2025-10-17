@@ -6,7 +6,7 @@ from typing import List, Tuple
 user = "chscscom_jacob"
 password = "Jacoshark11"
 host = "mi3-cl8-its1.a2hosting.com"
-port = 3306
+port = 3306 
 db = "chscscom_tutortrack"
 
 engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{db}")

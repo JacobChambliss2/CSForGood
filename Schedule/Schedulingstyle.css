@@ -164,3 +164,37 @@ padding: 20px;
 }
 
 .hours li.available { background:#c7f3c4; border-radius:6px; font-weight:600; padding:2px 6px; }
+
+/* Availability grid — minimal defaults */
+#availTable {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  #availTable th,
+  #availTable td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    text-align: center;
+    font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+    font-size: 14px;
+  }
+  
+  #availTable th:first-child {
+    text-align: right;
+    white-space: nowrap;
+    width: 110px; /* hour column */
+    position: sticky; left: 0; background: #fff; /* optional freeze-left */
+  }
+  
+  #availTable td.available {
+    background: #c7f7c7; /* your green; tweak later */
+  }
+  
+  /* Optional: make grid scroll horizontally if many tutors */
+  #availabilityGrid {
+    overflow: auto;
+    max-width: 100%;
+  }
+  

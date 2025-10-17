@@ -80,50 +80,146 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ---- NEW: load availability for ALL tutors for the selected date and show on page
-  async function loadAllTutorsAvailability(ymd){
-    try {
-      const data = await fetchJSON(`${BASE}availability.php?date=${encodeURIComponent(ymd)}`);
-      if (data.error) {
-        availabilityDisplay.textContent = `⚠️ ${data.error}`;
-        return;
-      }
+// ========= NEW: Availability Grid helpers =========
 
-      // header
-      availabilityDisplay.innerHTML = `<h3>Availability for ${data.date}</h3>`;
+// Make a 0..23 hour label
+function hourLabel(h){
+  const ampm = h === 0 ? "12:00am"
+            : h < 12 ? `${h}:00am`
+            : h === 12 ? "12:00pm"
+            : `${h-12}:00pm`;
+  return ampm;
+}
 
-      // table
-      const table = document.createElement("table");
-      table.style.borderCollapse = "collapse";
-      table.style.marginTop = "10px";
-      table.innerHTML = `
-        <tr>
-          <th style="border:1px solid #ccc; padding:6px;">Tutor</th>
-          <th style="border:1px solid #ccc; padding:6px;">Available Hours</th>
-        </tr>
-      `;
+const gridHost = document.getElementById("availabilityGrid");
+let gridState = {
+  tutorCols: [],          // array of {id, label}
+  indexByTutorId: new Map() // tutor_id -> column index (starting at 0 for first tutor col)
+};
 
-      // build rows using cached names when available
-      (data.tutors || []).forEach(t => {
-        const row = document.createElement("tr");
-        const meta = tutorMap.get(String(t.tutor_id));
-        const label = meta ? `${meta.first_name} ${meta.last_name} (ID ${t.tutor_id})`
-                           : `ID ${t.tutor_id}`;
-        const hours = (t.hours && t.hours.length) ? t.hours.join(", ") : "—";
-        row.innerHTML = `
-          <td style="border:1px solid #ccc; padding:6px;">${label}</td>
-          <td style="border:1px solid #ccc; padding:6px;">${hours}</td>
-        `;
-        table.appendChild(row);
-      });
+// Build an empty grid (header + hour rows, blank cells)
+function buildAvailabilityGrid(tutors){
+  // map tutors to {id,label}
+  const tutorCols = (tutors||[]).map(t => ({
+    id: String(t.id),
+    label: `${t.first_name} ${t.last_name}`.trim() || `Tutor ${t.id}`
+  }));
+  gridState.tutorCols = tutorCols;
+  gridState.indexByTutorId = new Map(tutorCols.map((t,i)=>[t.id, i]));
 
-      availabilityDisplay.appendChild(table);
-      dbg("All-tutor availability loaded.");
-    } catch (err) {
-      availabilityDisplay.textContent = " Failed to load availability.";
-      dbg("Avail-all error:", err.message);
-    }
+  // (Re)build table
+  gridHost.innerHTML = "";
+  const table = document.createElement("table");
+  table.id = "availTable";
+  table.style.borderCollapse = "collapse";
+  table.style.minWidth = "700px";
+
+  // tiny helper for cells
+  const styleCell = (el, isHeader=false) => {
+    el.style.border = "1px solid #ccc";
+    el.style.padding = "6px 10px";
+    if (isHeader) el.style.fontWeight = "600";
+    return el;
+  };
+
+  // THEAD
+  const thead = document.createElement("thead");
+  const htr = document.createElement("tr");
+
+  // top-left corner
+  htr.appendChild(styleCell(document.createElement("th"), true)).textContent = "Hour";
+
+  // tutor headers
+  tutorCols.forEach(t => {
+    const th = styleCell(document.createElement("th"), true);
+    th.textContent = t.label;
+    th.setAttribute("data-tutor-id", t.id);
+    htr.appendChild(th);
+  });
+  thead.appendChild(htr);
+  table.appendChild(thead);
+
+  // TBODY with 24 hour rows
+  const tbody = document.createElement("tbody");
+  for (let h = 0; h < 24; h++){
+    const tr = document.createElement("tr");
+
+    // hour label (frozen left)
+    const th = styleCell(document.createElement("th"), true);
+    th.textContent = hourLabel(h);
+    tr.appendChild(th);
+
+    // one cell per tutor; we key cells by tutorId-hour for fast lookup later
+    tutorCols.forEach(t => {
+      const td = styleCell(document.createElement("td"));
+      td.setAttribute("data-cell", `${t.id}-${h}`);
+      // default style is empty; you’ll style .available later
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
   }
+  table.appendChild(tbody);
+
+  // simple legend (optional)
+  const legend = document.createElement("div");
+  legend.style.margin = "8px 0 0 0";
+  legend.innerHTML = `
+    <span style="display:inline-block;width:14px;height:14px;border:1px solid #ccc;vertical-align:middle;margin-right:6px;"></span>
+    Unavailable
+    &nbsp;&nbsp;&nbsp;
+    <span class="available" style="display:inline-block;width:14px;height:14px;border:1px solid #ccc;vertical-align:middle;margin:0 6px;background:#c7f7c7;"></span>
+    Available
+  `;
+
+  gridHost.appendChild(table);
+  gridHost.appendChild(legend);
+}
+
+// Clear all green cells
+function clearGridAvailability(){
+  const cells = gridHost.querySelectorAll('[data-cell].available');
+  cells.forEach(td => td.classList.remove("available"));
+}
+
+// Mark a specific tutor/hour cell as available
+function markCellAvailable(tutorId, hour){
+  const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
+  if (td) td.classList.add("available");
+}
+
+// ========= REPLACE: loadAllTutorsAvailability with this =========
+async function loadAllTutorsAvailability(ymd){
+  try {
+    // fetch all tutors’ availability for the chosen date
+    const data = await fetchJSON(`${BASE}availability.php?date=${encodeURIComponent(ymd)}`);
+
+    if (!data || data.error){
+      dbg("Avail-all error:", data && data.error);
+      clearGridAvailability();
+      return;
+    }
+
+    // clear all old green cells
+    clearGridAvailability();
+
+    // fill green cells
+    (data.tutors || []).forEach(t => {
+      const tutorId = String(t.tutor_id);
+      const hours = Array.isArray(t.hours) ? t.hours : [];
+      hours.forEach(h => {
+        const hour = parseInt(h, 10);
+        if (!Number.isNaN(hour)) markCellAvailable(tutorId, hour);
+      });
+    });
+
+    dbg("All-tutor availability painted for", ymd);
+  } catch (err) {
+    dbg("Avail-all fetch error:", err.message);
+    clearGridAvailability();
+  }
+}
+
 
   let lastTutorId = null;
 
@@ -147,9 +243,29 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeBtn) closeBtn.addEventListener("click", () => bookingModal.style.display = "none");
 
   // ---- bootstrap: ensure date input has a value (fallback to today), then load both
-  if (dateInput && !dateInput.value) dateInput.value = todayISO();
-  const firstDate = selectedDate();
-  dbg("Page loaded → date:", firstDate, "→ calling rank.php + availability.php…");
-  loadRankedTutors();
-  loadAllTutorsAvailability(firstDate);
+  (async function init(){
+    if (dateInput && !dateInput.value) dateInput.value = todayISO();
+    const firstDate = selectedDate();
+    dbg("Page loaded → date:", firstDate, "→ calling rank.php + availability.php…");
+
+    // load tutors first so we can build the columns
+    const tutors = await (async () => {
+      try {
+        const data = await fetchJSON(`${BASE}rank.php`);
+        renderRankedTutors(data);   // your existing function (kept)
+        return data;
+      } catch (err) {
+        dbg("Rank error:", err.message);
+        tutorList.innerHTML = "<li>Could not load tutors</li>";
+        return [];
+      }
+    })();
+
+    // build the empty grid from the ranked tutors
+    buildAvailabilityGrid(tutors);
+
+    // now paint the availability for the chosen date
+    await loadAllTutorsAvailability(firstDate);
+  })();
+
 });
