@@ -1,200 +1,370 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-*{
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;600;700&display=swap');
+
+/* =======================================================
+   THEME TOKENS
+======================================================= */
+:root{
+  --bg: #FFF9F0;          /* page background */
+  --surface: #ffffff;     /* cards/panels */
+  --surface-muted: #f3efe8;
+
+  --sage: #7a9183;        /* header bar */
+  --sage-dark: #486855;   /* dark accent */
+  --green-pill: #DDEEDF;  /* button fill */
+  --green-border: #2E8B57;
+  --green-shadow: #1c5736;
+
+  --text: #333333;
+  --text-strong: #133120;
+
+  --line: #d3d3d3;
+
+  --avail: #c7f7c7;       /* available cell */
+  --avail-hover: #b4eab9;
+  --booked: #ff6b6b;      /* optional future state */
+  --booked-hover: #ff8787;
 }
 
-/*calendar div*/
-.calendar {
+/* =======================================================
+   GLOBAL
+======================================================= */
+*{ box-sizing: border-box; }
+html, body{
+  margin: 0; padding: 0;
+  font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+img{ max-width: 100%; display:block; }
+
+/* Optional debug area if present */
+#debug{
+  font: 12px/1.4 monospace;
+  background:#111; color:#0f0;
+  padding:8px; max-height:200px; overflow:auto;
+  margin: 8px 12px;
+}
+
+/* =======================================================
+   TOP BAR
+======================================================= */
+.topBar{
+  background: var(--sage);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;    /* center content by default */
+  gap: 12px;
+  padding: 14px 16px;
+  min-height: 4em;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  border-radius: 0 0 16px 16px;
+  flex-wrap: wrap;            /* keep it tidy on narrow screens */
+}
+
+/* calendar input */
+.calendar{ text-align: center; }
+.calendar input[type="date"]{
+  appearance: none;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 16px;
+  color: var(--text);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* CTA + Back button (pill) */
+.reservationbtn,
+.backHome{
+  background-color: var(--green-pill);
+  border: 2px solid var(--green-border);
+  border-radius: 30px;
+  box-shadow: var(--green-shadow) 4px 4px 0 0;
+  color: var(--text);
+  display: inline-block;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0 28px;
+  line-height: 44px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: background .2s, box-shadow .1s, transform .1s;
+}
+.reservationbtn:hover,
+.backHome:hover{
+  background-color: var(--avail);
+  box-shadow: var(--green-shadow) 2px 2px 0 0;
+  transform: translateY(-2px);
+}
+
+/* optional availability message container if present */
+#availabilityDisplay{
+  font-size: 14px;
+  color: #fff;
+}
+
+/* =======================================================
+   TUTOR LIST STRIP
+======================================================= */
+.tutors{
+  background: var(--surface);
+  padding: 14px 0 18px;
+  border-bottom: 1px solid var(--surface);
+  display: flex;
+  justify-content: center;
+}
+.tutors ul{
+  list-style: none;
+  display: flex;
+  gap: 60px;
+  padding: 0; margin: 0;
+  flex-wrap: wrap;       /* don’t overflow horizontally */
+}
+.tutors li{
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--sage-dark);
+  cursor: pointer;
+  transition: color .2s, transform .1s;
+  max-width: 20ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tutors li:hover{
+  color: var(--green-border);
+  transform: translateY(-2px);
+}
+
+/* =======================================================
+   HOURS + LINES LAYOUT (left column + background lines)
+======================================================= */
+.hoursWrapper{
+  display: flex;
+  align-items: stretch;
+  margin: 16px;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+  overflow: hidden;              /* prevent spill */
+}
+
+/* Left rail with hour labels */
+.hours{
+  background: var(--sage-dark);
+  color: #fff;
+  padding: 22px 22px;
+  min-width: 140px;
+}
+.hours ul{ list-style:none; padding:0; margin:0; }
+.hours li{
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+  font-size: 15px;
+}
+/* highlight hour chips if you use them */
+.hours li.available{
+  background: var(--avail);
+  color: var(--text-strong);
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 2px 8px;
+}
+
+/* Right background with subtle horizontal rules */
+.lines{
+  flex: 1;
+  min-height: 1180px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--bg),
+    var(--bg) 46px,
+    var(--line) 47px,
+    var(--line) 48px
+  );
+  position: relative;
+}
+
+/* =======================================================
+   AVAILABILITY GRID (button-like cells)
+   Your JS appends <table id="availTable"> inside #availabilityGrid.
+======================================================= */
+#availabilityGrid{
+  position: relative;
+  max-width: 100vw;          /* do not exceed viewport width */
+  overflow: auto;            /* scroll inside if needed */
+  padding: 12px;
+}
+
+/* Make the table a tidy grid of “chips” via border-spacing */
+#availTable{
+  width: 100%;
+  table-layout: fixed;       /* prevents overflow/overlap */
+  border-collapse: separate;
+  border-spacing: 8px;       /* space between buttons */
+  margin: 0;
+}
+
+/* Headers + cells look like cards/chips */
+#availTable th,
+#availTable td{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;   /* no text spill */
+}
+
+/* Sticky hour column (first th in each row) */
+#availTable th:first-child{
+  position: sticky; left: 0; z-index: 2;
+  background: var(--surface-muted);
+  color: var(--text-strong);
+  font-weight: 700;
+  min-width: 112px;
+  border-color: rgba(0,0,0,0.06);
+}
+
+/* If you render a THEAD, you can make the top row sticky too */
+#availTable thead th{
+  position: sticky; top: 0; z-index: 3;
+  background: var(--sage);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* The “button” feel */
+#availTable td{
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .18s ease, background .18s ease;
+}
+
+/* Available cells (green chips) */
+#availTable td.available{
+  background: var(--avail);
+}
+#availTable td.available:hover{
+  background: var(--avail-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+/* Optional booked state (if you ever use it) */
+#availTable td.booked{
+  background: var(--booked);
+  color: #fff;
+  font-weight: 600;
+}
+#availTable td.booked:hover{
+  background: var(--booked-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+/* =======================================================
+   BOOKING MODAL
+======================================================= */
+.bookingWrapper{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+.bookUI{
+  background: #fff;
+  margin: 10% auto;
+  padding: 26px 28px;
+  border-radius: 16px;
+  width: 340px;
+  max-width: calc(100% - 32px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  text-align: center;
+}
+.close{
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--booked);
+}
+.close:hover{ color: var(--booked-hover); }
+#bookingForm label{
+  display: inline-block;
+  min-width: 100px;
+  text-align: right;
+  margin-right: 10px;
+  color: var(--text-strong);
+}
+#bookingForm input[type="time"]{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.14);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: var(--text);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+#bookingForm button{
+  margin-top: 10px;
+  background-color: var(--green-pill);
+  border: 2px solid var(--green-border);
+  border-radius: 30px;
+  box-shadow: var(--green-shadow) 4px 4px 0 0;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0 24px;
+  line-height: 40px;
+  cursor: pointer;
+  transition: background .2s, box-shadow .1s, transform .1s;
+}
+#bookingForm button:hover{
+  background-color: var(--avail);
+  box-shadow: var(--green-shadow) 2px 2px 0 0;
+  transform: translateY(-2px);
+}
+
+/* =======================================================
+   RESPONSIVE TWEAKS
+======================================================= */
+@media (max-width: 1100px){
+  #availTable{ border-spacing: 6px; }
+  #availTable th, #availTable td{ font-size: 13px; padding: 8px 6px; }
+  #availTable th:first-child{ min-width: 100px; }
+}
+
+@media (max-width: 800px){
+  .hoursWrapper{
+    flex-direction: column;
+    border-radius: 16px;
+  }
+  .hours{
+    min-width: 100%;
     text-align: center;
-}
-
-/*calendar input*/
-input[type="date"] {
-    font-size: 17px;
-    padding-top: 8px;
-    padding-bottom: 12px;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-/*Calendar top blue bar*/
-.topBar {
-    background-color: #7ca38c;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-}
-
-.reservationbtn {
-    width: 300px;
-    background-color: #1c5736;
-    border: none;
-    font-size: 20px;
-    padding: 15px 0;
-    cursor: pointer;
-}
-
-.backHome {
-    background-color: #DDEEDF;
-    border: 2px solid #2E8B57;
-    border-radius: 30px;
-    box-shadow: #1c5736 4px 4px 0 0;
-    color: #333333;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 18px;
-    padding: 0 50px;
-    line-height: 50px;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    transition: all 0.2s ease-in-out;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
   }
-  
-  .backHome:hover {
-    background-color: #c1d3c3;
-    box-shadow: #1c5736 2px 2px 0 0;
-    transform: translateY(-2px);
-  }  
-
-/*wrapper for flex*/
-.hoursWrapper {
-display: flex;
-align-items: flex-start;
-padding: 20px;
-}
-
-/*hours grey left bar*/
-.hours {
-    background-color: grey;
-    padding: 20px 30px;
-    border-right: 2px solid rgb(37, 37, 37);
-}
-
-/*gets rid of bullet points*/
-.hours ul {
-    list-style: none;
-}
-
-/*margin between each hour*/
-.hours li {
-    margin-bottom: 30px;
-    font-size: 16px;
-    color: #1a1a1a;
-}
-
-/*horiz lines between each hour*/
-.lines {
-    flex: 1;
-    height: 1180px;
-
-    /*repeat hor lines so I don't need to create a div for every single one*/
-    background: repeating-linear-gradient(
-        to bottom,
-        rgb(224, 224, 224),
-        rgb(141, 141, 141) 2px,
-        white 1px,
-        white 49px
-    );
-}
-
-/*tutor list*/
-.tutors {
-    background-color: white;
-    padding-top: 15px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid White;
-}
-
-/*tutor style/font*/
-.tutors ul {
-    list-style: none;
-    display: flex;
-    padding: 0px;
-    margin-left: 120px;
-    font-size: larger;
-    font-family: 'Roboto', sans-serif;
-}
-
-.tutors li {
-    margin-left: 150px;
-}
-
-/*change tutor color when hover*/
-.tutors li:hover {
-    color: rgb(0, 96, 240);
-}
-
-/*booking pop up when user clicks on tutor*/
-.bookingWrapper {
-    display: none; /* hidden by default */
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-}
-
-.bookUI {
-    background: white;
-    margin: 10% auto;
-    padding: 20px 30px;
-    border-radius: 8px;
-    width: 300px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    text-align: center;
-}
-  
-/*Close button*/
-.close {
-    float: right;
-    font-size: 22px;
-    cursor: pointer;
-}
-
-.hours li.available { background:#c7f3c4; border-radius:6px; font-weight:600; padding:2px 6px; }
-
-/* Availability grid — minimal defaults */
-#availTable {
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
+  #availabilityGrid{
+    padding: 10px;
+    max-width: 100vw;
   }
-  
-  #availTable th,
-  #availTable td {
-    border: 1px solid #ccc;
-    padding: 6px 10px;
-    text-align: center;
-    font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-    font-size: 14px;
-  }
-  
-  #availTable th:first-child {
-    text-align: right;
-    white-space: nowrap;
-    width: 110px; /* hour column */
-    position: sticky; left: 0; background: #fff; /* optional freeze-left */
-  }
-  
-  #availTable td.available {
-    background: #c7f7c7; /* your green; tweak later */
-  }
-  
-  /* Optional: make grid scroll horizontally if many tutors */
-  #availabilityGrid {
-    overflow: auto;
-    max-width: 100%;
-  }
-  
+}
+
+@media (max-width: 560px){
+  #availTable{ border-spacing: 5px; }
+  #availTable th, #availTable td{ font-size: 12px; padding: 6px 5px; }
+  #availTable th:first-child{ min-width: 92px; }
+  .tutors ul{ gap: 24px; }
+}
