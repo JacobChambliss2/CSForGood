@@ -22,11 +22,12 @@ nav{
     display: flex;
     height: 4em;
     overflow: hidden;
-    position: relative;
+    position: flex;
     justify-content: space-between;
     gap: -2em;
 }
 .TitleArea h1{
+    margin: 0;
     font-size: 1.2em;
     font-family: verdana, serif;
 
@@ -34,6 +35,54 @@ nav{
 .TitleArea img{
     width: 3em 3em;
     margin: 0.5em;
+}
+/* ===== Title Area Flex Layout ===== */
+.title-area {
+    position: relative;
+    display: flex;
+    justify-content: center; /* keeps h1 centered */
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Accessibility container layout */
+.accessibility {
+    position: absolute;
+    right: 40px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+#google_translate_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* ===== GOOGLE TRANSLATE DROPDOWN STYLING ===== */
+#google_translate_element {
+  display: inline-block;
+  margin-left: 20px; /* Adjust spacing as needed */
+}
+
+/* Powered by Google Translate */
+.translate-powered {
+    font-size: 10px;
+    color: #666666;
+    margin-top: 3px;
+    text-align: center;
+}
+
+/* Light Mode Button */
+.modes {
+    padding: 10px 18px;
+    background-color: #DDEEDF;
+    color: #333333;
+    box-shadow: #1c5736 4px 4px 0 0;
+    border-radius: 30px;
+    border: 2px solid #2E8B57;
+    cursor: pointer;
+    font-size: 16px;
 }
 .navbuttons, #login, #CreateAcc{
     display: flex;
@@ -89,41 +138,6 @@ h1{
     justify-content: center;
     align-items: center;    color: #133120;
 }
-
-/*#region Scroll Container*/
-.scrollcontainer {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    height: 2em; 
-}
-.scroller {
-    position: absolute;
-    white-space: nowrap;
-    display: flex;
-    animation: scroll 20s linear infinite;
-}
-
-.scroll-content {
-    display: flex;
-    color: #333333;
-}
-
-.scroll-content span {
-    padding-right: 2em;
-    font-size: 1.5em;
-}
-
-@keyframes scroll {
-    0% {
-        transform: translateX(0%);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-/*#endregion*/
-
 
 
 /* Container for both sides */
