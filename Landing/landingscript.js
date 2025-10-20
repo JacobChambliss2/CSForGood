@@ -1,13 +1,34 @@
 function googleTranslateElementInit() {
-    new google.translate.TranslateElement(
-        {
-            pageLanguage: 'en',                 // default site language
-            includedLanguages: 'en,es,fr,de,zh-CN,zh-TW,ja,vi,ar',  // languages available
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        },
-        'google_translate_element'
-    );
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,es,fr,de,zh-CN,hi,ar,ja,ru,pt', // Add more if needed
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    },
+    'google_translate_element'
+  );
 }
+
+// Retry logic — ensures the widget always loads
+function ensureGoogleTranslateLoaded(attempt = 0) {
+  const element = document.getElementById('google_translate_element');
+  const frame = element?.querySelector('iframe');
+
+  // If iframe not loaded yet, retry up to 5 times
+  if (!frame && attempt < 5) {
+    setTimeout(() => {
+      if (typeof googleTranslateElementInit === 'function') {
+        googleTranslateElementInit();
+      }
+      ensureGoogleTranslateLoaded(attempt + 1);
+    }, 1000);
+  }
+}
+
+// Ensure everything runs when the page finishes loading
+window.addEventListener('load', () => {
+  ensureGoogleTranslateLoaded();
+});
 //source: https://stackoverflow.com/questions/54849362/how-to-achieve-this-typing-deleting-effect
 const words = ["Tutorly Needs", "Tutoring Questions", "Academic Help", "Engagement with Others"];
 let i = 0;
