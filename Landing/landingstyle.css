@@ -15,18 +15,20 @@ nav{
     font-size: 3.4vh;
     overflow: hidden;
     z-index: 1000;
-    background-color: #7a9183;}
+    background-color: #7a9183;
+}
 .TitleArea{
     margin: 0;
     padding: 0;
     display: flex;
     height: 4em;
     overflow: hidden;
-    position: relative;
+    position: flex;
     justify-content: space-between;
     gap: -2em;
 }
 .TitleArea h1{
+    margin: 0;
     font-size: 1.2em;
     font-family: verdana, serif;
 
@@ -35,6 +37,63 @@ nav{
     width: 3em 3em;
     margin: 0.5em;
 }
+/* ===== Title Area Flex Layout ===== */
+.title-area {
+    position: relative;
+    display: flex;
+    justify-content: center; /* keeps h1 centered */
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+.blink{
+    animation: blink 0.8s infinite;
+}
+@keyframes blink{
+    to {opacity:0;}
+}
+/* Accessibility container layout */
+.accessibility {
+    position: absolute;
+    right: 40px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+#google_translate_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* ===== GOOGLE TRANSLATE DROPDOWN STYLING ===== */
+#google_translate_element {
+  display: inline-block;
+  margin-left: 20px; /* Adjust spacing as needed */
+}
+
+/* Powered by Google Translate */
+.translate-powered {
+    font-size: 10px;
+    color: #666666;
+    margin-top: 3px;
+    text-align: center;
+}
+
+/* Light Mode Button */
+.modes {
+    padding: 10px 18px;
+    background-color: #DDEEDF;
+    color: #333333;
+    box-shadow: #1c5736 4px 4px 0 0;
+    border-radius: 30px;
+    border: 2px solid #2E8B57;
+    cursor: pointer;
+    font-size: 16px;
+}
+.navbuttons{
+    position: relative;
+    top: -8px;
+}
 .navbuttons, #login, #CreateAcc{
     display: flex;
     flex-wrap: wrap;
@@ -42,6 +101,7 @@ nav{
     margin: 1em;
     flex: 1 1 auto;
     min-width: 0;
+    
 }
 .butt, .butt2{
     /*Credits: https://getcssscan.com/css-buttons-examples*/
@@ -55,7 +115,7 @@ nav{
     font-weight: 600;
     font-size: 18px;
     padding: 0 50px;
-    line-height: 50px;
+    line-height: 60px;
     text-align: center;
     text-decoration: none;
     user-select: none;
@@ -89,41 +149,6 @@ h1{
     justify-content: center;
     align-items: center;    color: #133120;
 }
-
-/*#region Scroll Container*/
-.scrollcontainer {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    height: 2em; 
-}
-.scroller {
-    position: absolute;
-    white-space: nowrap;
-    display: flex;
-    animation: scroll 20s linear infinite;
-}
-
-.scroll-content {
-    display: flex;
-    color: #333333;
-}
-
-.scroll-content span {
-    padding-right: 2em;
-    font-size: 1.5em;
-}
-
-@keyframes scroll {
-    0% {
-        transform: translateX(0%);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-/*#endregion*/
-
 
 
 /* Container for both sides */
@@ -235,7 +260,7 @@ h1{
     opacity: 1;
 }
 .Achievements{
-    background-color: rgb(197, 197, 197);
+    background-color: #eee6da;
     height: 25em;
     display: flex;
     justify-content: center;
@@ -318,7 +343,7 @@ h1{
 /*End of Achievements Subsection*/
 /*Personal Review Subsection*/
 .reviewd{
-    background-color: rgb(112, 112, 112);
+    background-color: #FFF9F0;
     height: 15em;
     display: flex;
     justify-content: space-between;
@@ -327,10 +352,21 @@ h1{
     padding: 40px;
 }
 #actualreview{
+    background-color: white;
+    border-style: solid;
+    border-radius: 50px;
+    border-width: 1px;
+    border-color: rgb(211, 211, 211);
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
    width: 50%;
    line-height: 2em;
    margin-right: 20px;
-   font-size: 1.2em;
+   font-size: 1.15em;
+   padding: 20px;
+}
+#credentials{
+    position: relative;
+    top: 125px;
 }
 .card-img3 {
     width: 27%;
@@ -369,7 +405,7 @@ h1{
     }
 }
 .Purpose{
-    background-color: rgb(207, 206, 206);
+    background-color: #eee6da;
     height: 25em;
     display: flex;
     justify-content: space-between;
@@ -394,22 +430,102 @@ h1{
     border-radius: 12px;
     transition: opacity 0.3s ease;
 }
-.misc{
-    background-color: #7a9183;
-    height: 15em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
+/* General Footer Section */
+.misc {
+  background-color: #7a9183;
+  padding: 3em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2em;
 }
-.misc-container{
-    margin: 3em;
+
+/* Left text */
+.misc-container {
+  max-width: 25em;
 }
-.misc h3{
-    font-size: 1.4em;
-    margin: 2em;
-    
+
+.misc h3 {
+  line-height: 1.5em;
+  font-size: 1.35em;
+  font-family: Arial, sans-serif;
+  color: #27352d;
 }
+
+/* Center logo + title (side-by-side and larger) */
+.footer-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  flex-shrink: 0; 
+  margin-right: 10em;
+}
+
+.footer-logo {
+  width: 80px;  /* increased size */
+  height: 80px;
+  object-fit: contain;
+}
+
+.footer-title-text {
+  font-size: 4em;  
+  font-family: Arial, sans-serif;
+  color: #27352d;
+  font-weight: 700;
+  white-space: nowrap; 
+}
+
+
+/* Right side columns */
+.footer-columns {
+  display: flex;
+  gap: 3em;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-title {
+  font-family: Arial, sans-serif;
+  color: #27352d;
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+  text-decoration: underline;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #27352d;
+  font-family: Arial, sans-serif;
+  font-size: 1.05em;
+  margin: 0.3em 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+  color: #1c5736;
+  text-decoration: underline;
+}
+
+/* Bottom copyright */
+.footer-bottom {
+  background-color: #6b8375;
+  text-align: center;
+  padding: 1em 0;
+}
+
+.footer-bottom p {
+  color: #27352d;
+  font-family: Arial, sans-serif;
+  font-size: 0.95em;
+  margin: 0;
+}
+
+
 
 /*#endregion*/
 /*
