@@ -110,22 +110,37 @@ img{ max-width: 100%; display:block; }
 }
 
 /* =======================================================
-   TUTOR LIST STRIP
+   TUTOR LIST STRIP (centered with hour-column compensation)
 ======================================================= */
 .tutors{
   background: var(--surface);
-  padding: 14px 0 18px;
+  padding: 14px 12px 18px;      /* match availabilityGrid side padding */
   border-bottom: 1px solid var(--surface);
   display: flex;
-  justify-content: center;
+  justify-content: center;      /* center the grid row itself */
 }
+
 .tutors ul{
   list-style: none;
-  display: flex;
-  gap: 60px;
-  padding: 0; margin: 0;
-  flex-wrap: wrap;       /* don’t overflow horizontally */
+  display: grid;
+  /* Default template; JS will override with correct tutor count */
+  grid-template-columns: 112px repeat(4, 1fr) 112px; /* left spacer + names + right spacer */
+  column-gap: 8px;               /* matches #availTable border-spacing */
+  width: max-content;            /* shrink to content so centering is precise */
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
 }
+
+/* invisible spacers for left/right hour-column compensation */
+.tutors li.grid-spacer{
+  pointer-events: none;
+  visibility: hidden;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
 .tutors li{
   font-size: 18px;
   font-weight: 600;
