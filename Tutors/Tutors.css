@@ -63,30 +63,19 @@ html {
     opacity: 0.8;
 }
 
-.subjectlist {
+.biglist {
     margin-left: -2%;
     min-width: 160px;
     flex-direction: column;
     list-style-type: none;
 }
 
-.subjectlist li {
-    padding: 12px 16px;
+.biglist li {
+    margin-bottom: 2%;;
     display: block;
     color: #2f2f2f;
 }
 
-.filteroptions {
-    display: block;
-    min-width: 160px;
-    flex-direction: column;
-}
-
-.filteroptions li {
-    padding: 12px 16px;
-    display: block;
-    color: #2f2f2f;
-}
 
 #backarrow {
     width: 2%;
