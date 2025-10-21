@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="Schedulingstyle.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
-        <pre id="debug" style="white-space:pre-wrap; font:12px/1.4 monospace; background:#111; color:#0f0; padding:8px; max-height:200px; overflow:auto;"></pre>
         <script src="Schedulingscript.js" defer></script>
 
         <title>
@@ -14,12 +13,11 @@
     </head>
 
     <body>
+        <pre id="debug" style="white-space:pre-wrap; font:12px/1.4 monospace; background:#111; color:#0f0; padding:8px; max-height:200px; overflow:auto;"></pre>
+
         <!--top blue bar-->
         <div class="topBar">
-            <section id="availabilityDisplay" style="margin: 20px; font-family: sans-serif;">
-                Loading today’s availability...
-              </section>
-              
+
             <!--input calendar-->
             <div class="calendar">
                 <!--basic calendar from html-->
@@ -29,9 +27,6 @@
                 min="2025-01-01" max="2027-01-01">
             </div>
 
-            <!--Booking button-->
-            <div class="reservationbtn">Book a Reservation</div>
-
             <!--Back to home page-->
             <a href="/Landing/Landing.html" class="backHome">Main Page</a>
         </div>
@@ -40,42 +35,9 @@
         <div class="tutors">
             <ul id="tutorList"></ul>
         </div>
+        <!--availability grid-->
+        <div id="availabilityGrid" style="margin: 20px 0;"></div>
 
-        <!--hours wrapper for flex-->
-        <div class="hoursWrapper">
-            <!--list of hours for the whole day-->
-            <div class="hours">
-                <ul>
-                <li>12:00am</li>
-                <li>1:00am</li>
-                <li>2:00am</li>
-                <li>3:00am</li>
-                <li>4:00am</li>
-                <li>5:00am</li>
-                <li>6:00am</li>
-                <li>7:00am</li>
-                <li>8:00am</li>
-                <li>9:00am</li>
-                <li>10:00am</li>
-                <li>11:00am</li>
-                <li>12:00pm</li>
-                <li>1:00pm</li>
-                <li>2:00pm</li>
-                <li>3:00pm</li>
-                <li>4:00pm</li>
-                <li>5:00pm</li>
-                <li>6:00pm</li>
-                <li>7:00pm</li>
-                <li>8:00pm</li>
-                <li>9:00pm</li>
-                <li>10:00pm</li>
-                <li>11:00pm</li>
-                </ul>
-            </div>
-            <!--horiz lines for hours-->
-            <div class="lines"></div>
-        </div>
-        
         <!--booking popup (hidden)-->
         <div id="bookingModal" class="bookingWrapper">
             <!--UI-->

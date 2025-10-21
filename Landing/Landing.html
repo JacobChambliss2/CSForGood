@@ -6,21 +6,22 @@
     <title>Nextech CSforGood - Castle 2025, Tutoring Help</title>
     <link rel="stylesheet" href="landingstyle.css">
     <script defer src="landingscript.js"></script>
+
 </head>
 
 <body>
     <!-- Navigation -->
     <nav>
         <div class="TitleArea">
-             <img id="logo" src="https://logos-world.net/wp-content/uploads/2023/02/ChatGPT-Logo.png" alt="Logo">
+             <img id="logo" src="\Pictures\tutortracklogo.png" alt="Logo">
             <h1>Tutortrack</h1>
         </div>
         <div class="navbuttons">
             <!-- NOTE: IDs must be unique. Changed to class="nav-button" -->
+            <a href="..\Tutors\Tutors.html" class="butt nav-button">About Us</a>
             <a href="..\Tutors\Tutors.html" class="butt nav-button">Tutors</a>
-            <a href="https://chatgpt.com/" class="butt nav-button">Button 2</a>
-            <a href="https://chatgpt.com/" class="butt nav-button">Button 3</a>
             <a href="\Schedule\Scheduling.html" class="butt nav-button">Scheduling</a>
+            <a href="chatgpt.com" class="butt nav-button">Contact</a>
         </div>
 
         <!-- Whenever The User is On the Website before Creating an Account/Signing-In -->
@@ -39,24 +40,23 @@
 
     <!-- Title -->
     <div class="title-area">
-        <!--add language-->
-        <h1>A Hub of All Your Tutorly Needs.</h1>
-    </div>
+        <h1 class="header-title">
+            A Hub for All Your&nbsp;
+            <span id="word" class="header-sub-title"></span>
+            <span class="header-sub-title blink">|</span>
+        </h1>
 
-    <!-- Moving Text -->
-    <div class="scrollcontainer">
-        <div class="scroller">
-            <div class="scroll-content">
-                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
-                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
+        <div class="accessibility">
+            <!-- Google Translate Widget -->
+            <div id="google_translate_wrapper">
+                <div id="google_translate_element"></div>
+            <span class="translate-powered">Powered by Google Translate</span>
             </div>
-            <div class="scroll-content" aria-hidden="true">
-                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
-                <span>WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE WELCOME TO WEBSITE </span>
-            </div>
+            <!-- Light Mode Button
+             <button class="modes">Light Mode</button> -->
+            
         </div>
     </div>
-    
 
     <!-- Two Images Side-by-Side -->
      <!--https://prismic.io/blog/css-hover-effects-->
@@ -90,28 +90,30 @@
                 <img src="https://cdn.pixabay.com/photo/2017/01/17/12/14/apple-1986660_1280.png" alt="Stat Image" class="card-img2">
                 <div class="overlay-text2">
                     <span class="Header">Certified Tutors/Professionals</span>
-                    <h3 class="imagetext2">Trusted People</h3>
+                    <h3 class="imagetext2">Verified from Those You Know Locally
+
+                    </h3>
                 </div>
             </div>
             <div class=" boxt sujets">
                 <img src="https://media.istockphoto.com/id/912462850/vector/open-book-with-education-sketches.jpg?s=612x612&w=0&k=20&c=tgQ2i4J4NDd_EIsluN5CxwDNg4r4pDXgwyVqPBd_jKs=" alt="Stat Image" class="card-img2">
                 <div class="overlay-text2">
                     <span class="Header">Many Subjects Covered</span>
-                    <h3 class="imagetext2">We tutor Math and other subjects!</h3>
+                    <h3 class="imagetext2">Never Have To Worry About What's Covered</h3>
                 </div>
             </div>
             <div class="boxt apib">
                 <img src="\Pictures\collegeboardandib.png" alt="Stat Image" class="card-img2">
                 <div class="overlay-text2">
                     <span class="Header">AP/IB Included</span>
-                    <h3 class="imagetext2">Tutors know the curriculum, we trust em.</h3>
+                    <h3 class="imagetext2">Verified from the curriculum </h3>
                 </div>
             </div>
             <div class="boxt reviewer">
                 <img src="https://cdn.pixabay.com/photo/2017/01/17/12/14/apple-1986660_1280.png" alt="Stat Image" class="card-img2">
                 <div class="overlay-text2">
                     <span class="Header">A Bunch of Five Star Reviews!</span>
-                    <h3 class="imagetext2">like 41 of em are good</h3>
+                    <h3 class="imagetext2">Many of those you know tutored and satisfied!</h3>
                 </div>
             </div>         
     </div>
@@ -139,11 +141,45 @@
     </div>
 
     <div class="misc">
+        <!-- Left Side -->
         <div class="misc-container">
-            <!-- May include other buttons -->
-            <h3>Tutortrack is widely available to all students for tutoring and gives opportunities for those who want to tutor.</h3>
+        <h3>
+            Tutortrack is widely available to all students for tutoring and gives opportunities
+            for those who want to tutor.
+        </h3>
+        </div>
+
+        <!-- Center (Logo + Title) -->
+        <div class="footer-center">
+            <img src="\Pictures\tutortracklogo.png" alt="Tutortrack Logo" class="footer-logo">
+            <h2 class="footer-title-text"><strong>Tutortrack</strong></h2>
+        </div>
+
+        <!-- Right Side (Link Columns) -->
+        <div class="footer-columns">
+            <div class="footer-column">
+                <h4 class="footer-title">Tutoring Help</h4>
+                <a href="..\Tutors\Tutors.html" class="footer-link">Tutors</a>
+                <a href="\Schedule\Scheduling.html" class="footer-link">Scheduling</a>
+            </div>
+
+            <div class="footer-column">
+                <h4 class="footer-title">Information</h4>
+                <a href="..\About\About.html" class="footer-link">About Us</a>
+                <a href="..\Contact\Contact.html" class="footer-link">Contact Us</a>
+            </div>
         </div>
     </div>
+
+    <!-- Copyright at the very bottom -->
+    <footer class="footer-bottom">
+        <p>© 2025 Tutortrack. All rights reserved.</p>
+    </footer>
+
+
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
 </body>
 </html>
 
