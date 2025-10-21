@@ -8,6 +8,9 @@ html {
     gap: 20%;
     padding-top: 2%;
 }
+.toppart{
+    
+}
 .title {
     color: #FFF9F0;
     margin-top: -1%;
@@ -161,4 +164,23 @@ html {
 #bio {
     font-style: italic;
     color: #5f6f65;
+}
+#landingpagenav, #schedulingnav, #tutorsnav{
+     /*Credits: https://getcssscan.com/css-buttons-examples*/
+    background-color: #DDEEDF;
+    border: 2px solid #2E8B57;
+    border-radius: 30px;
+    box-shadow: #1c5736 4px 4px 0 0;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 50px;
+    line-height: 60px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
