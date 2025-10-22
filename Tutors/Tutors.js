@@ -127,13 +127,50 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
                 tutorcards.appendChild(expanded);
                
+                // Toggle heart icon in expanded card
+                const expandedHeart = expanded.querySelector(".insideheart .heart");
+                const matchingButton = Array.from(document.querySelectorAll(".tutor-card"))
+                    .find(btn => btn.querySelector("strong").textContent === tutor.name);
+
+                // Set initial heart state in expanded view
+                if (matchingButton.classList.contains("favorite")) {
+                    expandedHeart.src = "../Pictures/filledinheart.png";
+                } else {
+                    expandedHeart.src = "../Pictures/heart.png";
+                }
+
+                expandedHeart.addEventListener("click", () => {
+                    const isFavorited = matchingButton.classList.contains("favorite");
+                    const heartImg = matchingButton.querySelector(".heart");
+
+                    if (isFavorited) {
+                        // Remove from favorites
+                        matchingButton.classList.remove("favorite");
+                        heartImg.src = "../Pictures/heart.png";
+                        expandedHeart.src = "../Pictures/heart.png";
+                        const index = favtutors.findIndex(t => t.name === tutor.name);
+                        if (index !== -1) favtutors.splice(index, 1);
+                    } else {
+                        // Add to favorites
+                        matchingButton.classList.add("favorite");
+                        heartImg.src = "../Pictures/filledinheart.png";
+                        expandedHeart.src = "../Pictures/filledinheart.png";
+                        favtutors.push({
+                            name: tutor.name,
+                            age: tutor.age,
+                            school: tutor.school,
+                            sat: tutor.sat
+                        });
+                    }
+                });
+
+
                 // Back button restores all tutor cards
                 document.getElementById("backarrow").addEventListener("click", () => {
                     expanded.remove();
                     document.querySelectorAll(".tutor-card").forEach(card => {
                         card.style.display = "block";
                     });
-                    
                     backarrow.style.display = "none";
                 });
             }

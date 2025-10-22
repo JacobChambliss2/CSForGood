@@ -141,6 +141,7 @@ html {
 }
 
 .rightsidecard {
+    position: relative;
     padding-left: 2%;
     padding-right: 2%;
     margin-left: 20%;
@@ -150,4 +151,10 @@ html {
 #bio {
     font-style: italic;
     color: #5f6f65;
+}
+#heart {
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+    cursor: pointer;
 }
