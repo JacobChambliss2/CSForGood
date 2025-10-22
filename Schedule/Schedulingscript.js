@@ -1,4 +1,69 @@
 const BASE = ""; // same-origin with your PHP server
+const TOGGLE_URL = `${BASE}toggle_availability.php`;
+
+// ---- MOCK TOGGLE ----
+const MOCK = false; // set to false to hit real PHP endpoints
+
+// ---- FAKE DATA ----
+const MOCK_DATA = {
+  tutors: [
+    { id: 1, first_name: "Alice", last_name: "Nguyen" },
+    { id: 2, first_name: "Ben",   last_name: "Patel"  },
+    { id: 3, first_name: "Chloe", last_name: "Smith"  },
+    { id: 4, first_name: "Diego", last_name: "Gomez"  },
+    { id: 5, first_name: "John", last_name: "Pork"  }
+  ],
+  // Availability by date → tutorId → hours[]
+  availabilityByDate: {
+    [new Date().toISOString().slice(0,10)]: {
+      1: [9,10,11,14,15],
+      2: [13,14,15,16,17,18],
+      3: [8,9,10,18,19],
+      4: [12,13,17,20]
+    },
+    "2025-10-20": {
+      1: [8,9,10,11],
+      2: [15,16,17,18,19],
+      3: [12,13,14],
+      4: [9,10,11,12,13,14]
+    }
+  },
+  // fallback if date not present
+  defaultHours: { 1:[9,10,11], 2:[14,15,16], 3:[8,9], 4:[12,13,14] }
+};
+
+// Generate response objects identical to your real PHP output
+function mockResponse(url){
+  const u = new URL(url, location.href);
+  const path = u.pathname.toLowerCase();
+
+  if (path.endsWith("rank.php")){
+    return MOCK_DATA.tutors.slice();
+  }
+
+  if (path.endsWith("availability.php")){
+    const date = u.searchParams.get("date");
+    const tutorId = u.searchParams.get("tutor_id");
+    const dayMap = (date && MOCK_DATA.availabilityByDate[date]) || null;
+
+    if (tutorId){
+      const hours = (dayMap && dayMap[tutorId]) ||
+                    MOCK_DATA.defaultHours[tutorId] ||
+                    [];
+      return { hours: hours.slice() };
+    }
+
+    const source = dayMap || MOCK_DATA.defaultHours;
+    const rows = MOCK_DATA.tutors.map(t => ({
+      tutor_id: t.id,
+      hours: (source[t.id] || []).slice()
+    }));
+    return { tutors: rows };
+  }
+
+  return {};
+}
+
 
 // simple on-page logger so you can see what’s happening without DevTools
 function dbg(...args){
@@ -8,16 +73,33 @@ function dbg(...args){
 }
 
 async function fetchJSON(url, options){
+  // Serve from mock instantly if MOCK is on
+  if (MOCK){
+    const data = mockResponse(url);
+    dbg("MOCK RESP", url, JSON.stringify(data).slice(0,200));
+    // simple deep copy to mimic fetch JSON
+    return JSON.parse(JSON.stringify(data));
+  }
+
+  // Otherwise, hit the real server; if it fails, fall back to mock
   dbg("FETCH", url);
-  const res = await fetch(url, options);
-  const text = await res.text();
-  dbg("RESP", url, "status", res.status, "body:", text.slice(0,200));
   try {
-    return JSON.parse(text);
-  } catch (e) {
-    throw new Error("Non-JSON from " + url + ": " + text.slice(0,200));
+    const res = await fetch(url, options);
+    const text = await res.text();
+    dbg("RESP", url, "status", res.status, "body:", text.slice(0,200));
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    try {
+      return JSON.parse(text);
+    } catch {
+      throw new Error("Non-JSON from " + url + ": " + text.slice(0,200));
+    }
+  } catch (e){
+    dbg("FETCH FAIL → using MOCK for", url, "reason:", e.message);
+    const data = mockResponse(url);
+    return JSON.parse(JSON.stringify(data));
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const tutorList      = document.getElementById("tutorList");
@@ -81,14 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 // ========= NEW: Availability Grid helpers =========
-
-// Make a 0..23 hour label
-function hourLabel(h){
-  const ampm = h === 0 ? "12:00am"
-            : h < 12 ? `${h}:00am`
-            : h === 12 ? "12:00pm"
-            : `${h-12}:00pm`;
-  return ampm;
+function hourLabel(h) {
+  const hour12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+  const ampm = h < 12 ? "am" : "pm";
+  return `${hour12}:00${ampm}`;
 }
 
 const gridHost = document.getElementById("availabilityGrid");
@@ -99,22 +177,20 @@ let gridState = {
 
 // Build an empty grid (header + hour rows, blank cells)
 function buildAvailabilityGrid(tutors){
-  // map tutors to {id,label}
-  const tutorCols = (tutors||[]).map(t => ({
-    id: String(t.id),
-    label: `${t.first_name} ${t.last_name}`.trim() || `Tutor ${t.id}`
-  }));
+  // map tutors to {id,label} — we still need IDs to build columns
+  const tutorCols = (tutors||[]).map(t => ({ id: String(t.id) }));
   gridState.tutorCols = tutorCols;
   gridState.indexByTutorId = new Map(tutorCols.map((t,i)=>[t.id, i]));
 
-  // (Re)build table
+  // rebuild table
   gridHost.innerHTML = "";
   const table = document.createElement("table");
   table.id = "availTable";
   table.style.borderCollapse = "collapse";
-  table.style.minWidth = "700px";
+  table.style.minWidth = "100%";
+  table.style.tableLayout = "fixed";   // ensures columns align evenly
+  table.style.marginTop = "0";
 
-  // tiny helper for cells
   const styleCell = (el, isHeader=false) => {
     el.style.border = "1px solid #ccc";
     el.style.padding = "6px 10px";
@@ -122,38 +198,25 @@ function buildAvailabilityGrid(tutors){
     return el;
   };
 
-  // THEAD
-  const thead = document.createElement("thead");
-  const htr = document.createElement("tr");
+  // === no THEAD with tutor names ===
 
-  // top-left corner
-  htr.appendChild(styleCell(document.createElement("th"), true)).textContent = "Hour";
-
-  // tutor headers
-  tutorCols.forEach(t => {
-    const th = styleCell(document.createElement("th"), true);
-    th.textContent = t.label;
-    th.setAttribute("data-tutor-id", t.id);
-    htr.appendChild(th);
-  });
-  thead.appendChild(htr);
-  table.appendChild(thead);
-
-  // TBODY with 24 hour rows
+  // TBODY with hour rows
   const tbody = document.createElement("tbody");
-  for (let h = 0; h < 24; h++){
+  for (let h = 8; h <= 20; h++){
     const tr = document.createElement("tr");
 
-    // hour label (frozen left)
+    // left column (hour label)
     const th = styleCell(document.createElement("th"), true);
     th.textContent = hourLabel(h);
+    th.style.width = "90px";
+    th.style.textAlign = "left";
     tr.appendChild(th);
 
-    // one cell per tutor; we key cells by tutorId-hour for fast lookup later
+    // one cell per tutor
     tutorCols.forEach(t => {
       const td = styleCell(document.createElement("td"));
       td.setAttribute("data-cell", `${t.id}-${h}`);
-      // default style is empty; you’ll style .available later
+      td.style.width = `${100 / tutorCols.length}%`;
       tr.appendChild(td);
     });
 
@@ -161,7 +224,7 @@ function buildAvailabilityGrid(tutors){
   }
   table.appendChild(tbody);
 
-  // simple legend (optional)
+  // legend below the table
   const legend = document.createElement("div");
   legend.style.margin = "8px 0 0 0";
   legend.innerHTML = `
@@ -252,7 +315,31 @@ async function loadAllTutorsAvailability(ymd){
     const tutors = await (async () => {
       try {
         const data = await fetchJSON(`${BASE}rank.php`);
-        renderRankedTutors(data);   // your existing function (kept)
+        renderRankedTutors(data);
+
+        // === Align tutor name bar to grid columns ===
+        const ul = document.getElementById("tutorList");
+
+        // insert spacer in column 1 (hour label width)
+        if (!ul.firstElementChild || !ul.firstElementChild.classList.contains("grid-spacer")) {
+          const spacer = document.createElement("li");
+          spacer.className = "grid-spacer";
+          ul.prepend(spacer);
+        }
+
+        // turn the UL into a grid that mirrors the table:
+        //  - 112px hour column
+        //  - then one equal column per tutor
+        ul.style.display = "grid";
+        ul.style.gridTemplateColumns = `calc(112px + 2vw) repeat(${data.length}, 1fr)`; 
+        ul.style.columnGap = "8px"; // matches #availTable { border-spacing: 8px }
+        ul.style.rowGap = "0";
+        ul.style.width = "100%";
+        ul.style.margin = "0";
+        ul.style.padding = "0";
+        ul.style.listStyle = "none";
+        ul.style.textAlign = "center";
+
         return data;
       } catch (err) {
         dbg("Rank error:", err.message);
@@ -263,6 +350,36 @@ async function loadAllTutorsAvailability(ymd){
 
     // build the empty grid from the ranked tutors
     buildAvailabilityGrid(tutors);
+    const TOGGLE_URL = `${BASE}toggle_availability.php`;
+
+    gridHost.addEventListener('click', async (e) => {
+      const td = e.target.closest('td[data-cell]');
+      if (!td) return;
+
+      const [tutorId, hourStr] = td.getAttribute('data-cell').split('-');
+      const ymd = selectedDate();
+
+      try {
+        const res = await fetch(TOGGLE_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ date: ymd, tutor_id: Number(tutorId), hour: Number(hourStr) })
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) throw new Error(data.error || 'Toggle failed');
+
+        // green when available, red when not
+        if (data.is_available) {
+          td.classList.add('available');
+          td.classList.remove('booked');
+        } else {
+          td.classList.remove('available');
+          td.classList.add('booked');
+        }
+      } catch (err) {
+        dbg('Toggle error:', err.message);
+      }
+    });
 
     // now paint the availability for the chosen date
     await loadAllTutorsAvailability(firstDate);

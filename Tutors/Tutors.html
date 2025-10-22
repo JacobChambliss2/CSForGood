@@ -31,43 +31,24 @@
               <p for="satrange" class="form-label">Minimum SAT Score: <span id="satscore">800</span></p>
               <input type="range" class="form-range" min="0" max="1600" step="10" id="satrange">
             </div>
-            <p>Subjects:</p>
-            <ul class="subjectlist">
-              <li class="subject">
-                  <input class="form-check-input me-1" type="radio" id="LACheck" name="subject">
-                  <label class="form-check-label" for="LACheck">Language Arts</label>
-              </li>
-              <li class="subject">
-                  <input class="form-check-input me-1" type="radio" id="ScienceCheck" name="subject">
-                  <label class="form-check-label" for="ScienceCheck">Science</label>
-              </li>
-              <li class="subject">
-                  <input class="form-check-input me-1" type="radio" id="MathCheck" name="subject">
-                  <label class="form-check-label" for="MathCheck">Math</label>
-              </li>
-              <li class="subject">
-                  <input class="form-check-input me-1" type="radio" id="OtherCheck" name="subject">
-                  <label class="form-check-label" for="OtherCheck">All</label>
-              </li>
-            </ul>
             <p>View:</p>
-            <ul class="filteroptions">
-              <li class="filteroption">
-                <input class="form-check-input me-1" type="radio" id="filterfavorites" name ="filters">
-                <label class="form-check-label" for="Price">Favorites</label>
-              </li>
-              <li class="filteroption">
-                <input class="form-check-input me-1" type="radio" id="filterprice" name ="filters">
-                <label class="form-check-label" for="Price">By Price</label>
-              </li>
-              <li class="filteroption">
-                <input class="form-check-input me-1" type="radio" id="filterrating" name = "filters">
-                <label class="form-check-label" for="Rating">By Rating</label>
-              </li>
-              <li class="filteroption">
-                <input class="form-check-input me-1" type="radio" id="filterdefault" name = "filters">
-                <label class="form-check-label" for="Default">Default</label>
-              </li>
+            <ul class="biglist">
+              <!-- Subjects -->
+              <li><input type="radio" name="view" id="filterMath"><label for="math">Math</label></li>
+              <li><input type="radio" name="view" id="filterScience"><label for="science">Science</label></li>
+              <li><input type="radio" name="view" id="filterLanguageArts"><label for="english">Language Arts</label></li>
+              <li><input type="radio" name="view" id="filterHistory"><label for="history">History</label></li>
+              <li><input type="radio" name="view" id="filterBiology"><label for="biology">Biology</label></li>
+              <li><input type="radio" name="view" id="filterChemistry"><label for="chemistry">Chemistry</label></li>
+              <li><input type="radio" name="view" id="filterCS"><label for="cs">Computer Science</label></li>
+              <li><input type="radio" name="view" id="filterSpanish"><label for="spanish">Spanish</label></li>
+              <li><input type="radio" name="view" id="filterFrench"><label for="french">French</label></li>
+            
+              <!-- Filters -->
+              <li><input type="radio" name="view" id="filterFavorites"><label for="favorites">Favorites</label></li>
+            
+              <!-- Always include Default option -->
+              <li><input type="radio" name="view" id="filterAll" checked><label for="default">All</label></li>
             </ul>
           </div>
           <button id="backarrow">
