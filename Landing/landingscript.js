@@ -69,3 +69,70 @@ function deletingEffect() {
 };
 
 typingEffect();
+function adjustLayout() {
+  const twoSides = document.querySelectorAll('.side');
+  const misc = document.querySelector('.misc-inner');
+  const miscContainer = document.querySelector('.misc-container');
+  const footerColumns = document.querySelector('.footer-columns');
+  const footerColumnList = document.querySelectorAll('.footer-column');
+
+  if (!twoSides.length || !misc) return; // safety check
+
+  // === For smaller screens ===
+  if (window.innerWidth < 1024) {
+    // --- Two Sides Section ---
+    twoSides.forEach(side => {
+      side.style.width = '90%';
+      side.style.margin = '1.5em auto';
+      side.style.display = 'block';
+    });
+
+    // --- Footer Section ---
+    misc.style.flexDirection = 'column';
+    misc.style.alignItems = 'center';
+    misc.style.textAlign = 'center';
+    miscContainer.style.maxWidth = '90%';
+    miscContainer.style.textAlign = 'center';
+    footerColumns.style.justifyContent = 'center';
+
+    footerColumnList.forEach(col => {
+      col.style.alignItems = 'center';
+    });
+
+  // === For desktops and larger screens ===
+  } else {
+    // --- Two Sides Section ---
+    twoSides.forEach(side => {
+      side.style.width = '45%';
+      side.style.margin = '0';
+      side.style.display = 'inline-block';
+      side.style.verticalAlign = 'top';
+    });
+
+    // --- Footer Section ---
+    misc.style.flexDirection = 'row';
+    misc.style.alignItems = 'flex-start';
+    misc.style.textAlign = 'left';
+    miscContainer.style.maxWidth = '25em';
+    miscContainer.style.textAlign = 'left';
+    footerColumns.style.justifyContent = 'flex-end';
+
+    footerColumnList.forEach(col => {
+      col.style.alignItems = 'flex-start';
+    });
+  }
+}
+window.addEventListener('load', () => {
+  let opacity = 0;
+  const speed = 10; // lower = slower fade (ms between frames)
+  const fade = () => {
+    opacity += 0.03;
+    document.body.style.opacity = opacity;
+    if (opacity < 1) {
+      setTimeout(fade, speed);
+    }
+  };
+
+  document.body.style.opacity = 0;
+  fade();
+});

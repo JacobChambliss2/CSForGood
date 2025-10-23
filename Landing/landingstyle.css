@@ -1,504 +1,448 @@
-
-html, body{
-    scroll-behavior: smooth;
-    background-color: #FFF9F0;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-nav{
-    position: relative;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 4em;
-    font-size: 3.4vh;
-    overflow: hidden;
-    z-index: 1000;
-    background-color: #7a9183;
-}
-.TitleArea{
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 4em;
-    overflow: hidden;
-    position: flex;
-    justify-content: space-between;
-    gap: -2em;
-}
-.TitleArea h1{
-    margin: 0;
-    font-size: 1.2em;
-    font-family: verdana, serif;
-
-}
-.TitleArea img{
-    width: 3em 3em;
-    margin: 0.5em;
-}
-/* ===== Title Area Flex Layout ===== */
-.title-area {
-    position: relative;
-    display: flex;
-    justify-content: center; /* keeps h1 centered */
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-}
-.blink{
-    animation: blink 0.8s infinite;
-}
-@keyframes blink{
-    to {opacity:0;}
-}
-/* Accessibility container layout */
-.accessibility {
-    position: absolute;
-    right: 40px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-#google_translate_wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-/* ===== GOOGLE TRANSLATE DROPDOWN STYLING ===== */
-#google_translate_element {
-  display: inline-block;
-  margin-left: 20px; /* Adjust spacing as needed */
+html, body {
+  scroll-behavior: smooth;
+  background-color: #FFF9F0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
 }
 
-/* Powered by Google Translate */
-.translate-powered {
-    font-size: 10px;
-    color: #666666;
-    margin-top: 3px;
-    text-align: center;
-}
-
-/* Light Mode Button */
-.modes {
-    padding: 10px 18px;
-    background-color: #DDEEDF;
-    color: #333333;
-    box-shadow: #1c5736 4px 4px 0 0;
-    border-radius: 30px;
-    border: 2px solid #2E8B57;
-    cursor: pointer;
-    font-size: 16px;
-}
-.navbuttons, #login, #CreateAcc{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 1em;
-    flex: 1 1 auto;
-    min-width: 0;
-}
-.butt, .butt2{
-    /*Credits: https://getcssscan.com/css-buttons-examples*/
-    background-color: #DDEEDF;
-    border: 2px solid #2E8B57;
-    border-radius: 30px;
-    box-shadow: #1c5736 4px 4px 0 0;
-    color: #333333;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 18px;
-    padding: 0 50px;
-    line-height: 60px;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-.butt:hover, .butt2:hover{
-    background-color: #c1d3c3;
-    box-shadow: #1c5736 2px 2px 0 0;
-    transform: translateY(-2px);
-}
-.Creation{
-    display: flex;
-    align-items: center;
-    height: 4em;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 4em;
-    font-size: 3.4vh;
-    overflow: hidden;
-    background-color: #486855;
-    position: relative;
-}
-/*
-Verdana, Tahoma, Trebuchet, Arial
-*/
-h1{
-    display: flex;
-    font-family: Georgia, serif;
-    justify-content: center;
-    align-items: center;    color: #133120;
-}
-
-
-/* Container for both sides */
-.TwoSides {
-    display: flex;
-    justify-content: center;
-    margin: auto;
-    gap: 35px;
-    flex-wrap: wrap;
-    width: 90em;
-    padding: 40px;
-}
-
-/* Card container */
-.Side {
-    position: relative;
-    width: 40em;
-    height: 28em;
-    border-radius:50px;
-    overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
-    cursor: pointer;
-}
-
-.Side:hover, .boxt:hover {
-    transform: scale(1.10);
-    box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
-}
-
-/* Actual image */
-.card-img {
-    width: 50em;
-    object-fit: cover;
-    display: block;
-    border-radius: 12px;
-    transition: opacity 0.3s ease;
-}
-
-/* Hover overlay dims the image */
-.Side:hover .img-hover {
-    opacity: 1;
-}
-.img-hover {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.3); /* You can adjust the dimming level */
-    opacity: 0;
-    transition: 0.3s all ease;
-    z-index: 1;
-}
-
-/* Text block */
-.overlay-text{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    padding: 20px;
-    width: 100%;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    color: #ffffff91;
-}
-
-/* Hover: transparent bg + white text */
-.Side:hover .overlay-text {
-    background-color: transparent;
-    color: rgb(255, 255, 255);
-}
-.boxt:hover .overlay-text2{
-    background-color: transparent;
-    color: black;
-}
-
-/* Typography */
-.Header {
-    display: block;
-    font-family: 'Raleway', sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
-    letter-spacing: 2px;
-    font-weight: 500;
-}
-
-.imagetext {
-    margin-top: 5px;
-    font-family: 'Roboto Slab', serif;
-    font-size: 16px;
-}
-/*Achievements Subsection*/
-.boxt{
-    justify-content: center;
-}
-.overlay-text2{
-    position: absolute;
-    justify-content: center;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    padding: 20px;
-    width: 100%;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    color: #ffffff;
-}
-.boxt-hover .img-hover {
-    opacity: 1;
-}
-.Achievements{
-    background-color: #eee6da;
-    height: 25em;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-    padding: 40px;
-}
-.boxt .Header{
-    display: block;
-    font-family: 'Raleway', sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
-    letter-spacing: 2px;
-    font-weight: 500;
-    color: black;
-}
-.card-img2 {
-    width: 19em;
-    object-fit: cover;
-    display: block;
-    border-radius: 12px;
-}
-.sujets img{
-    width: 23em;
-    position: relative;
-    left: -25px;
-}
-.apib img{
-    width: 27em;
-    position: relative;
-    left: -50px;
-}
-.imagetext2 {
-    margin-top: 5px;
-    justify-content: center;
-    font-family: 'Roboto Slab', serif;
-    font-size: 16px;
-    color: inherit;
-}
-.professional{
-    background-color: white;
-    position: relative;
-    width: 20em;
-    height: 23em;
-    border-radius:50px;
-    overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
-}
-.sujets{
-    background-color: white;
-    position: relative;
-    width: 20em;
-    height: 23em;
-    border-radius:50px;
-    overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
-}
-.apib{
-    background-color: white;
-    position: relative;
-    width: 20em;
-    height: 23em;
-    border-radius:50px;
-    overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
-}
-.reviewer{
-    background-color: white;
-    position: relative;
-    width: 20em;
-    height: 23em;
-    border-radius:50px;
-    overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
-}
-/*End of Achievements Subsection*/
-/*Personal Review Subsection*/
-.reviewd{
-    background-color: #FFF9F0;
-    height: 15em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    padding: 40px;
-}
-#actualreview{
-    background-color: white;
-    border-style: solid;
-    border-radius: 50px;
-    border-width: 1px;
-    border-color: rgb(211, 211, 211);
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
-   width: 50%;
-   line-height: 2em;
-   margin-right: 20px;
-   font-size: 1.15em;
-   padding: 20px;
-}
-#credentials{
-    position: relative;
-    top: 125px;
-}
-.card-img3 {
-    width: 27%;
-    height: auto;
-    border-width: 20px;
-    border-radius: 20px;
-    border-color: red;
-}
-/*#region Responsive Media Queries*/
-@media (max-width: 768px) {
-    .TitleArea, .navbuttons, #login, #CreateAcc, .Creation {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5em;
-    }
-
-    .butt, .butt2 {
-        padding: 0 1.5em;
-        font-size: 1em;
-        line-height: 2.5em;
-    }
-
-    .scroll-content span {
-        font-size: 1.2em;
-    }
-
-    .TwoSides {
-        padding: 1em;
-        gap: 1em;
-    }
-
-    .reviewd {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-.Purpose{
-    background-color: #eee6da;
-    height: 25em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    padding: 100px;
-}
-.Purpose h3{
-    font-size: 18px;
-    margin: 0;
-    align-self: flex-start;
-}
-.purpose-images{
-    display: flex;
-    justify-content: space-between;
-    gap: 1px;
-}
-.purpose-images img{
-    width: 27em;
-    object-fit: cover;
-    display: block;
-    border-radius: 12px;
-    transition: opacity 0.3s ease;
-}
-/* General Footer Section */
-.misc {
-  background-color: #7a9183;
-  padding: 3em;
+/* NAVIGATION BAR */
+nav {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 2em;
+  height: 4em;
+  font-size: 1.1rem;
+  background-color: #7a9183;
   flex-wrap: wrap;
+  z-index: 1000;
+}
+
+.TitleArea {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.TitleArea img {
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.TitleArea h1 {
+  margin: 0;
+  font-size: 1.2em;
+  font-family: Verdana, sans-serif;
+  color: #133120;
+}
+
+/* NAV BUTTONS */
+.navbuttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
+}
+
+.butt, .butt2 {
+  background-color: #DDEEDF;
+  border: 2px solid #2E8B57;
+  border-radius: 30px;
+  box-shadow: #1c5736 4px 4px 0 0;
+  color: #333;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5em 1.5em;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.butt:hover, .butt2:hover {
+  background-color: #c1d3c3;
+  box-shadow: #1c5736 2px 2px 0 0;
+  transform: translateY(-2px);
+}
+
+.Creation {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}
+
+/* TITLE AREA */
+.title-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  padding: 2em 1em;
+}
+
+.header-title {
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  margin-bottom: 0.5em;
+}
+
+.accessibility {
+  position: relative;
+  margin-top: 1em;
+}
+
+/* === TwoSides Hover Card Style (Tutor/Student) === */
+.TwoSides {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 2em;
+  flex-wrap: wrap;
+  padding: 3em 5%;
+  text-align: center;
 }
 
-/* Left text */
+/* Card Base */
+.Side {
+  position: relative;
+  width: clamp(300px, 40%, 450px);
+  aspect-ratio: 4 / 3;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: all 0.4s ease-out;
+}
+
+/* Hover: raise and reveal overlay */
+.Side:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Image */
+.Side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  transition: transform 0.4s ease;
+}
+
+/* Optional: zoom effect on image hover */
+.Side:hover img {
+  transform: scale(1.05);
+}
+
+/* Dark overlay that fades in */
+.Side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 2;
+}
+
+.Side:hover::before {
+  opacity: 1;
+}
+
+/* Overlay Text */
+.overlay-text {
+  position: relative;
+  z-index: 3;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5em;
+}
+
+.Side:hover .overlay-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Typography */
+.overlay-text .Header {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffd580; /* Accent color */
+}
+
+.overlay-text .imagetext {
+  font-size: 1rem;
+  margin-top: 0.5em;
+  color: #fff9f0;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+/* === Button Styling === */
+.overlay-text button {
+  margin-top: 1em;
+  padding: 0.6rem 1.2rem;
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-text button:hover {
+  background: #ffb347; /* Soft orange highlight */
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+
+/* === Achievements Section (Same as TwoSides Styling) === */
+.Achievements {
+  background-color: #eee6da;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  flex-wrap: wrap;
+  padding: 3em 5%;
+  text-align: center;
+}
+
+/* Each Achievement Box */
+.boxt {
+  position: relative;
+  width: clamp(200px, 22%, 300px);
+  aspect-ratio: 3 / 2;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: all 0.4s ease-out;
+}
+
+/* Hover lift + overlay fade */
+.boxt:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Card Images */
+.boxt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  transition: 0.4s ease;
+}
+
+/* Dark overlay fade on hover */
+.boxt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 2;
+}
+
+.boxt:hover::before {
+  opacity: 1;
+}
+
+/* Overlay Text (fade + slide up) */
+.overlay-text2 {
+  position: relative;
+  z-index: 3;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5em;
+}
+
+.boxt:hover .overlay-text2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text Styling */
+.overlay-text2 .Header {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffd580; /* your accent color */
+}
+
+.overlay-text2 .imagetext2 {
+  font-size: 1rem;
+  margin-top: 0.5em;
+  color: #fff9f0;
+  line-height: 1.4;
+}
+
+
+/* REVIEW SECTION */
+.reviewd {
+  background-color: #FFF9F0;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2em;
+  padding: 3em 10%;
+}
+
+#actualreview {
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  border-radius: 20px;
+  box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+  padding: 1.5em;
+  flex: 2;
+  line-height: 1.6em;
+  font-size: 1rem;
+}
+
+#credentials {
+  flex: 0.5;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-img3 {
+  width: clamp(150px, 25%, 250px);
+  border-radius: 15px;
+}
+
+/* PURPOSE SECTION */
+.Purpose {
+  background-color: #eee6da;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  padding: 4em 10%;
+  text-align: left;
+}
+.Purpose h3 {
+  max-width: 100%;
+  font-size: 1rem;
+  line-height: 1.6em;
+}
+.purpose-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1em;
+  width: 100%;
+}
+.purpose-images img {
+  width: clamp(250px, 32%, 400px);
+  border-radius: 10px;
+}
+
+/* === FINAL FIXED FOOTER: FULL WIDTH, CENTERED CONTENT === */
+.misc {
+  width: 100%;
+  background-color: #7a9183;
+  padding: 3em 0;
+  display: flex;
+  justify-content: center;
+}
+
+.misc-inner {
+  width: 100%;
+  max-width: 1200px; /* keeps content readable */
+  padding: 0 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 3em;
+}
+
 .misc-container {
+  flex: 1;
   max-width: 25em;
+  text-align: left;
 }
 
-.misc h3 {
-  line-height: 1.5em;
-  font-size: 1.35em;
-  font-family: Arial, sans-serif;
+.misc-container h3 {
   color: #27352d;
+  font-weight: 500;
+  line-height: 1.6em;
 }
 
-/* Center logo + title (side-by-side and larger) */
 .footer-center {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
-  flex-shrink: 0; 
-  margin-right: 10em;
+  flex: 1;
 }
 
 .footer-logo {
-  width: 80px;  /* increased size */
-  height: 80px;
-  object-fit: contain;
+  width: 90px;
+  height: 90px;
 }
 
 .footer-title-text {
-  font-size: 4em;  
-  font-family: Arial, sans-serif;
+  font-size: clamp(1.8rem, 2.5vw, 3rem);
   color: #27352d;
   font-weight: 700;
-  white-space: nowrap; 
 }
 
-
-/* Right side columns */
 .footer-columns {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 3em;
+  flex: 1;
 }
 
 .footer-column {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
-.footer-title {
-  font-family: Arial, sans-serif;
+.footer-title,
+.footer-link {
   color: #27352d;
-  font-size: 1.2em;
-  margin-bottom: 0.5em;
-  text-decoration: underline;
 }
 
 .footer-link {
   text-decoration: none;
-  color: #27352d;
-  font-family: Arial, sans-serif;
-  font-size: 1.05em;
   margin: 0.3em 0;
-  transition: all 0.2s ease-in-out;
 }
 
 .footer-link:hover {
@@ -506,63 +450,13 @@ h1{
   text-decoration: underline;
 }
 
-/* Bottom copyright */
 .footer-bottom {
   background-color: #6b8375;
   text-align: center;
   padding: 1em 0;
-}
-
-.footer-bottom p {
-  color: #27352d;
-  font-family: Arial, sans-serif;
-  font-size: 0.95em;
-  margin: 0;
+  font-size: 0.9rem;
 }
 
 
 
-/*#endregion*/
-/*
-
-
-<!-- HTML !-->
-<button class="button-74" role="button">Button 74</button>
-
-/* CSS 
-.button-74 {
-    background-color: #fbeee0;
-    border: 2px solid #422800;
-    border-radius: 30px;
-    box-shadow: #422800 4px 4px 0 0;
-    color: #422800;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 18px;
-    padding: 0 18px;
-    line-height: 50px;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-  
-  .button-74:hover {
-    background-color: #fff;
-  }
-  
-  .button-74:active {
-    box-shadow: #422800 2px 2px 0 0;
-    transform: translate(2px, 2px);
-  }
-  
-  @media (min-width: 768px) {
-    .button-74 {
-      min-width: 120px;
-      padding: 0 25px;
-    }
-  }
-*/
 
