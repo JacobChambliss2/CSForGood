@@ -47,28 +47,37 @@ nextBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         const visibleSteps = getVisibleSteps();
         const currentFormStep = visibleSteps[currentStep];
-    
-        // Validate all inputs in current step
-        const inputs = currentFormStep.querySelectorAll("input, select, textarea");
-    
-        for (let input of inputs) {
-            if (!input.checkValidity()) {
-                input.reportValidity(); //shows native popup
-                return; //stop navigation
+
+        // Special validation for subject step
+        const isSubjectStep = currentFormStep.querySelector("#subjects-container") !== null;
+        if (isSubjectStep) {
+            const checkedSubjects = currentFormStep.querySelectorAll('input[name="subjects"]:checked');
+            if (checkedSubjects.length === 0) {
+                alert("Please select at least one subject before continuing.");
+                return; // Stop navigation
             }
         }
-    
-        // All fields are valid — continue to next step
+
+        // Regular input validation
+        const inputs = currentFormStep.querySelectorAll("input, select, textarea");
+
+        for (let input of inputs) {
+            if (!input.checkValidity()) {
+                input.reportValidity(); // shows native popup
+                return; // stop navigation
+            }
+        }
+
+        // Navigation logic
         if (currentStep === 1 && roleSelect.value === "student") {
             showStep(currentStep + 2); // skip subject step for students
         } else {
             showStep(currentStep + 1);
         }
-    
+
         console.log(currentStep);
         console.log(roleSelect.value);
     });
-    
 });
 
 prevBtns.forEach(btn => {

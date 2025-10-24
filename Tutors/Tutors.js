@@ -25,7 +25,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 subjects: subjects[i],
             });
             }
-
+            let selectedSubject = "All";
+            let minSAT = 0;
+    
+            // Function to apply both filters together
+            function applyFilters() {
+                tutorData.forEach((tutor, i) => {
+                    const button = document.getElementById(`tutor${i}`);
+                    const matchesSAT = tutor.sat >= minSAT;
+                    const matchesSubject =
+                        selectedSubject === "All" ||
+                        (selectedSubject === "Favorites" && button.classList.contains("favorite")) ||
+                        tutor.subjects.includes(selectedSubject);
+    
+                    if (matchesSAT && matchesSubject) {
+                        button.style.display = "block";
+                    } else {
+                        button.style.display = "none";
+                    }
+                });
+            }
             
 
             // Create cards
@@ -108,96 +127,99 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
                 tutorcards.appendChild(expanded);
                
+                // Toggle heart icon in expanded card
+                const expandedHeart = expanded.querySelector(".insideheart .heart");
+                const matchingButton = Array.from(document.querySelectorAll(".tutor-card"))
+                    .find(btn => btn.querySelector("strong").textContent === tutor.name);
+
+                // Set initial heart state in expanded view
+                if (matchingButton.classList.contains("favorite")) {
+                    expandedHeart.src = "../Pictures/filledinheart.png";
+                } else {
+                    expandedHeart.src = "../Pictures/heart.png";
+                }
+
+                expandedHeart.addEventListener("click", () => {
+                    const isFavorited = matchingButton.classList.contains("favorite");
+                    const heartImg = matchingButton.querySelector(".heart");
+
+                    if (isFavorited) {
+                        // Remove from favorites
+                        matchingButton.classList.remove("favorite");
+                        heartImg.src = "../Pictures/heart.png";
+                        expandedHeart.src = "../Pictures/heart.png";
+                        const index = favtutors.findIndex(t => t.name === tutor.name);
+                        if (index !== -1) favtutors.splice(index, 1);
+                    } else {
+                        // Add to favorites
+                        matchingButton.classList.add("favorite");
+                        heartImg.src = "../Pictures/filledinheart.png";
+                        expandedHeart.src = "../Pictures/filledinheart.png";
+                        favtutors.push({
+                            name: tutor.name,
+                            age: tutor.age,
+                            school: tutor.school,
+                            sat: tutor.sat
+                        });
+                    }
+                });
+
+
                 // Back button restores all tutor cards
                 document.getElementById("backarrow").addEventListener("click", () => {
                     expanded.remove();
                     document.querySelectorAll(".tutor-card").forEach(card => {
                         card.style.display = "block";
                     });
-                    
                     backarrow.style.display = "none";
                 });
             }
 
             
             // Set up slider
+            // SAT Slider
             const slider = document.getElementById('satrange');
             const output = document.getElementById('satscore');
             slider.addEventListener('input', function () {
+                minSAT = parseInt(this.value, 10);
                 output.textContent = this.value;
-                tutorData.forEach((tutor,i) => {
-                    const button = document.getElementById(`tutor${i}`);
-                    if (tutor.sat < this.value) {
-                        button.style.display = 'none';
-                    } else {
-                        button.style.display = 'block';
-                    }
-                    
-                });
-            });
-            const favoritesFilter = document.getElementById("filterfavorites");
-
-            favoritesFilter.addEventListener("click", function () {
-              const allTutors = document.querySelectorAll(".tutor-card");
-              allTutors.forEach(card => {
-                if (!card.classList.contains("favorite")) {
-                    card.style.display = "none";
-                }
-              });
+                applyFilters();
             });
 
-            const lafilter = document.getElementById("LACheck");
-            lafilter.addEventListener("click", function () {
-                const allTutors = document.querySelectorAll(".tutor-card");
-                tutorData.forEach((tutor, i) => {
-                    const button = document.getElementById(`tutor${i}`);
-                    if (tutor.subjects.includes("Language Arts")) {
-                        button.style.display = "block";
-                    } else {
-                        button.style.display = "none";
-                    }
+              // Unified filter handler
+        const filters = ["Math","Science","Language Arts","History","Biology","Chemistry","Computer Science","Spanish","French","Favorites", "All"];
+        filters.forEach(filterName => {
+            const filterElem = document.getElementById(`filter${filterName.replace(/\s/g,'')}`); // expects IDs like filterMath, filterEnglish
+            if(filterElem) {
+                filterElem.addEventListener("click", function() {
+                    tutorData.forEach((tutor,i) => {
+                        const button = document.getElementById(`tutor${i}`);
+                        if(filterName === "All") {
+                            button.style.display = "block";
+                        } else if(filterName === "Favorites") {
+                            button.style.display = button.classList.contains("favorite") ? "block" : "none";
+                        } else {
+                            button.style.display = tutor.subjects.includes(filterName) ? "block" : "none";
+                        }
+                        selectedSubject = filterName;
+                        applyFilters();
+                    });
                 });
-              });
-            const mathfilter = document.getElementById("MathCheck");
-            mathfilter.addEventListener("click", function () {
-                const allTutors = document.querySelectorAll(".tutor-card");
-                tutorData.forEach((tutor, i) => {
-                    const button = document.getElementById(`tutor${i}`);
-                    if (tutor.subjects.includes("Math")) {
-                        button.style.display = "block";
-                    } else {
-                        button.style.display = "none";
-                    }
-                });
-              });
-            const sciencefilter = document.getElementById("ScienceCheck");
-            sciencefilter.addEventListener("click", function () {
-                const allTutors = document.querySelectorAll(".tutor-card");
-                tutorData.forEach((tutor, i) => {
-                    const button = document.getElementById(`tutor${i}`);
-                    if (tutor.subjects.includes("Science")) {
-                        button.style.display = "block";
-                    } else {
-                        button.style.display = "none";
-                    }
-                });
-              });
-              const otherfilter = document.getElementById("OtherCheck");
-              othercheck.addEventListener("click", function () {
-                  const allTutors = document.querySelectorAll(".tutor-card");
-                  allTutors.forEach(card => {
-                    card.style.display = "block";
-                });
-                });
-        })
+            }
+        });
 
-        const filterdefault = document.getElementById("filterdefault");
+        const filterdefault = document.getElementById("filterDefault");
         filterdefault.addEventListener("click", function () {
             const allTutors = document.querySelectorAll(".tutor-card");
             allTutors.forEach(card => {
                 card.style.display = "block";
+                applyFilters();
             });
         });
+
+       
+        
         
     })
     .catch(error => console.error('Error loading data:', error));
+});
