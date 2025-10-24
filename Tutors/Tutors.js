@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <div class="rightsidecard">
                         <h3> Bio:</h3>
-                        <p id = "bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquam odio et faucibus. Nulla rhoncus feugiat eros quis consectetur. Morbi neque ex, condimentum dapibus congue et, vulputate ut ligula. </p>
+                        <p id = "bio">Hi! I’m Lucus, a senior at Reitz High School. I mainly tutor in Language Arts, and I’ve helped other students prepare for class essays, AP tests, and SAT reading. I’m part of the National Honor Society and I’ve been a peer tutor at my school for the past year. I know school can be stressful, so I always try to explain things in a clear and relaxed way. I’m patient, easy to talk to, and I really enjoy helping people feel more confident in their classes. </p>
                         <div class="insideheart">
                                 <img src="../Pictures/heart.png" 
                                     alt="Heart icon" 
