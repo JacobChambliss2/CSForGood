@@ -32,6 +32,9 @@ nav {
   width: 2.5em;
   height: 2.5em;
 }
+.TitleArea h1{
+  color: #133120;
+}
 /* ===== GOOGLE TRANSLATE DROPDOWN STYLING ===== */
 #google_translate_element {
   display: inline-block;
