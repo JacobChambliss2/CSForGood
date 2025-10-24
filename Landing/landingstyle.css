@@ -60,7 +60,7 @@ nav {
 .navbuttons, #login, #CreateAcc{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     margin: 1em;
     flex: 1 1 auto;
     min-width: 0;
