@@ -32,21 +32,7 @@ nav {
   width: 2.5em;
   height: 2.5em;
 }
-/* ===== GOOGLE TRANSLATE DROPDOWN STYLING ===== */
-#google_translate_element {
-  display: inline-block;
-  margin-left: 20px; /* Adjust spacing as needed */
-}
 
-/* Powered by Google Translate */
-.translate-powered {
-    font-size: 10px;
-    color: #666666;
-    margin-top: 3px;
-    text-align: center;
-}
-
-/* Light Mode Button */
 .modes {
     padding: 10px 18px;
     background-color: #DDEEDF;
@@ -90,27 +76,47 @@ nav {
   display: flex;
   gap: 0.5em;
   align-items: center;
+  background-color:
 }
 
 /* TITLE AREA */
 .title-area {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* places title on left, translate on right */
   align-items: center;
-  text-align: center;
-  flex-direction: column;
-  padding: 2em 1em;
+  flex-wrap: wrap;
+  padding: 2em 5%;
+  text-align: center; /* so title isn’t centered globally */
 }
 
 .header-title {
+  flex: 1;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
-  margin-bottom: 0.5em;
+  margin: 0;
 }
 
 .accessibility {
-  position: relative;
-  margin-top: 1em;
+  flex-shrink: 0; /* prevents it from squishing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0; /* removes the top gap you had */
 }
+
+#google_translate_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.translate-powered {
+  font-size: 10px;
+  color: #666666;
+  margin-top: 3px;
+  text-align: center;
+}
+
+
 
 /* === TwoSides Hover Card Style (Tutor/Student) === */
 .TwoSides {
@@ -226,7 +232,7 @@ nav {
 }
 
 .overlay-text button:hover {
-  background: #ffb347; /* Soft orange highlight */
+  background: #000000; /* Soft orange highlight */
   color: #fff;
   transform: translateY(-3px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
@@ -317,7 +323,7 @@ nav {
 .overlay-text2 .Header {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #ffd580; /* your accent color */
+  color: #ffffff; /* your accent color */
 }
 
 .overlay-text2 .imagetext2 {
@@ -362,6 +368,7 @@ nav {
 }
 
 /* PURPOSE SECTION */
+/* PURPOSE SECTION */
 .Purpose {
   background-color: #eee6da;
   display: flex;
@@ -371,22 +378,113 @@ nav {
   padding: 4em 10%;
   text-align: left;
 }
+
 .Purpose h3 {
   max-width: 100%;
   font-size: 1rem;
   line-height: 1.6em;
 }
-.purpose-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1em;
+
+/* Carousel container */
+.carousel-container {
+  position: relative;
+  max-width: 800px;
   width: 100%;
+  margin: auto;
+  border-radius: 15px;
+  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
-.purpose-images img {
-  width: clamp(250px, 32%, 400px);
-  border-radius: 10px;
+
+/* Fix: preserve height */
+.carousel-container::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* 16:9 aspect ratio (adjust if needed) */
 }
+
+/* Slides */
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+/* Fade animation */
+@keyframes slideShow {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  30% { opacity: 1; }
+  35% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Assign timing per slide */
+.carousel-slide:nth-child(1) {
+  animation: slideShow 9s infinite;
+}
+.carousel-slide:nth-child(2) {
+  animation: slideShow 9s infinite 3s;
+}
+.carousel-slide:nth-child(3) {
+  animation: slideShow 9s infinite 6s;
+}
+
+/* Dots */
+.carousel-dots {
+  text-align: center;
+  position: relative;
+  top: -25px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 3px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Dot animation */
+.carousel-dots .dot:nth-child(1) {
+  animation: dotCycle 9s infinite;
+}
+.carousel-dots .dot:nth-child(2) {
+  animation: dotCycle 9s infinite 3s;
+}
+.carousel-dots .dot:nth-child(3) {
+  animation: dotCycle 9s infinite 6s;
+}
+
+@keyframes dotCycle {
+  0%, 35% { background-color: #717171; }
+  36%, 100% { background-color: #bbb; }
+}
+
+/* Responsive sizing */
+@media (max-width: 768px) {
+  .carousel-container::before {
+    padding-top: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-container::before {
+    padding-top: 70%;
+  }
+}
+
 
 /* === FINAL FIXED FOOTER: FULL WIDTH, CENTERED CONTENT === */
 .misc {
