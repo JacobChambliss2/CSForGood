@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- References -->
+    <meta charset="UTF-8">
+    <title>Tutortrack | Local and Easy Tutoring Access and Help</title>
+    <link rel="stylesheet" href="examplelogin.css">
+    <link rel="stylesheet" href="animaion.css">
+    <script defer src="landingscript.js"></script>
+    <link rel="icon" type="image/x-icon" href="\Pictures\tutortracklogo.ico">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="TitleArea">
+             <img id="logo" src="\Pictures\tutortracklogo.png" alt="Logo">
+             <a href="Landing.html" id="thetitle"><h1>Tutortrack</h1></a>
+        </div>
+        <div class="navbuttons">
+            <!-- NOTE: IDs must be unique. Changed to class="nav-button" -->
+            <a href="..\Tutors\Tutors.html" class="butt nav-button">About Us</a>
+            <a href="..\Tutors\Tutors.html" class="butt nav-button">Tutors</a>
+            <a href="\Schedule\Scheduling.html" class="butt nav-button">Scheduling</a>
+            <a href="chatgpt.com" class="butt nav-button">Contact</a>
+        </div>
+
+        <!-- Whenever The User is On the Website before Creating an Account/Signing-In -->
+        <div class="LoggedIn">
+            <a href="..\Profile\profile.html" class="loggedin-btn">
+                <img src="\Pictures\profilepic.jpg" alt="Profile Picture" class="profile-pic">
+                <span class="username">Cole M.</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="title-area">
+        <h1 class="header-title">
+            A Hub for All Your
+            <span id="word" class="header-sub-title"></span>
+            <span class="header-sub-title blink">|</span>
+        </h1>
+
+        <div class="accessibility">
+            <!-- Google Translate Widget -->
+            <div id="google_translate_wrapper">
+                <div id="google_translate_element"></div>
+            <span class="translate-powered">Powered by Google Translate</span>
+            </div>
+            <!-- Light Mode Button
+             <button class="modes">Light Mode</button> -->
+            
+        </div>
+    </div>
+
+    <!-- Two Images Side-by-Side -->
+     <!--https://prismic.io/blog/css-hover-effects-->
+    <div class="TutorDashboard">
+        <h2 class="dashboard-title">Tutor Dashboard Overview</h2>
+        <div class="dashboard-container">
+            <div class="dashboard-card profile">
+                <img src="\Pictures\profilepic.jpg" alt="Tutor Profile" class="dashboard-pic">
+                <h3 class="tutor-name">Jacob Thompson</h3>
+                <p class="tutor-role">Math & Chemistry Tutor</p>
+                <button class="dashboard-btn">View Full Profile</button>
+            </div>
+
+            <div class="dashboard-card schedule">
+                <h3>Upcoming Sessions</h3>
+                <ul>
+                    <li><strong>Mon:</strong> 4:00 PM – Algebra II (Cole M.)</li>
+                    <li><strong>Wed:</strong> 6:30 PM – Chemistry Honors (Lina S.)</li>
+                    <li><strong>Fri:</strong> 3:00 PM – SAT Math Prep (Online)</li>
+                </ul>
+                <button class="dashboard-btn">View Calendar</button>
+            </div>
+
+            <div class="dashboard-card feedback">
+                <h3>Student Feedback</h3>
+                <p>“Jacob helped me understand balancing equations for the first time!”</p>
+                <p>“Best math tutor I’ve ever had — super patient and explains clearly.”</p>
+                <button class="dashboard-btn">View All Reviews</button>
+            </div>
+        </div>
+    </div>
+    <footer class="misc">
+    <div class="misc-inner">
+        <div class="misc">
+        <!-- Left Side -->
+        <div class="misc-container">
+        <h3>
+            Tutortrack is widely available to all students for tutoring and gives opportunities
+            for those who want to tutor.
+        </h3>
+        </div>
+
+        <!-- Center (Logo + Title) -->
+        <div class="footer-center">
+            <img src="\Pictures\tutortracklogo.png" alt="Tutortrack Logo" class="footer-logo">
+            <h2 class="footer-title-text"><strong>Tutortrack</strong></h2>
+        </div>
+
+        <!-- Right Side (Link Columns) -->
+        <div class="footer-columns">
+            <div class="footer-column">
+                <h4 class="footer-title">Tutoring Help</h4>
+                <a href="..\Tutors\Tutors.html" class="footer-link">Tutors</a>
+                <a href="\Schedule\Scheduling.html" class="footer-link">Scheduling</a>
+            </div>
+
+            <div class="footer-column">
+                <h4 class="footer-title">Information</h4>
+                <a href="..\About\About.html" class="footer-link">About Us</a>
+                <a href="..\Contact\Contact.html" class="footer-link">Contact Us</a>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">Social Media</h4>
+                <a href="https://www.instagram.com" class="footer-link">Instagram</a>
+                <a href="https://www.facebook.com" class="footer-link">Facebook</a>
+                <a href="https://x.com/home" class="footer-link">X</a>
+                <a href="https://www.youtube.com" class="footer-link">Youtube</a>
+            </div>
+        </div>
+    </div>
+    </div>
+    </footer>
+
+    
+
+    <!-- Copyright at the very bottom -->
+    <footer class="footer-bottom">
+        <p>© 2025 Tutortrack. All rights reserved.</p>
+    </footer>
+
+
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
+</body>
+</html>
+
+<!--
+
+<a href="link" id="placeholder">Schedule</a> 
+
+-->
