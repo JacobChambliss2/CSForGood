@@ -161,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             school: tutor.school,
                             sat: tutor.sat
                         });
+                        updateFavoritesStorage();
                     }
                 });
 
@@ -222,4 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
     })
     .catch(error => console.error('Error loading data:', error));
+    function updateFavoritesStorage() {
+        localStorage.setItem("favorites", JSON.stringify(favtutors));
+    }
 });
