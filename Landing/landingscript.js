@@ -132,10 +132,10 @@ window.addEventListener('load', () => {
       setTimeout(fade, speed);
     }
   };
-
   document.body.style.opacity = 0;
   fade();
 });
+
 let slideIndex = 0;
 showSlides();
 
