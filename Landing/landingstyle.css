@@ -1,6 +1,6 @@
 html, body {
   scroll-behavior: smooth;
-  background-color: #FFF9F0;
+  background-color: #faf0e3;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -32,8 +32,9 @@ nav {
   width: 2.5em;
   height: 2.5em;
 }
-.TitleArea h1{
+#thetitle{
   color: #133120;
+  text-decoration: none;
 }
 /* ===== GOOGLE TRANSLATE DROPDOWN STYLING ===== */
 #google_translate_element {
@@ -93,7 +94,6 @@ nav {
   display: flex;
   gap: 0.5em;
   align-items: center;
-  background-color:
 }
 
 /* TITLE AREA */
@@ -223,7 +223,7 @@ nav {
 .overlay-text .Header {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #ffd580; /* Accent color */
+  color: #DDEEDF; /* Accent color */
 }
 
 .overlay-text .imagetext {
