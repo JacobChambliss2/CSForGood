@@ -144,14 +144,31 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderRankedTutors(rows){
     tutorList.innerHTML = "";
     (rows||[]).forEach(t => {
-      tutorMap.set(String(t.id), { first_name: t.first_name, last_name: t.last_name });
+      tutorMap.set(String(t.id), {
+        first_name: t.first_name,
+        last_name: t.last_name,
+        favorited: !!t.favorited
+      });
+  
       const li = document.createElement("li");
-      li.textContent = `${t.first_name} ${t.last_name}`;
       li.dataset.tutorId = t.id;
+  
+      // star + name
+      const star = document.createElement("span");
+      star.className = "fav-star";
+      star.textContent = t.favorited ? "★" : "☆"; // filled or outline
+      star.setAttribute("aria-label", t.favorited ? "Favorited" : "Not favorited");
+  
+      const name = document.createElement("span");
+      name.textContent = ` ${t.first_name} ${t.last_name}`;
+  
+      li.appendChild(star);
+      li.appendChild(name);
       tutorList.appendChild(li);
     });
     dbg("Rendered tutors:", (rows||[]).length);
   }
+  
 
   async function loadRankedTutors(){
     try {
@@ -242,8 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function clearGridAvailability(){
-    gridHost.querySelectorAll('[data-cell].available').forEach(td => td.classList.remove("available"));
+    // wipe all state before painting a new date
+    gridHost.querySelectorAll('td[data-cell]').forEach(td => {
+      td.classList.remove('available', 'selected', 'confirmed');
+    });
   }
+  
   function markCellAvailable(tutorId, hour){
     const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
     if (td) td.classList.add("available");
@@ -484,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           ul.style.display = "grid";
           ul.style.gridTemplateColumns = `calc(112px + 2vw) repeat(${data.length}, 1fr)`;
-          ul.style.columnGap = "8px";
+          ul.style.columnGap = "100px";
           ul.style.rowGap = "0";
           ul.style.width = "100%";
           ul.style.margin = "0";
