@@ -1,6 +1,8 @@
 const BASE = ""; // same-origin with your PHP server
 const TOGGLE_URL = `${BASE}toggle_availability.php`;
-
+// Automatically pull data from tutors.js
+const favtutors = JSON.parse(localStorage.getItem("favorites")) || [];
+console.log("Loaded favorites:", favtutors);
 // ---- MOCK TOGGLE ----
 const MOCK = false; // set to false to hit real PHP endpoints
 
@@ -100,6 +102,7 @@ async function fetchJSON(url, options){
   }
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
   const tutorList      = document.getElementById("tutorList");
   const dateInput      = document.getElementById("start");
@@ -108,19 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn       = document.querySelector(".close");
   const availabilityDisplay = document.getElementById("availabilityDisplay");
 
-  // Confirm UI (optional: guards if you haven't added the HTML yet)
-  const confirmBar        = document.getElementById('confirmBar');
-  const confirmBtn        = document.getElementById('confirmBtn');
-  const confirmModal      = document.getElementById('confirmModal');
-  const closeConfirmModal = document.getElementById('closeConfirmModal');
-  const cancelConfirm     = document.getElementById('cancelConfirm');
-  const submitConfirm     = document.getElementById('submitConfirm');
-  const confirmList       = document.getElementById('confirmList');
-  const confirmDateEl     = document.getElementById('confirmDate');
-
-  const FAKE_CONFIRM = true; // set false when you wire a PHP endpoint
-
-  // tag hours (0..23) if that left rail exists on your page
+  // tag hours (0..23)
   document.querySelectorAll(".hours li").forEach((li, idx) => li.dataset.hour = idx);
 
   // helpers
@@ -190,312 +181,158 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ========= Availability Grid helpers =========
-  function hourLabel(h) {
-    const hour12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
-    const ampm = h < 12 ? "am" : "pm";
-    return `${hour12}:00${ampm}`;
-  }
+// ========= NEW: Availability Grid helpers =========
+function hourLabel(h) {
+  const hour12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+  const ampm = h < 12 ? "am" : "pm";
+  return `${hour12}:00${ampm}`;
+}
 
-  const gridHost = document.getElementById("availabilityGrid");
-  let gridState = {
-    tutorCols: [],
-    indexByTutorId: new Map()
+const gridHost = document.getElementById("availabilityGrid");
+let gridState = {
+  tutorCols: [],          // array of {id, label}
+  indexByTutorId: new Map() // tutor_id -> column index (starting at 0 for first tutor col)
+};
+
+// Build an empty grid (header + hour rows, blank cells)
+function buildAvailabilityGrid(tutors){
+  // map tutors to {id,label} — we still need IDs to build columns
+  const tutorCols = (tutors||[]).map(t => ({ id: String(t.id) }));
+  gridState.tutorCols = tutorCols;
+  gridState.indexByTutorId = new Map(tutorCols.map((t,i)=>[t.id, i]));
+
+  // rebuild table
+  gridHost.innerHTML = "";
+  const table = document.createElement("table");
+  table.id = "availTable";
+  table.style.borderCollapse = "collapse";
+  table.style.minWidth = "100%";
+  table.style.tableLayout = "fixed";   // ensures columns align evenly
+  table.style.marginTop = "0";
+
+  const styleCell = (el, isHeader=false) => {
+    el.style.border = "1px solid #ccc";
+    el.style.padding = "6px 10px";
+    if (isHeader) el.style.fontWeight = "600";
+    return el;
   };
 
-  function buildAvailabilityGrid(tutors){
-    const tutorCols = (tutors||[]).map(t => ({ id: String(t.id) }));
-    gridState.tutorCols = tutorCols;
-    gridState.indexByTutorId = new Map(tutorCols.map((t,i)=>[t.id, i]));
+  // === no THEAD with tutor names ===
 
-    gridHost.innerHTML = "";
-    const table = document.createElement("table");
-    table.id = "availTable";
-    table.style.borderCollapse = "collapse";
-    table.style.minWidth = "100%";
-    table.style.tableLayout = "fixed";
-    table.style.marginTop = "0";
+  // TBODY with hour rows
+  const tbody = document.createElement("tbody");
+  for (let h = 8; h <= 20; h++){
+    const tr = document.createElement("tr");
 
-    const styleCell = (el, isHeader=false) => {
-      el.style.border = "1px solid #ccc";
-      el.style.padding = "6px 10px";
-      if (isHeader) el.style.fontWeight = "600";
-      return el;
-    };
+    // left column (hour label)
+    const th = styleCell(document.createElement("th"), true);
+    th.textContent = hourLabel(h);
+    th.style.width = "90px";
+    th.style.textAlign = "left";
+    tr.appendChild(th);
 
-    const tbody = document.createElement("tbody");
-    for (let h = 8; h <= 20; h++){
-      const tr = document.createElement("tr");
+    // one cell per tutor
+    tutorCols.forEach(t => {
+      const td = styleCell(document.createElement("td"));
+      td.setAttribute("data-cell", `${t.id}-${h}`);
+      td.style.width = `${100 / tutorCols.length}%`;
+      tr.appendChild(td);
+    });
 
-      const th = styleCell(document.createElement("th"), true);
-      th.textContent = hourLabel(h);
-      th.style.width = "90px";
-      th.style.textAlign = "left";
-      tr.appendChild(th);
-
-      tutorCols.forEach(t => {
-        const td = styleCell(document.createElement("td"));
-        td.setAttribute("data-cell", `${t.id}-${h}`);
-        td.style.width = `${100 / tutorCols.length}%`;
-        tr.appendChild(td);
-      });
-
-      tbody.appendChild(tr);
-    }
-    table.appendChild(tbody);
-
-    const legend = document.createElement("div");
-    legend.style.margin = "8px 0 0 0";
-    legend.innerHTML = `
-      <span style="display:inline-block;width:14px;height:14px;border:1px solid #ccc;vertical-align:middle;margin-right:6px;"></span>
-      Unavailable
-      &nbsp;&nbsp;&nbsp;
-      <span class="available" style="display:inline-block;width:14px;height:14px;border:1px solid #ccc;vertical-align:middle;margin:0 6px;background:#c7f7c7;"></span>
-      Available
-    `;
-
-    gridHost.appendChild(table);
-    gridHost.appendChild(legend);
+    tbody.appendChild(tr);
   }
+  table.appendChild(tbody);
+
+  // legend below the table
+  const legend = document.createElement("div");
+  legend.style.margin = "8px 0 0 0";
+  legend.innerHTML = `
+    <span style="display:inline-block;width:14px;height:14px;border:1px solid #ccc;vertical-align:middle;margin-right:6px;"></span>
+    Unavailable
+    &nbsp;&nbsp;&nbsp;
+    <span class="available" style="display:inline-block;width:14px;height:14px;border:1px solid #ccc;vertical-align:middle;margin:0 6px;background:#c7f7c7;"></span>
+    Available
+  `;
+
+  gridHost.appendChild(table);
+  gridHost.appendChild(legend);
+}
 
   function clearGridAvailability(){
-    // wipe all state before painting a new date
-    gridHost.querySelectorAll('td[data-cell]').forEach(td => {
-      td.classList.remove('available', 'selected', 'confirmed');
-    });
+    gridHost.querySelectorAll('[data-cell].available').forEach(td => td.classList.remove("available"));
   }
-  
   function markCellAvailable(tutorId, hour){
     const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
     if (td) td.classList.add("available");
   }
 
-  async function loadAllTutorsAvailability(ymd){
-    try {
-      const data = await fetchJSON(`${BASE}availability.php?date=${encodeURIComponent(ymd)}`);
-      if (!data || data.error){
-        dbg("Avail-all error:", data && data.error);
-        clearGridAvailability();
-        return;
-      }
+// ========= REPLACE: loadAllTutorsAvailability with this =========
+async function loadAllTutorsAvailability(ymd){
+  try {
+    // fetch all tutors’ availability for the chosen date
+    const data = await fetchJSON(`${BASE}availability.php?date=${encodeURIComponent(ymd)}`);
+
+    if (!data || data.error){
+      dbg("Avail-all error:", data && data.error);
       clearGridAvailability();
-      (data.tutors || []).forEach(t => {
-        const tutorId = String(t.tutor_id);
-        const hours = Array.isArray(t.hours) ? t.hours : [];
-        hours.forEach(h => {
-          const hour = parseInt(h, 10);
-          if (!Number.isNaN(hour)) markCellAvailable(tutorId, hour);
-        });
+      return;
+    }
+
+    // clear all old green cells
+    clearGridAvailability();
+
+    // fill green cells
+    (data.tutors || []).forEach(t => {
+      const tutorId = String(t.tutor_id);
+      const hours = Array.isArray(t.hours) ? t.hours : [];
+      hours.forEach(h => {
+        const hour = parseInt(h, 10);
+        if (!Number.isNaN(hour)) markCellAvailable(tutorId, hour);
       });
-      dbg("All-tutor availability painted for", ymd);
-    } catch (err) {
-      dbg("Avail-all fetch error:", err.message);
-      clearGridAvailability();
-    }
-  }
-
-  // ====== Confirm-flow state (local selections) ======
-  const pendingSelections = new Map(); // Map<tutorId, Set<hour>>
-  function selectionCount(){
-    let n = 0; for (const set of pendingSelections.values()) n += set.size; return n;
-  }
-  function updateConfirmBar(){
-    if (!confirmBar || !confirmBtn) return;
-    const n = selectionCount();
-    confirmBar.style.display = n > 0 ? 'flex' : 'none';
-    confirmBtn.textContent = `Confirm ${n} slot(s)`;
-  }
-  function toggleSelection(tutorId, hour, td){
-    if (td.classList.contains('confirmed')) return;
-    if (!td.classList.contains('available') && !td.classList.contains('selected')) return;
-
-    let set = pendingSelections.get(tutorId);
-    if (!set){ set = new Set(); pendingSelections.set(tutorId, set); }
-
-    if (set.has(hour)){
-      set.delete(hour);
-      td.classList.remove('selected');
-      td.classList.add('available');
-      if (set.size === 0) pendingSelections.delete(tutorId);
-    } else {
-      set.add(hour);
-      td.classList.add('selected');
-      td.classList.remove('available');
-    }
-    updateConfirmBar();
-  }
-  function hourLabelShort(h){
-    const hour12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
-    const ampm = h < 12 ? "am" : "pm";
-    return `${hour12}${ampm}`;
-  }
-  function buildSelectionSummary(ymd){
-    const items = [];
-    for (const [tutorId, set] of pendingSelections.entries()){
-      const t = tutorMap.get(String(tutorId)) || {first_name:'Tutor', last_name:String(tutorId)};
-      const name = `${t.first_name} ${t.last_name}`;
-      [...set].sort((a,b)=>a-b).forEach(hour => items.push({ tutorId:Number(tutorId), tutorName:name, date: ymd, hour }));
-    }
-    items.sort((a,b)=> a.tutorName.localeCompare(b.tutorName) || a.hour - b.hour);
-    return items;
-  }
-  function clearSelectionsUI(){
-    gridHost.querySelectorAll('td.selected').forEach(td=>{
-      td.classList.remove('selected');
-      td.classList.add('available');
     });
-    pendingSelections.clear();
-    updateConfirmBar();
+
+    dbg("All-tutor availability painted for", ymd);
+  } catch (err) {
+    dbg("Avail-all fetch error:", err.message);
+    clearGridAvailability();
   }
+}
+
 
   let lastTutorId = null;
 
   tutorList.addEventListener("click", (e) => {
     const li = e.target.closest("li"); if (!li) return;
     lastTutorId = li.dataset.tutorId;
-    if (modalTutorName) modalTutorName.textContent = `Book a time with ${li.textContent}`;
-    if (bookingModal) bookingModal.style.display = "block";
+    modalTutorName.textContent = `Book a time with ${li.textContent}`;
+    bookingModal.style.display = "block";
     const ymd = selectedDate();
     loadAvailability(lastTutorId, ymd);
   });
 
-    dateInput.addEventListener("change", () => {
-      clearSelectionsUI(); // NEW
-      const ymd = selectedDate();
-      loadAllTutorsAvailability(ymd);
-      if (lastTutorId) loadAvailability(lastTutorId, ymd);
-    });
-    
+  dateInput.addEventListener("change", () => {
+    const ymd = selectedDate();
+    // refresh the all-tutors table for the newly chosen date
+    loadAllTutorsAvailability(ymd);
+    // if a tutor modal is open/selected, refresh their hour highlights too
+    if (lastTutorId) loadAvailability(lastTutorId, ymd);
+  });
 
   if (closeBtn) closeBtn.addEventListener("click", () => bookingModal.style.display = "none");
 
-  // Grid click: select/deselect (no DB write here)
-  gridHost.addEventListener('click', (e) => {
-    const td = e.target.closest('td[data-cell]');
-    if (!td) return;
-
-    // ignore truly locked cells
-    if (td.classList.contains('confirmed')) return;
-
-    const [tutorId, hourStr] = td.getAttribute('data-cell').split('-');
-    const hour = Number(hourStr);
-    toggleSelection(String(tutorId), hour, td);
-  });
-
-    // open modal and list selections
-    confirmBtn.addEventListener('click', () => {
-      const ymd = selectedDate();
-      const items = buildSelectionSummary(ymd);
-
-      confirmDateEl.textContent = `Date: ${ymd}`;
-      confirmList.innerHTML = items.length
-        ? items.map(i => `<li>${i.tutorName} — ${hourLabelShort(i.hour)}</li>`).join('')
-        : '<li>No selections.</li>';
-
-      confirmModal.style.display = 'block';
-    });
-    [closeConfirmModal, cancelConfirm].forEach(btn => btn.addEventListener('click', () => {
-      confirmModal.style.display = 'none';
-    }));
-
-    // submit (fake now; ready for real later)
-    submitConfirm.addEventListener('click', async () => {
-      const ymd = selectedDate();
-      const items = buildSelectionSummary(ymd);
-      if (!items.length){ confirmModal.style.display='none'; return; }
-
-      try{
-        if (FAKE_CONFIRM){
-          await new Promise(r=>setTimeout(r, 250)); // simulate success
-        } else {
-          const res = await fetch(CONFIRM_URL, {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ date: ymd, slots: items })
-          });
-          const data = await res.json();
-          if (!res.ok || data.error) throw new Error(data.error || 'Confirm failed');
-        }
-
-        // lock them in UI
-        items.forEach(({tutorId, hour})=>{
-          const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
-          if (!td) return;
-          td.classList.remove('selected','available');
-          td.classList.add('confirmed'); // visually distinct + locked
-        });
-
-        pendingSelections.clear();
-        updateConfirmBar();
-        confirmModal.style.display = 'none';
-        dbg(`Confirmed ${items.length} slot(s) on ${ymd}.`);
-      } catch(err){
-        dbg('Confirm error:', err.message);
-        alert('Could not confirm right now. Please try again.');
-      }
-    });
-
-
-  // Confirm modal handlers (no-ops if modal not present)
-  if (confirmBtn){
-    confirmBtn.addEventListener('click', () => {
-      const ymd = selectedDate();
-      const items = buildSelectionSummary(ymd);
-      if (confirmDateEl) confirmDateEl.textContent = `Date: ${ymd}`;
-      if (confirmList) {
-        confirmList.innerHTML = items.length
-          ? items.map(i => `<li>${i.tutorName} — ${hourLabelShort(i.hour)}</li>`).join('')
-          : '<li>No selections.</li>';
-      }
-      if (confirmModal) confirmModal.style.display = 'block';
-    });
-  }
-  [closeConfirmModal, cancelConfirm].forEach(btn => {
-    if (btn) btn.addEventListener('click', () => { if (confirmModal) confirmModal.style.display = 'none'; });
-  });
-  if (submitConfirm){
-    submitConfirm.addEventListener('click', async () => {
-      const ymd = selectedDate();
-      const items = buildSelectionSummary(ymd);
-      if (!items.length){ if (confirmModal) confirmModal.style.display='none'; return; }
-
-      try{
-        if (FAKE_CONFIRM){
-          await new Promise(r=>setTimeout(r, 250)); // simulate
-        } else {
-          // wire your PHP here later:
-          // await fetch(`${BASE}confirm_appointments.php`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ date: ymd, slots: items }) });
-        }
-        // Lock in UI
-        items.forEach(({tutorId, hour})=>{
-          const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
-          if (!td) return;
-          td.classList.remove('selected','available');
-          td.classList.add('confirmed');
-        });
-        pendingSelections.clear();
-        updateConfirmBar();
-        if (confirmModal) confirmModal.style.display = 'none';
-        dbg(`Confirmed ${items.length} slot(s) on ${ymd}.`);
-      } catch(err){
-        dbg('Confirm error:', err.message);
-        alert('Could not confirm right now. Please try again.');
-      }
-    });
-  }
-
-  // ---- bootstrap
+  // ---- bootstrap: ensure date input has a value (fallback to today), then load both
   (async function init(){
     if (dateInput && !dateInput.value) dateInput.value = todayISO();
     const firstDate = selectedDate();
     dbg("Page loaded → date:", firstDate, "→ calling rank.php + availability.php…");
 
+    // load tutors first so we can build the columns
     const tutors = await (async () => {
       try {
         const data = await fetchJSON(`${BASE}rank.php`);
         renderRankedTutors(data);
 
-        // Align tutor name bar to grid columns
+        // === Align tutor name bar to grid columns ===
         const ul = document.getElementById("tutorList");
         if (ul){
           if (!ul.firstElementChild || !ul.firstElementChild.classList.contains("grid-spacer")) {
@@ -505,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           ul.style.display = "grid";
           ul.style.gridTemplateColumns = `calc(112px + 2vw) repeat(${data.length}, 1fr)`;
-          ul.style.columnGap = "100px";
+          ul.style.columnGap = "8px";
           ul.style.rowGap = "0";
           ul.style.width = "100%";
           ul.style.margin = "0";
@@ -521,7 +358,41 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })();
 
+    // build the empty grid from the ranked tutors
     buildAvailabilityGrid(tutors);
+    const TOGGLE_URL = `${BASE}toggle_availability.php`;
+
+    gridHost.addEventListener('click', async (e) => {
+      const td = e.target.closest('td[data-cell]');
+      if (!td) return;
+
+      const [tutorId, hourStr] = td.getAttribute('data-cell').split('-');
+      const ymd = selectedDate();
+
+      try {
+        const res = await fetch(TOGGLE_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ date: ymd, tutor_id: Number(tutorId), hour: Number(hourStr) })
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) throw new Error(data.error || 'Toggle failed');
+
+        // green when available, red when not
+        if (data.is_available) {
+          td.classList.add('available');
+          td.classList.remove('booked');
+        } else {
+          td.classList.remove('available');
+          td.classList.add('booked');
+        }
+      } catch (err) {
+        dbg('Toggle error:', err.message);
+      }
+    });
+
+    // now paint the availability for the chosen date
     await loadAllTutorsAvailability(firstDate);
   })();
+
 });
