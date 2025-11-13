@@ -135,14 +135,31 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderRankedTutors(rows){
     tutorList.innerHTML = "";
     (rows||[]).forEach(t => {
-      tutorMap.set(String(t.id), { first_name: t.first_name, last_name: t.last_name });
+      tutorMap.set(String(t.id), {
+        first_name: t.first_name,
+        last_name: t.last_name,
+        favorited: !!t.favorited
+      });
+  
       const li = document.createElement("li");
-      li.textContent = `${t.first_name} ${t.last_name}`;
       li.dataset.tutorId = t.id;
+  
+      // star + name
+      const star = document.createElement("span");
+      star.className = "fav-star";
+      star.textContent = t.favorited ? "★" : "☆"; // filled or outline
+      star.setAttribute("aria-label", t.favorited ? "Favorited" : "Not favorited");
+  
+      const name = document.createElement("span");
+      name.textContent = ` ${t.first_name} ${t.last_name}`;
+  
+      li.appendChild(star);
+      li.appendChild(name);
       tutorList.appendChild(li);
     });
     dbg("Rendered tutors:", (rows||[]).length);
   }
+  
 
   async function loadRankedTutors(){
     try {
@@ -241,17 +258,13 @@ function buildAvailabilityGrid(tutors){
   gridHost.appendChild(legend);
 }
 
-// Clear all green cells
-function clearGridAvailability(){
-  const cells = gridHost.querySelectorAll('[data-cell].available');
-  cells.forEach(td => td.classList.remove("available"));
-}
-
-// Mark a specific tutor/hour cell as available
-function markCellAvailable(tutorId, hour){
-  const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
-  if (td) td.classList.add("available");
-}
+  function clearGridAvailability(){
+    gridHost.querySelectorAll('[data-cell].available').forEach(td => td.classList.remove("available"));
+  }
+  function markCellAvailable(tutorId, hour){
+    const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
+    if (td) td.classList.add("available");
+  }
 
 // ========= REPLACE: loadAllTutorsAvailability with this =========
 async function loadAllTutorsAvailability(ymd){
@@ -321,27 +334,22 @@ async function loadAllTutorsAvailability(ymd){
 
         // === Align tutor name bar to grid columns ===
         const ul = document.getElementById("tutorList");
-
-        // insert spacer in column 1 (hour label width)
-        if (!ul.firstElementChild || !ul.firstElementChild.classList.contains("grid-spacer")) {
-          const spacer = document.createElement("li");
-          spacer.className = "grid-spacer";
-          ul.prepend(spacer);
+        if (ul){
+          if (!ul.firstElementChild || !ul.firstElementChild.classList.contains("grid-spacer")) {
+            const spacer = document.createElement("li");
+            spacer.className = "grid-spacer";
+            ul.prepend(spacer);
+          }
+          ul.style.display = "grid";
+          ul.style.gridTemplateColumns = `calc(112px + 2vw) repeat(${data.length}, 1fr)`;
+          ul.style.columnGap = "8px";
+          ul.style.rowGap = "0";
+          ul.style.width = "100%";
+          ul.style.margin = "0";
+          ul.style.padding = "0";
+          ul.style.listStyle = "none";
+          ul.style.textAlign = "center";
         }
-
-        // turn the UL into a grid that mirrors the table:
-        //  - 112px hour column
-        //  - then one equal column per tutor
-        ul.style.display = "grid";
-        ul.style.gridTemplateColumns = `calc(112px + 2vw) repeat(${data.length}, 1fr)`; 
-        ul.style.columnGap = "8px"; // matches #availTable { border-spacing: 8px }
-        ul.style.rowGap = "0";
-        ul.style.width = "100%";
-        ul.style.margin = "0";
-        ul.style.padding = "0";
-        ul.style.listStyle = "none";
-        ul.style.textAlign = "center";
-
         return data;
       } catch (err) {
         dbg("Rank error:", err.message);

@@ -457,3 +457,37 @@ img{ max-width: 100%; display:block; }
 .confirm-date{ margin:.5rem 0 1rem; color: var(--text-strong); }
 .confirm-list{ margin:0 0 1rem 1rem; padding-left: 0.8rem; }
 .confirm-actions{ display:flex; gap:8px; justify-content:flex-end; }
+
+#tutorList li {
+  font-size: 2em; /* increase text size here */
+}
+
+.fav-star {
+  color: #DAA520;
+  font-size: 2em; /* star slightly larger than text */
+  vertical-align: middle;
+}
+
+/* === Tweakable left shift for the whole tutor strip === */
+:root{
+  --tutor-offset-x: -24px;  /* make more negative to move further left, e.g., -40px */
+}
+
+
+/* === Keep names and stars perfectly centered vertically === */
+#tutorList li{
+  display: inline-flex;     
+  align-items: center;  
+  gap: 6px;       
+  line-height: 1;    
+  font-size: 1.7em;           
+}
+
+.fav-star{
+  color: #DAA520;
+  font-size: 1.7em;         
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;    
+}
+

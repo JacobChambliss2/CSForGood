@@ -20,7 +20,9 @@ $weights = [
 ];
 $weight_sum = array_sum($weights);
 
-$sql = "SELECT id, first_name, last_name, age, school, sat_score, distance FROM tutors";
+// include favorited flag
+$sql = "SELECT id, first_name, last_name, age, school, sat_score, distance, favorited
+        FROM tutors";
 $res = $mysqli->query($sql);
 $tutors = [];
 while ($row = $res->fetch_assoc()) {
@@ -32,6 +34,8 @@ while ($row = $res->fetch_assoc()) {
     'School'     => $row['school'],
     'SAT'        => is_null($row['sat_score']) ? null : (int)$row['sat_score'],
     'distance'   => is_null($row['distance']) ? null : (float)$row['distance'],
+    // expose as boolean for the front end
+    'favorited'  => (int)$row['favorited'] === 1
   ];
 }
 
@@ -74,7 +78,7 @@ foreach ($tutors as &$t) {
 }
 unset($t);
 
-// sort: Score DESC, SAT DESC, distance ASC
+// primary sort: Score DESC, SAT DESC, distance ASC (unchanged)
 usort($tutors, function($a,$b){
   if ($a['Score']     != $b['Score'])     return ($a['Score']     < $b['Score'])     ? 1 : -1;
   if ($a['SAT']       != $b['SAT'])       return ($a['SAT']       < $b['SAT'])       ? 1 : -1;
@@ -82,4 +86,13 @@ usort($tutors, function($a,$b){
   return 0;
 });
 
+// FINAL pass: favorites first, but preserve the above relative order (stable “promotion”)
+$fav = [];
+$non = [];
+foreach ($tutors as $t) {
+  if (!empty($t['favorited'])) $fav[] = $t; else $non[] = $t;
+}
+$tutors = array_merge($fav, $non);
+
+// return top 5 (now with favorited flag)
 echo json_encode(array_slice($tutors, 0, 5));
