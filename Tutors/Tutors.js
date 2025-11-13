@@ -5,10 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('Data loaded:', data); 
         const names = data.names;
         const ages = data.ages; 
+        let imgLink = "";
         const schools = data.schools;
         const sats = data.sats;
         const subjects = data.subjects;
         const actives = data.actives;
+        const pics = data.pics;
         const favtutors = [];
         const imglink = `<img src='../Pictures/black.jpg' alt="Tutor photo" style="width:30px; height:30px; border-radius:50%; vertical-align:middle; margin-right:8px;">`;
         const heartlink = `<img src='../Pictures/heart.png' alt="Heart icon" style="width:20px; height:20px; vertical-align:right;">`;
@@ -23,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 school: schools[i],
                 sat: sats[i],
                 subjects: subjects[i],
+                pics: pics[i],
             });
             }
             let selectedSubject = "All";
@@ -51,8 +54,28 @@ document.addEventListener("DOMContentLoaded", function () {
             tutorData.forEach((tutor, i) => {
                 const button = document.createElement('button');
                 button.setAttribute('id', `tutor${i}`);
-                button.innerHTML = `
-                        ${imglink}
+                // Detect file type if it's Base64 or normal path
+                
+                if (tutor.pics && tutor.pics.length > 100) {
+                // assume it's a Base64 string if it's long enough
+                imgLink = `<img src="data:image/jpeg;base64,${tutor.pics}"
+                alt="Tutor photo"
+                style="width:50px; height:50px; border-radius:50%; vertical-align:middle;">`;
+                } else if (tutor.pics) {
+                // regular image path
+                const ext = tutor.pics.split('.').pop().toLowerCase();
+                if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
+                imgLink = `<img src="${tutor.pics}"
+                alt="Tutor photo"
+                style="width:50px; height:50px; border-radius:50%; vertical-align:middle;">`;
+                } else {
+                imgLink = `<img src="../Pictures/black.jpg"
+                alt="Tutor photo"
+                style="width:50px; height:50px; border-radius:50%; vertical-align:middle;">`;
+                }
+                } 
+                        button.innerHTML = `
+                        ${imgLink}
                         <strong>${tutor.name}</strong><br>
                         Age: ${tutor.age}<br>
                         School: ${tutor.school}<br>
@@ -91,37 +114,53 @@ document.addEventListener("DOMContentLoaded", function () {
             }); 
 
             function showExpandedTutor(tutor) {
-                // Hide all normal cards
-                document.querySelectorAll(".tutor-card").forEach(card => {
-                    card.style.display = "none";
-                });
+                document.querySelectorAll(".tutor-card").forEach(card => card.style.display = "none");
                 backarrow.style.display = "block";
-                // Remove existing expanded card
+            
                 const oldExpanded = document.getElementById("expanded-card");
                 if (oldExpanded) oldExpanded.remove();
-
-                // Create expanded view
+            
+                if (tutor.pics && tutor.pics.length > 100) {
+                    // assume it's a Base64 string if it's long enough
+                    imgLink = `<img src="data:image/jpeg;base64,${tutor.pics}"
+                    alt="Tutor photo"
+                    style="width:120px; height:120px; border-radius:50%; margin-bottom:15px;">`;
+                    } else if (tutor.pics) {
+                    // regular image path
+                    const ext = tutor.pics.split('.').pop().toLowerCase();
+                    if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
+                    imgLink = `<img src="${tutor.pics}"
+                    alt="Tutor photo"
+                    style="width:120px; height:120px; border-radius:50%; margin-bottom:15px;">`;
+                    } else {
+                    imgLink = `<img src="../Pictures/black.jpg">
+                    alt="Tutor photo"
+                    style="width:120px; height:120px; border-radius:50%; margin-bottom:15px;">`;
+                    }
+                    } 
+            
                 const expanded = document.createElement("div");
                 expanded.id = "expanded-card";
                 expanded.classList.add("expanded-card");
+            
                 expanded.innerHTML = `
-                    <div class = "leftsidecard">
-                        <img src="../Pictures/black.jpg" alt="Tutor photo" style="width:120px; height:120px; border-radius:50%; margin-bottom:15px;">
+                    <div class="leftsidecard">
+                        ${imgLink}
+                       
                         <h2>${tutor.name}</h2>
                         <p><strong>Age:</strong> ${tutor.age}</p>
                         <p><strong>School:</strong> ${tutor.school}</p>
                         <p><strong>SAT Score:</strong> ${tutor.sat}</p>
                         <p><strong>Subjects:</strong> ${tutor.subjects}</p>
-                        
                     </div>
                     <div class="rightsidecard">
-                        <h3> Bio:</h3>
-                        <p id = "bio">Hi! I’m Lucus, a senior at Reitz High School. I mainly tutor in Language Arts, and I’ve helped other students prepare for class essays, AP tests, and SAT reading. I’m part of the National Honor Society and I’ve been a peer tutor at my school for the past year. I know school can be stressful, so I always try to explain things in a clear and relaxed way. I’m patient, easy to talk to, and I really enjoy helping people feel more confident in their classes. </p>
+                        <h3>Bio:</h3>
+                        <p id="bio">Hi! I’m ${tutor.name}, and I tutor ${tutor.subjects}. I love breaking down complex concepts into clear, manageable steps and tailoring my teaching style to each student’s needs. My approach is patient, encouraging, and interactive, and I always aim to make learning engaging and relevant. Outside of tutoring, I enjoy rock climbing, reading, and finding creative ways to connect real-world problems to academic concepts.</p>
                         <div class="insideheart">
-                                <img src="../Pictures/heart.png" 
-                                    alt="Heart icon" 
-                                    class="heart" 
-                                    style="width:20px; height:20px; cursor:pointer;">
+                            <img src="../Pictures/heart.png"
+                                alt="Heart icon"
+                                class="heart"
+                                style="width:20px; height:20px; cursor:pointer;">
                         </div>
                     </div>
                 `;
