@@ -210,6 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     expanded.remove();
                     document.querySelectorAll(".tutor-card").forEach(card => {
                         card.style.display = "block";
+                        applyFilters();
                     });
                     backarrow.style.display = "none";
                 });
