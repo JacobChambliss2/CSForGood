@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from sqlalchemy import create_engine
 import json
+import base64
 
 # database setup
 user = "chscscom_jacob"
@@ -20,6 +21,7 @@ schools = []
 sats = []
 distances = []
 subjects = []
+pics = []
 
 df = pd.read_sql("SELECT * FROM tutors", engine)
 #columns = age, school, sat, distance, subject
@@ -33,6 +35,11 @@ for index, row in df.iterrows():
     sats.append(row['sat_score'])
     distances.append(row['distance'])
     subjects.append(row['subject'])
+    if row['profile_pic'] is not None:
+        encoded_pic = base64.b64encode(row['profile_pic']).decode('utf-8')
+        pics.append(encoded_pic)
+    else:
+        pics.append(None)
 
 names = [f"{first} {last}" for first, last in zip(firstname, lastname)]
 # Save the lists into a dictionary
@@ -42,7 +49,8 @@ data = {
     "schools": schools,
     "sats": sats,
     "distances": distances,
-    "subjects": subjects
+    "subjects": subjects,
+    "pics": pics
 }
 
 # Write the dictionary to a JSON file

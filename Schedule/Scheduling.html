@@ -13,7 +13,6 @@
     </head>
 
     <body>
-        <pre id="debug" style="white-space:pre-wrap; font:12px/1.4 monospace; background:#111; color:#0f0; padding:8px; max-height:200px; overflow:auto;"></pre>
 
         <!--top blue bar-->
         <div class="topBar">
@@ -37,7 +36,27 @@
         </div>
         <!--availability grid-->
         <div id="availabilityGrid" style="margin: 20px 0;"></div>
-
+        <!-- Confirm bar -->
+        <div id="confirmBar" class="confirm-bar" style="display:none;">
+            <button id="confirmBtn" class="confirm-primary">Confirm 0 slot(s)</button>
+        </div>
+        
+        <!-- Confirm modal -->
+        <div id="confirmModal" class="confirm-modal" style="display:none;">
+            <div class="confirm-card">
+            <div class="confirm-head">
+                <h3>Review your selections</h3>
+                <button id="closeConfirmModal" class="confirm-x" aria-label="Close">×</button>
+            </div>
+            <p id="confirmDate" class="confirm-date"></p>
+            <ul id="confirmList" class="confirm-list"></ul>
+            <div class="confirm-actions">
+                <button id="cancelConfirm" class="confirm-secondary">Cancel</button>
+                <button id="submitConfirm" class="confirm-primary">Confirm</button>
+            </div>
+            </div>
+        </div>
+        
         <!--booking popup (hidden)-->
         <div id="bookingModal" class="bookingWrapper">
             <!--UI-->
