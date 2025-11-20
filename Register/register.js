@@ -110,6 +110,17 @@ document.getElementById("registerForm").addEventListener("submit", e => {
         document.querySelectorAll('input[name="subjects"]:checked')
     ).map(cb => cb.value);
 
+    fetch("hash.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: "password=" + encodeURIComponent(password)
+    })
+    .then(response => response.text())
+    .then(hash => {
+    console.log("Hashed password:", hash);
+    })
+    .catch(err => console.error("Error:", err));
+
 
     // Bundle into variables / object
     const formData = {
