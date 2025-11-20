@@ -1,0 +1,9 @@
+@media (max-width: 900px) {
+    .info-section {
+      flex-direction: column;
+      text-align: center;
+    }
+    .info-image img {
+      max-width: 90%;
+    }
+  }

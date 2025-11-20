@@ -122,19 +122,6 @@ function adjustLayout() {
     });
   }
 }
-window.addEventListener('load', () => {
-  let opacity = 0;
-  const speed = 10; // lower = slower fade (ms between frames)
-  const fade = () => {
-    opacity += 0.03;
-    document.body.style.opacity = opacity;
-    if (opacity < 1) {
-      setTimeout(fade, speed);
-    }
-  };
-  document.body.style.opacity = 0;
-  fade();
-});
 
 let slideIndex = 0;
 showSlides();
