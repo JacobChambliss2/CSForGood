@@ -13,7 +13,7 @@ const MOCK_DATA = {
     { id: 2, first_name: "Ben",   last_name: "Patel"  },
     { id: 3, first_name: "Chloe", last_name: "Smith"  },
     { id: 4, first_name: "Diego", last_name: "Gomez"  },
-    { id: 5, first_name: "John", last_name: "Pork"  }
+    { id: 5, first_name: "John", last_name: "Tutor"  }
   ],
   // Availability by date → tutorId → hours[]
   availabilityByDate: {
@@ -263,7 +263,7 @@ function buildAvailabilityGrid(tutors){
   }
   function markCellAvailable(tutorId, hour){
     const td = gridHost.querySelector(`[data-cell="${tutorId}-${hour}"]`);
-    if (td) td.classList.add("available");
+    if (td) td.classList.add("booked");
   }
 
 // ========= REPLACE: loadAllTutorsAvailability with this =========

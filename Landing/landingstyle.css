@@ -39,7 +39,7 @@ nav {
 /* ===== GOOGLE TRANSLATE DROPDOWN STYLING ===== */
 #google_translate_element {
   display: inline-block;
-  margin-left: 20px; /* Adjust spacing as needed */
+  margin-left: 20px; 
 }
 
 /* Powered by Google Translate */
@@ -99,11 +99,11 @@ nav {
 /* TITLE AREA */
 .title-area {
   display: flex;
-  justify-content: space-between; /* places title on left, translate on right */
+  justify-content: space-between; 
   align-items: center;
   flex-wrap: wrap;
   padding: 2em 5%;
-  text-align: center; /* so title isn’t centered globally */
+  text-align: center; 
 }
 
 .header-title {
@@ -113,11 +113,11 @@ nav {
 }
 
 .accessibility {
-  flex-shrink: 0; /* prevents it from squishing */
+  flex-shrink: 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 0; /* removes the top gap you had */
+  margin-top: 0; 
 }
 
 #google_translate_wrapper {
@@ -179,12 +179,12 @@ nav {
   transition: transform 0.4s ease;
 }
 
-/* Optional: zoom effect on image hover */
+
 .Side:hover img {
   transform: scale(1.05);
 }
 
-/* Dark overlay that fades in */
+
 .Side::before {
   content: "";
   position: absolute;

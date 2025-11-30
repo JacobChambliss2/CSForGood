@@ -4,7 +4,7 @@
     <!-- References -->
     <meta charset="UTF-8">
     <title>Tutortrack | Local and Easy Tutoring Access and Help</title>
-    <link rel="stylesheet" href="landingstyle.css">
+    <link rel="stylesheet" href="examplelogin.css">
     <link rel="stylesheet" href="animaion.css">
     <script defer src="landingscript.js"></script>
     <link rel="icon" type="image/x-icon" href="\Pictures\tutortracklogo.ico">
@@ -26,18 +26,11 @@
         </div>
 
         <!-- Whenever The User is On the Website before Creating an Account/Signing-In -->
-        <div class="Creation">
-            <img id="logo" src="">
-            <a href="examplelogin.html" class="butt2" id="login">Dan Phan</a>
-
-        </div>
-
-        <!-- Whenever the User is Logged In -->
-        <!-- 
         <div class="LoggedIn">
-            <a href="https://chatgpt.com/" id="LoggedIn">Timmy Toughknuckles</a>
+            <a href="..\Profile\profile.html" class="loggedin-btn">
+                <span class="username">Alice N.</span>
+            </a>
         </div>
-        -->
     </nav>
 
     <!-- Title -->
@@ -62,91 +55,31 @@
 
     <!-- Two Images Side-by-Side -->
      <!--https://prismic.io/blog/css-hover-effects-->
-     <div class="TwoSides">
-        <div class="Side Side1">
-            <img src="https://bigfuture.collegeboard.org/media/styles/large/public/high-school-classes-colleges-look-for.jpg" alt="Tutor Image" class="card-img">
-            <div class="img-hover"></div>
-            <div class="overlay-text">
-                <span class="Header">Tutor</span>
-                <h3 class="imagetext">Join the great team of tutors!</h3>
-                <a href="tutorinfo.html"><button>Learn More</button></a>
-            </div>
-        </div>
-        <div class="Side Side2">
-            <img src="https://media.istockphoto.com/id/1912511508/photo/portrait-of-happy-high-school-students-looking-at-camera.jpg?s=612x612&w=0&k=20&c=69wPs2E1pjk9UfRgEZogIFweao1Uw8FgXLDOZmYtLVg=" alt="Tutor Image" class="card-img">
-            <div class="img-hover"></div>
-            <div class="overlay-text">
-                <span class="Header">Student</span>
-                <h3 class="imagetext">Engage and learn alongside millions of other students!</h3>
-                <a href="studentinfo.html"><button>Learn More</button></a>
-            </div>
-        </div>
-    </div>
-    <div class="Achievements">
-        <!-- Four Containers:
-            1. Licensed Professionals,
-            2. Many Subjects,
-            3. Yeah,
-            4. AP/IB -->
-            <div class="boxt professional">
-                <img src="\Pictures\jacobanddan.jpeg" alt="Stat Image" class="card-img2">
-                <div class="overlay-text2">
-                    <span class="Header">Certified Tutors/Professionals</span>
-                </div>
-            </div>
-            <div class=" boxt sujets">
-                <img src="https://media.istockphoto.com/id/912462850/vector/open-book-with-education-sketches.jpg?s=612x612&w=0&k=20&c=tgQ2i4J4NDd_EIsluN5CxwDNg4r4pDXgwyVqPBd_jKs=" alt="Stat Image" class="card-img2">
-                <div class="overlay-text2">
-                    <span class="Header">Many Subjects Covered</span>
-                </div>
-            </div>
-            <div class="boxt apib">
-                <img src="\Pictures\collegeboardandib.png" alt="Stat Image" class="card-img2">
-                <div class="overlay-text2">
-                    <span class="Header">AP/IB Included</span>
-                </div>
-            </div>
-            <div class="boxt reviewer">
-                <img src="\Pictures\everyone.jpeg" alt="Stat Image" class="card-img2">
-                <div class="overlay-text2">
-                    <span class="Header">Easy and Simple Process!</span>
-                </div>
-            </div>         
-    </div>
-    <div class="reviewd">
-        <!-- May include an Admin/Adult saying they are excited about this -->
-        <h3 id="actualreview">
-            Tutortrack has been a huge help in improving my grades this semester. The platform made it easy to find reliable tutors for each subject, and the sessions were super flexible with my schedule. I went from struggling in math to actually understanding the material and feeling confident before tests. Highly recommend it to anyone who wants extra academic support!
-        </h3>
-        <h3 id="credentials">Cameron - Indiana</h3>
-        <img src="https://www.shutterstock.com/image-photo/close-young-handsome-positive-curly-600nw-2261684097.jpg" alt="Personal Image" class="card-img3">
-
-    </div>
-
-    <div class="Purpose">
-        <h3>
-            The purpose of Tutortrack is to bridge the gap between students seeking academic support and tutors eager to share their knowledge. Our platform is designed to make quality tutoring accessible, personalized, and flexible for every learner. By connecting students with dedicated tutors, Tutortrack aims to foster confidence, understanding, and long-term academic growth. Through innovative tools, clear communication, and a supportive community, Tutortrack empowers students to overcome challenges, reach their goals, and rediscover the joy of learning.
-        </h3>
-
-        <div class="carousel-container">
-            <div class="carousel-slide fade">
-            <img src="https://www.hillcenter.org/app/uploads/2022/06/4-Benefits-of-Tutoring-For-Children-With-Learning-Differences.jpg" alt="Tutoring 1">
-            </div>
-            <div class="carousel-slide fade">
-            <img src="https://previews.123rf.com/images/stockbroker/stockbroker1507/stockbroker150701300/42119393-2-students-working-together-in-library.jpg" alt="Tutoring 2">
-            </div>
-            <div class="carousel-slide fade">
-            <img src="https://c8.alamy.com/comp/HR9KEK/two-students-doing-homework-together-and-helping-each-other-sitting-HR9KEK.jpg" alt="Tutoring 3">
+    <div class="TutorDashboard">
+        <h2 class="dashboard-title">Tutor Dashboard Overview</h2>
+        <div class="dashboard-container">
+            <div class="dashboard-card profile">
+                <h3 class="tutor-name">Alice Nguyen</h3>
+                <p class="tutor-role">Math & Chemistry Tutor</p>
+                <button class="dashboard-btn">View Full Profile</button>
             </div>
 
-            <div class="carousel-dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+            <div class="dashboard-card schedule">
+                <h3>Upcoming Sessions</h3>
+                <ul>
+                    <li><strong>Fri:</strong> 9:00 AM – Algebra II (Dan P.)</li>
+                </ul>
+                <button class="dashboard-btn">View Calendar</button>
+            </div>
+
+            <div class="dashboard-card feedback">
+                <h3>Student Feedback</h3>
+                <p>“Jacob helped me understand balancing equations for the first time!”</p>
+                <p>“Best math tutor I’ve ever had — super patient and explains clearly.”</p>
+                <button class="dashboard-btn">View All Reviews</button>
             </div>
         </div>
     </div>
-
     <footer class="misc">
     <div class="misc-inner">
         <div class="misc">
