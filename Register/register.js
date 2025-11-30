@@ -110,6 +110,21 @@ document.getElementById("registerForm").addEventListener("submit", e => {
         document.querySelectorAll('input[name="subjects"]:checked')
     ).map(cb => cb.value);
 
+        // Decide what "username" is — here we use email
+    const username = email; // or: const username = name;
+
+    fetch("hash.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body:
+            "username=" + encodeURIComponent(username) +
+            "&password=" + encodeURIComponent(password)
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log("Server response:", result);
+    })
+    .catch(err => console.error("Error:", err));
 
     // Bundle into variables / object
     const formData = {
